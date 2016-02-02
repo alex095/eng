@@ -16,7 +16,9 @@ class FrontController{
 
 
     private function __construct() {
-        $request = filter_input(INPUT_SERVER, 'REQUEST_URI');
+        $request = filter_input(INPUT_SERVER,
+                                'REQUEST_URI',
+                                FILTER_SANITIZE_STRING);
         $splitRequest = explode('/', trim($request, '/'));
         $this->getControllerName($splitRequest);
         $this->getActionName($splitRequest);

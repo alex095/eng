@@ -20,6 +20,8 @@ function __autoload($class){
         require_once("application/controllers/".$class.".php");
     }else if(file_exists("application/models/".$class.".php")){
         require_once("application/models/".$class.".php");
+    }else if(file_exists("application/helpers/".$class.".php")){
+        require_once("application/helpers/".$class.".php");
     }
 }
 

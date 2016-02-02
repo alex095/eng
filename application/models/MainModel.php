@@ -7,7 +7,30 @@
  */
 
 class MainModel extends Model{
-    public function getData() {
+    
+    private $_db = null;
+
+    
+    public function __construct(){
+        if($this->_db === null){
+            $this->_db = new PDO("mysql:host=localhost;dbname=words_db",
+                                    "user",
+                                    "123456");
+        }
+    }
+
+    
+    public function dbConnect(){
+        return $this->_db;
+    }
+
+
+    public function getData(){
         /*to do*/
     }
+    
+    public function getWordsCategories(){
+        
+    }
+    
 }

@@ -9,11 +9,9 @@
 class IndexController extends Controller{
 
 
-    public function IndexAction($params){
-        $model = new MainModel();
-        echo $model->getData();
+    public function IndexAction(){
         $view = new View();
-        $view->render('view_index', $params, $view);
+        $view->render('view_index');
     }
     
     

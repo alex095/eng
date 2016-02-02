@@ -12,7 +12,9 @@ class View{
     private $_stylesPath = "/css/";
 
     public function __construct() {
-        $this->_viewsPath = filter_input(INPUT_SERVER, 'DOCUMENT_ROOT').
+        $this->_viewsPath = filter_input(INPUT_SERVER,
+                            'DOCUMENT_ROOT',
+                            FILTER_SANITIZE_STRING).
                             $this->_viewsPath;
     }
 
