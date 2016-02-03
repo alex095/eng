@@ -9,9 +9,10 @@ and open the template in the editor.
         <meta charset="UTF-8">
         <title></title>
         <?php echo $this->connectCss("style"); ?>
+        
     </head>
     <body>
-        <div class="main_div">
+        <div class="main_div add_words_main_div">
             <form action="/admino/addwords" method="post" enctype="multipart/form-data">
                 <div class="input_div">
                     <div class="input_text">Слово: </div><br />

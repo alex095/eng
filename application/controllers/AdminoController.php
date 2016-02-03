@@ -8,7 +8,12 @@
 
 class AdminoController extends Controller{
 
-    public function AddWordsAction(){
+    
+    public function IndexAction(){
+        /*echo "IndexAction";*/
+    }
+    
+    public function AddWordAction(){
         $helper = new InputHelper();
         if($helper->checkVariable($_POST['send_word'])){
             $word = $helper->isComplited($_POST['word']);
@@ -20,7 +25,7 @@ class AdminoController extends Controller{
             //                                'audio/'.$word.$ext);
         }else{
             $view = new View();
-            $view->render('view_add_words');
+            $view->render('view_add_word', 'view_basic_template');
         }
     }
     
@@ -28,30 +33,18 @@ class AdminoController extends Controller{
         $helper = new InputHelper();
         $model = new MainModel();
         $view = new View();
-        $categories = array();
-        $query = $model->dbConnect()->query("SELECT category_name 
-                                                    FROM categories");
-        while($result = $query->fetch(PDO::FETCH_ASSOC)){
-            $categories[] = $result['category_name'];
-        }
-        $data['categories'] = $categories;
-            
         if($helper->checkVariable($_POST["add_cat"])){
             $catName = $helper->checkVariable($_POST['category_name']);
-            $model->dbConnect()->exec("INSERT INTO
-                                          categories (category_name) 
-                                       VALUES 
-                                          ('".$catName."')"); 
+            $model->insertNewCategory($catName); 
         }
+        $data = $model->getWordsCategories();
         $view->render('view_add_category', $data);
     }
-
     
-
-
-
-    public function IndexAction(){
-        echo "IndexAction";
+    public function RemoveCategoryAction($params){
+        $model = new MainModel();
+        $model->removeCategory($params['id']);
+        header("Location: /admino/addcategory");
     }
-    
 }
+

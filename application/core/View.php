@@ -10,6 +10,7 @@ class View{
 
     private $_viewsPath = "/application/views/";
     private $_stylesPath = "/css/";
+    private $_templateView = "view_basic_template";
 
     public function __construct() {
         $this->_viewsPath = filter_input(INPUT_SERVER,
@@ -18,8 +19,9 @@ class View{
                             $this->_viewsPath;
     }
 
-    public function render($file, $data = null){
-        include($this->_viewsPath.$file.".php");
+    public function render($basicTemplate, $contentTemplate, $data = null){
+        $contentTemplate = $contentTemplate.".php";
+        include($this->_viewsPath.$basicTemplate.".php");
     }
     
     public function connectCss($file){
