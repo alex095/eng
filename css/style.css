@@ -5,9 +5,55 @@ and open the template in the editor.
 */
 
 body{
+    margin: 0px;
+    padding: 0px;
     background-color: #eeeeee;
     font-family: "Helvetica, Verdana, sans-serif";
 }
+
+/* Топ меню */
+
+.top_line{
+    height: 10px;
+    background-color: #395895;
+}
+
+.basic_tmp_menu{
+    text-align: center;
+    height: 50px;
+    background-color: #ccddff;
+}
+
+.basic_tmp_menu ul{
+    display: block;
+    list-style: none;
+    margin: 0px;
+    padding: 18px;
+}
+
+.basic_tmp_menu ul > li{
+    display: inline-block;
+    padding-left: 10px;
+    padding-right: 7px;
+    border-left: 1px solid #7E9CD7;
+    text-align: center;
+}
+
+.basic_tmp_menu ul > li:last-child{
+    border-right: 1px solid #7E9CD7;
+}
+
+.basic_tmp_menu ul > li a:link,
+.basic_tmp_menu ul > li a:visited{
+    text-decoration: none;
+    color: #14274E;
+}
+
+.basic_tmp_menu ul > li a:hover{
+    color: #3C5994;
+}
+
+/* Топ меню END*/
 
 .main_div{
     background-color: #ccddff;

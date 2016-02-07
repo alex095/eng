@@ -15,7 +15,7 @@ class AdminoController extends Controller{
     
     public function AddWordAction(){
         $helper = new InputHelper();
-        if($helper->checkVariable($_POST['send_word'])){
+        if(isset($_POST['send_word'])){
             $word = $helper->isComplited($_POST['word']);
             $translation = $helper->validateString($_POST['traslation']);
             $transcription = $helper->validateString($_POST['transcription']);
@@ -24,20 +24,28 @@ class AdminoController extends Controller{
             //move_uploaded_file($_FILES['audio_file']['tmp_name'],
             //                                'audio/'.$word.$ext);
         }else{
-            $view = new View();
-            $view->render('view_add_word', 'view_basic_template');
+            $blocks['calendar'] = array(
+                'data' => 'hello',
+            );
+            $view = new View('basic_template');
+            $view->render('view_add_word');
         }
     }
     
     public function AddCategoryAction(){
         $helper = new InputHelper();
         $model = new MainModel();
-        $view = new View();
-        if($helper->checkVariable($_POST["add_cat"])){
+        if(isset($_POST['add_cat'])){
             $catName = $helper->checkVariable($_POST['category_name']);
-            $model->insertNewCategory($catName); 
+            $model->insertNewCategory($catName);
         }
         $data = $model->getWordsCategories();
+        
+        
+        $blocks['calendar'] = array(
+            'data' => 'data'
+        );
+        $view = new View('basic_template', $blocks);
         $view->render('view_add_category', $data);
     }
     
