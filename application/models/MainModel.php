@@ -9,7 +9,9 @@
 class MainModel extends Model{
     
     private $_db = null;
-   
+
+
+
     public function __construct(){
         if($this->_db === null){
             $this->_db = new PDO("mysql:host=localhost;dbname=words_db",

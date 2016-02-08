@@ -14,17 +14,22 @@ class View{
     const VIEWS_EXT = ".php";
     private $_basicTemplate;
     private $_blocks;
-    
+    public $errors = array();
 
 
-    public function __construct($basicTemplate, $blocks = null) {
+    public function __construct($basicTemplate, $blocks = null){
         $this->_basicTemplate = $basicTemplate;
         $this->_blocks = $blocks;
     }
 
     public function render($content, $data = null){
         $content = $content.self::VIEWS_EXT;
-        include(self::VIEWS_PATH.$this->_basicTemplate.self::VIEWS_EXT);
+        if($this->_basicTemplate){
+            include(self::VIEWS_PATH.$this->_basicTemplate.self::VIEWS_EXT);
+        }else{
+            include(self::VIEWS_PATH.$content);
+        }
+        
     }
     
     public function connectCss($file){
@@ -51,6 +56,13 @@ class View{
         }else{
             return false;
         }   
+    }
+    
+    private function showError($errorCode){
+        if(isset($this->errors[$errorCode])){
+            return $this->errors[$errorCode];
+        }
+        return false;
     }
     
 }

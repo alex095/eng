@@ -20,10 +20,6 @@ and open the template in the editor.
                 </ul>
             </div>
         </div>
-        
-        
-        
-        
         <?php include_once($content); ?>
     </body>
 </html>

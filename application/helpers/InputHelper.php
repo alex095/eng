@@ -8,6 +8,18 @@
 
 class InputHelper{
 
+    public $inputErrors = array(
+        '0x00001' => 'Невірно заповнене поле!'
+    );
+    
+    
+    public function checkStrLen($str, $minLen){
+        if(strlen($str) < $minLen){
+            return false;
+        }
+        return true;
+    }
+
     public function checkVariable($variable){
         if(isset($variable)){
             return $variable;

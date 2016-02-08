@@ -10,7 +10,7 @@ class IndexController extends Controller{
 
 
     public function IndexAction(){
-        $view = new View();
+        $view = new View(false);
         $view->render('view_index');
     }
     
@@ -23,7 +23,7 @@ class IndexController extends Controller{
     
 
     public function notFoundAction(){
-        $view = new View();
+        $view = new View(false);
         $view->render('view_error_404');
     }
 

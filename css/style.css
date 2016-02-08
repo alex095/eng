@@ -78,6 +78,7 @@ body{
     border: 1px solid #bfd2ff;
     padding: 5px;
     background-color: #d5e2ff;
+    width: 50%;
 }
 
 .add_words_main_div .input_text{
@@ -86,7 +87,9 @@ body{
     text-align: left;
     font-size: 14px;
     width: 165px;
+    margin-left: 15px;
 }
+
 
 .add_words_main_div .input_div{
     padding-bottom: 13px;
@@ -109,7 +112,7 @@ body{
 
 .cateries_table{
     border-collapse: collapse;
-    margin: 20px auto;
+    margin: 0px auto;
 }
 
 .cateries_table td{
@@ -129,4 +132,8 @@ body{
 
 /*Сторінка додавання категорій END*/
 
-
+.error{
+    color: red;
+    text-align: center;
+    font-size: 12px;
+}
