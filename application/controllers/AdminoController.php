@@ -16,21 +16,23 @@ class AdminoController extends Controller{
     }
     
     public function AddWordAction(){
+        $model = new MainModel();
         $helper = new InputHelper();
+        $wordData = array();
         if(isset($_POST['send_word'])){
-            $word = $helper->isComplited($_POST['word']);
-            $translation = $helper->validateString($_POST['traslation']);
-            $transcription = $helper->validateString($_POST['transcription']);
+            $wordData['word'] = $helper->isComplited($_POST['word']);
+            $wordData['translation'] = $helper->validateString($_POST['traslation']);
+            $wordData['transcription'] = $helper->validateString($_POST['transcription']);
+            $wordData['category'] = $helper->validateString($_POST['category']);
             $expFileName = explode('.', $_FILES['audio_file']['name']);
             $ext = '.'.$expFileName[count($ar) - 1];
             move_uploaded_file($_FILES['audio_file']['tmp_name'],
                                             'audio/'.$word.$ext);
+            $model->insertNewWord($wordData);
         }else{
-            /*$blocks['calendar'] = array(
-                'data' => 'hello'
-            );*/
+            $data['categories'] = $model->getWordsCategories();
             $view = new View('basic_template');
-            $view->render('view_add_word');
+            $view->render('view_add_word', $data);
         }
     }
     

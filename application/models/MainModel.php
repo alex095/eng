@@ -34,6 +34,13 @@ class MainModel extends Model{
         return $categories;
     }
     
+    public function insertNewWord($wordData){
+        $sql = "INSERT INTO words_list ()";
+        $query = exec($sql);
+    }
+
+    
+
     public function insertNewCategory($catName){
         $sql = "INSERT INTO categories (category_name) VALUES ('".$catName."')";
         $this->dbConnect()->exec($sql);
