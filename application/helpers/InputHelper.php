@@ -8,12 +8,16 @@
 
 class InputHelper{
 
-    public $inputErrors = array(
-        '0x00001' => 'Невірно заповнене поле!'
+    private $inputErrors = array(
+        '0x00001' => 'Невірно заповнене поле!',
+        '0x00002' => 'Помилка взаємодії з БД!'
     );
     
-    
-    public function checkStrLen($str, $minLen){
+    public function getError($errorCode){
+        return $this->inputErrors[$errorCode];
+    }
+
+        public function checkStrLen($str, $minLen){
         if(strlen($str) < $minLen){
             return false;
         }

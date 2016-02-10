@@ -56,7 +56,11 @@ class View{
         return false;
     }
     
-    public function getBlocks(){
+    public function pushError($name, $error){
+        $this->errors[$name] = $error;
+    }
+
+        public function getBlocks(){
         return $this->_blocks;
     }
     

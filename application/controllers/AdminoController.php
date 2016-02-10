@@ -20,15 +20,19 @@ class AdminoController extends Controller{
         $helper = new InputHelper();
         $wordData = array();
         if(isset($_POST['send_word'])){
-            $wordData['word'] = $helper->isComplited($_POST['word']);
+            $wordData['word'] = $helper->validateString($_POST['word']);
             $wordData['translation'] = $helper->validateString($_POST['traslation']);
             $wordData['transcription'] = $helper->validateString($_POST['transcription']);
             $wordData['category'] = $helper->validateString($_POST['category']);
             $expFileName = explode('.', $_FILES['audio_file']['name']);
-            $ext = '.'.$expFileName[count($ar) - 1];
+            $ext = '.'.$expFileName[count($expFileName) - 1];
             move_uploaded_file($_FILES['audio_file']['tmp_name'],
-                                            'audio/'.$word.$ext);
-            $model->insertNewWord($wordData);
+                                            'audio/'.$wordData['word'].$ext);
+            $wordData['audio_file'] = $wordData['word'].$ext;
+            $sendData = $model->insertNewWord($wordData);
+            if(!$sendData){
+                
+            }
         }else{
             $data['categories'] = $model->getWordsCategories();
             $view = new View('basic_template');
@@ -47,7 +51,7 @@ class AdminoController extends Controller{
                 $catName = $helper->validateString($catName);
                 $model->insertNewCategory($catName);
             }else{
-                $view->errors['cat_name'] = $helper->inputErrors['0x00001'];
+                $view->pushError('cat_name', $helper->getError('0x00001'));
             }
             
         }

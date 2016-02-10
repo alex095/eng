@@ -14,7 +14,7 @@ class MainModel extends Model{
 
     public function __construct(){
         if($this->_db === null){
-            $this->_db = new PDO("mysql:host=localhost;dbname=words_db",
+            $this->_db = new PDO("mysql:host=localhost;dbname=eng_db",
                                     "user",
                                     "123456");
         }
@@ -23,11 +23,12 @@ class MainModel extends Model{
     public function dbConnect(){
         return $this->_db;
     }
-    
+
     public function getWordsCategories(){
         $categories = array();
-        $sql = "SELECT category_id, category_name FROM categories ORDER BY category_id DESC";
-        $query = $this->dbConnect()->query($sql);
+        $sql = "SELECT category_id, category_name FROM categories
+                                                  ORDER BY category_id DESC";
+        $query = $this->_db->query($sql);
         while($result = $query->fetch(PDO::FETCH_ASSOC)){
             $categories[] = $result;
         }
@@ -35,20 +36,74 @@ class MainModel extends Model{
     }
     
     public function insertNewWord($wordData){
-        $sql = "INSERT INTO words_list ()";
-        $query = exec($sql);
+        
+        $lastId = $this->insertWordData($wordData);
+        if(!$lastId){
+            return FALSE;
+        }
+        
+        $catId = $this->getCategoryId($wordData['category']);
+        if(!$catId){
+            echo 1;
+            return FALSE;
+        }
+        
+        if(!$this->insertWordCategory($lastId, $catId)){
+            return FALSE;
+        }
+
+        return TRUE;
+        
+    }
+
+    public function insertWordData($wordData){
+        $sql = "INSERT INTO words_list (word,
+                                        transcription,
+                                        audio)
+                        VALUES ('".$wordData['word']."',
+                                '".$wordData['transcription']."',
+                                '".$wordData['audio_file']."')";
+        
+        $insertQuery = $this->_db->exec($sql);
+        if(!$insertQuery){
+            return FALSE;
+        }
+        return $this->_db->lastInsertId();
+    }
+
+        public function insertWordCategory($lastId, $catId){
+        $sql = "INSERT INTO category (word_id, category_id)
+                       VALUES ('".$lastId."', '".$catId."')";
+        $insertWordCategoryQuery = $this->_db->exec($sql);
+        var_dump($insertWordCategoryQuery);
+        if(!$insertWordCategoryQuery){
+            return FALSE;
+        }
+    }
+
+
+    public function getCategoryId($category){
+        $sql = "SELECT category_id 
+                FROM categories
+                WHERE category_name = '".$category."'";
+        $getCatIdQuery = $this->_db->query($sql);
+        if(!$getCatIdQuery){
+            return FALSE;
+        }
+        return $getCatIdQuery->fetch(PDO::FETCH_NUM)[0];
     }
 
     
 
+
     public function insertNewCategory($catName){
         $sql = "INSERT INTO categories (category_name) VALUES ('".$catName."')";
-        $this->dbConnect()->exec($sql);
+        $this->_db->exec($sql);
     }
     
     public function removeCategory($catId){
         $sql = "DELETE FROM categories WHERE category_id = '".$catId."'";
-        $this->dbConnect()->exec($sql);
+        $this->_db->exec($sql);
     }
     
 }

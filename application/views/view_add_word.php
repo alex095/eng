@@ -10,7 +10,7 @@
                 </div>
                 <div class="input_div">
                     <div class="input_text">Транскрипція: </div><br />
-                    <input type="text" name="trascription" />
+                    <input type="text" name="transcription" />
                 </div>
                 <div class="input_div">
                     <div class="input_text">Категорія: </div><br />
