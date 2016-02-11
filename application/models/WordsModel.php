@@ -6,22 +6,20 @@
  * and open the template in the editor.
  */
 
-class MainModel extends Model{
+class WordsModel extends Model{
     
-    private $_db = null;
-
-
+    private $_db;
+    private $dbConfig = array(
+        'host' => "localhost",
+        'user' => "user",
+        'pswd' => "123456",
+        'db' => "eng_db"
+    );
+    
 
     public function __construct(){
-        if($this->_db === null){
-            $this->_db = new PDO("mysql:host=localhost;dbname=eng_db",
-                                    "user",
-                                    "123456");
-        }
-    }
-    
-    public function dbConnect(){
-        return $this->_db;
+        parent::__construct($this->dbConfig);
+        $this->_db = $this->dbConnect();
     }
 
     public function getWordsCategories(){
@@ -92,8 +90,6 @@ class MainModel extends Model{
         }
         return $getCatIdQuery->fetch(PDO::FETCH_NUM)[0];
     }
-
-    
 
 
     public function insertNewCategory($catName){

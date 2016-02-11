@@ -7,6 +7,28 @@
  */
 
 class Model{
+    
+    protected $db = null;
+    protected $config;
+
+    public function __construct($config) {
+        $this->config = $config;
+        if($this->db === null){
+            $this->db = $this->PDOConnect();
+        }
+    }
+    
+    private function PDOConnect(){
+        return new PDO("mysql:host=".$this->config['host'].";
+                                        dbname=".$this->config['db']."",
+                                        "".$this->config['user']."",
+                                        "".$this->config['pswd']."");
+    }
+    
+    public function dbConnect(){
+        return $this->db;
+    }
+    
     public function getData(){
         
     }

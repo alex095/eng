@@ -17,7 +17,25 @@ class InputHelper{
         return $this->inputErrors[$errorCode];
     }
 
-        public function checkStrLen($str, $minLen){
+    public function validateInputs($inputs){
+        var_dump($inputs);
+        $validInputs = array();
+        foreach($inputs as $key=>$value){
+            if(!empty($value)){
+                echo $key.$value;
+                $input = trim($value);
+                $input = stripslashes($input);
+                $input = htmlspecialchars($input);
+                $validInputs[$key] = $input;
+            }else{
+                return FALSE;
+            }
+        }
+        var_dump($validInputs);
+        return $validInputs;
+    }
+
+    public function checkStrLen($str, $minLen){
         if(strlen($str) < $minLen){
             return false;
         }
