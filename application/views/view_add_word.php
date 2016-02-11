@@ -6,7 +6,7 @@
                 </div>
                 <div class="input_div">
                     <div class="input_text" >Переклад: </div><br />
-                    <input type="text" name="translate" />
+                    <input type="text" name="translation" />
                 </div>
                 <div class="input_div">
                     <div class="input_text">Транскрипція: </div><br />

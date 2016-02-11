@@ -17,19 +17,16 @@ class AdminoController extends Controller{
     
     public function AddWordAction(){
         $model = new WordsModel();
-        $helper = new InputHelper();
         if(isset($_POST['send_word'])){
-            $wordData = array(
-                'word' => $_POST['word'],
-                'translation' => $_POST['traslation'],
-                'transcription' => $_POST['transcription'],
-                'category' => $_POST['category'],
-                'audio_file' => $this->downloadAudioFile($wordData['word'])
-            );
-            $wordData['audio_file'] = $this->downloadAudioFile($wordData['word']);
-            $sendData = $model->insertNewWord($wordData);
+            $model->word = $_POST['word'];
+            $model->translation = $_POST['translation'];
+            $model->transcription = $_POST['transcription'];
+            $model->category = $_POST['category'];
+            $model->audioFile = $_FILES['audio_file'];
+            
+            $sendData = $model->insertNewWord();
             if(!$sendData){
-                
+                echo 'error';
             }
         }else{
             $data['categories'] = $model->getWordsCategories();
@@ -38,13 +35,7 @@ class AdminoController extends Controller{
         }
     }
     
-    public function downloadAudioFile($word){
-        $expFileName = explode('.', $_FILES['audio_file']['name']);
-        $ext = '.'.$expFileName[count($expFileName) - 1];
-        move_uploaded_file($_FILES['audio_file']['tmp_name'],
-                           'audio/'.$word.$ext);
-        return $word.$ext;
-    }
+    
     
     public function AddCategoryAction(){
         $helper = new InputHelper();

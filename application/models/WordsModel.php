@@ -16,6 +16,13 @@ class WordsModel extends Model{
         'db' => "eng_db"
     );
     
+    public $word;
+    public $translation;
+    public $transcription;
+    public $category;
+    public $audioFile;
+
+
 
     public function __construct(){
         parent::__construct($this->dbConfig);
@@ -33,14 +40,16 @@ class WordsModel extends Model{
         return $categories;
     }
     
-    public function insertNewWord($wordData){
+    public function insertNewWord(){
         
-        $lastId = $this->insertWordData($wordData);
+        $this->downloadAudioFile($this->word);
+        
+        $lastId = $this->insertWordData();
         if(!$lastId){
             return FALSE;
         }
         
-        $catId = $this->getCategoryId($wordData['category']);
+        $catId = $this->getCategoryId($this->category);
         if(!$catId){
             echo 1;
             return FALSE;
@@ -54,29 +63,31 @@ class WordsModel extends Model{
         
     }
 
-    public function insertWordData($wordData){
+    
+    
+    public function insertWordData(){
         $sql = "INSERT INTO words_list (word,
                                         transcription,
                                         audio)
-                        VALUES ('".$wordData['word']."',
-                                '".$wordData['transcription']."',
-                                '".$wordData['audio_file']."')";
-        
+                        VALUES ('".$this->word."',
+                                '".$this->transcription."',
+                                '".$this->audioFile."')";
         $insertQuery = $this->_db->exec($sql);
         if(!$insertQuery){
             return FALSE;
         }
         return $this->_db->lastInsertId();
     }
-
-        public function insertWordCategory($lastId, $catId){
+    
+    
+    public function insertWordCategory($lastId, $catId){
         $sql = "INSERT INTO category (word_id, category_id)
                        VALUES ('".$lastId."', '".$catId."')";
         $insertWordCategoryQuery = $this->_db->exec($sql);
-        var_dump($insertWordCategoryQuery);
         if(!$insertWordCategoryQuery){
             return FALSE;
         }
+        return TRUE;
     }
 
 
@@ -92,6 +103,13 @@ class WordsModel extends Model{
     }
 
 
+    public function downloadAudioFile(){
+        $expFileName = explode('.', $this->audioFile['name']);
+        $ext = '.'.$expFileName[count($expFileName) - 1];
+        move_uploaded_file($this->audioFile['tmp_name'], 'audio/'.$this->word.$ext);
+        $this->audioFile = $this->word.$ext;
+    }
+    
     public function insertNewCategory($catName){
         $sql = "INSERT INTO categories (category_name) VALUES ('".$catName."')";
         $this->_db->exec($sql);
