@@ -10,32 +10,38 @@ class InputHelper{
 
     private $inputErrors = array(
         '0x00001' => 'Невірно заповнене поле!',
-        '0x00002' => 'Помилка взаємодії з БД!'
+        '0x00002' => 'Помилка взаємодії з БД!',
+        '0x00003' => 'Додайте файл mp3 формату!',
+        '0x00004' => 'Помилка видалення!'
     );
-    
+
+
+    public $currentInput;
+
+
     public function getError($errorCode){
         return $this->inputErrors[$errorCode];
     }
 
-    public function validateInputs($inputs){
-        var_dump($inputs);
-        $validInputs = array();
-        foreach($inputs as $key=>$value){
-            if(!empty($value)){
-                echo $key.$value;
-                $input = trim($value);
-                $input = stripslashes($input);
-                $input = htmlspecialchars($input);
-                $validInputs[$key] = $input;
-            }else{
-                return FALSE;
-            }
+    public function validateInput($value){
+        $input = trim($value);
+        $input = stripslashes($input);
+        $input = htmlspecialchars($input);
+        if(empty($input)){
+            return FALSE;
         }
-        var_dump($validInputs);
-        return $validInputs;
+        $this->currentInput = $value;
+        return TRUE;
     }
 
-    public function checkStrLen($str, $minLen){
+    public function checkInt($var){
+        if((int)$var === 0){
+            return FALSE;
+        }
+        return TRUE;
+    }
+
+        public function checkStrLen($str, $minLen){
         if(strlen($str) < $minLen){
             return false;
         }
@@ -57,14 +63,4 @@ class InputHelper{
         return true;
     }
 
-        public function validateString($string){
-        if(!empty($string)){
-            $string = trim($string);
-            $string = stripslashes($string);
-            $string = htmlspecialchars($string);
-        }else{
-            return false;
-        }
-        return $string;
-    }
 }

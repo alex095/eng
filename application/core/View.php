@@ -15,6 +15,7 @@ class View{
     private $_basicTemplate;
     private $_blocks;
     public $errors = array();
+    public $values = array();
 
 
     public function __construct($basicTemplate, $blocks = null){
@@ -49,9 +50,16 @@ class View{
         }   
     }
     
-    private function showError($errorCode){
-        if(isset($this->errors[$errorCode])){
-            return $this->errors[$errorCode];
+    public function showValue($name){
+        if(isset($this->values[$name])){
+            return $this->values[$name];
+        }
+        
+    }
+
+        private function showError($subject){
+        if(isset($this->errors[$subject])){
+            return $this->errors[$subject];
         }
         return false;
     }

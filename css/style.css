@@ -99,6 +99,11 @@ body{
 
 /*Сторінка додавання категорій*/
 
+.categories_list{
+    width: 39%;
+    padding: 1px;
+}
+
 .cat_delete_col{
     padding-left: 50px;
     padding-right: 5px;
@@ -136,4 +141,11 @@ body{
     color: red;
     text-align: center;
     font-size: 12px;
+}
+
+.simple_error{
+    color: red;
+    text-align: center;
+    font-size: 18px;
+    margin-top: 25px;
 }

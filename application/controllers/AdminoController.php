@@ -12,21 +12,26 @@ class AdminoController extends Controller{
     public function IndexAction(){
         $view = new View('basic_template');
         $view->render('view_index');
-        
     }
     
+
     public function AddWordAction(){
         $model = new WordsModel();
         if(isset($_POST['send_word'])){
-            $model->word = $_POST['word'];
-            $model->translation = $_POST['translation'];
-            $model->transcription = $_POST['transcription'];
-            $model->category = $_POST['category'];
-            $model->audioFile = $_FILES['audio_file'];
+            $model->validate('word', $_POST['word']);
+            $model->validate('translation', $_POST['translation']);
+            $model->validate('transcription', $_POST['transcription']);
+            $model->validate('category', $_POST['category']);
+            $model->validateFile('audioFile', $_FILES['audioFile']);
             
-            $sendData = $model->insertNewWord();
-            if(!$sendData){
-                echo 'error';
+            if(count($model->errors) > 0){
+                $view = new View('basic_template');
+                $view->errors = $model->errors;
+                $view->values = $model->validInputs;
+                $data['categories'] = $model->getWordsCategories();
+                $view->render('view_add_word', $data);
+            }else{
+                $model->insertNewWord();
             }
         }else{
             $data['categories'] = $model->getWordsCategories();
@@ -35,22 +40,18 @@ class AdminoController extends Controller{
         }
     }
     
-    
-    
     public function AddCategoryAction(){
         $helper = new InputHelper();
         $model = new WordsModel();
         $view = new View('basic_template');
         $data = array();
         if(isset($_POST['add_cat'])){
-            $catName = $_POST['category_name'];
-            if($helper->checkStrLen($catName, 3)){
-                $catName = $helper->validateString($catName);
-                $model->insertNewCategory($catName);
+            $model->validate('category', $_POST['category_name']);
+            if(count($model->errors) > 0){
+                $view->errors = $model->errors;
             }else{
-                $view->pushError('cat_name', $helper->getError('0x00001'));
+                $model->insertNewCategory($model->category);
             }
-            
         }
         $data['categories'] = $model->getWordsCategories();
         
@@ -58,9 +59,16 @@ class AdminoController extends Controller{
     }
     
     public function RemoveCategoryAction($params){
+        $view = new View('basic_template');
         $model = new WordsModel();
         $model->removeCategory($params['id']);
-        header("Location: /admino/addcategory");
+        if(count($model->errors) > 0){
+            $view->errors = $model->errors;
+            $view->render('view_error');
+        }else{
+            header("Location: /admino/addcategory");
+        }
+        
     }
 }
 

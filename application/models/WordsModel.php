@@ -8,7 +8,6 @@
 
 class WordsModel extends Model{
     
-    private $_db;
     private $dbConfig = array(
         'host' => "localhost",
         'user' => "user",
@@ -21,19 +20,43 @@ class WordsModel extends Model{
     public $transcription;
     public $category;
     public $audioFile;
-
-
+    
+    public $errors = array();
+    public $validInputs = array();
 
     public function __construct(){
         parent::__construct($this->dbConfig);
-        $this->_db = $this->dbConnect();
     }
+
+    public function validate($name, $value){
+        $this->loadHelper("InputHelper");
+        if($this->helper->validateInput($value)){
+            $this->$name = $this->helper->currentInput;
+            $this->validInputs[$name] = $this->$name;
+        }else{
+            $this->errors[$name] = $this->helper->getError('0x00001');
+        }
+    }
+    
+    public function validateFile($name, $file){
+        if($file['size'] === 0){
+            $this->errors[$name] = $this->helper->getError('0x00003');
+        }else{
+            $this->validInputs[$name] = $this->$name;
+        }
+    }
+
+    public function getValidInputs(){
+        return $this->validInputs;
+    }
+
+    
 
     public function getWordsCategories(){
         $categories = array();
         $sql = "SELECT category_id, category_name FROM categories
                                                   ORDER BY category_id DESC";
-        $query = $this->_db->query($sql);
+        $query = $this->db->query($sql);
         while($result = $query->fetch(PDO::FETCH_ASSOC)){
             $categories[] = $result;
         }
@@ -41,26 +64,10 @@ class WordsModel extends Model{
     }
     
     public function insertNewWord(){
-        
         $this->downloadAudioFile($this->word);
-        
         $lastId = $this->insertWordData();
-        if(!$lastId){
-            return FALSE;
-        }
-        
         $catId = $this->getCategoryId($this->category);
-        if(!$catId){
-            echo 1;
-            return FALSE;
-        }
-        
-        if(!$this->insertWordCategory($lastId, $catId)){
-            return FALSE;
-        }
-
-        return TRUE;
-        
+        $this->insertWordCategory($lastId, $catId); 
     }
 
     
@@ -72,18 +79,18 @@ class WordsModel extends Model{
                         VALUES ('".$this->word."',
                                 '".$this->transcription."',
                                 '".$this->audioFile."')";
-        $insertQuery = $this->_db->exec($sql);
+        $insertQuery = $this->db->exec($sql);
         if(!$insertQuery){
             return FALSE;
         }
-        return $this->_db->lastInsertId();
+        return $this->db->lastInsertId();
     }
     
     
     public function insertWordCategory($lastId, $catId){
         $sql = "INSERT INTO category (word_id, category_id)
                        VALUES ('".$lastId."', '".$catId."')";
-        $insertWordCategoryQuery = $this->_db->exec($sql);
+        $insertWordCategoryQuery = $this->db->exec($sql);
         if(!$insertWordCategoryQuery){
             return FALSE;
         }
@@ -95,7 +102,7 @@ class WordsModel extends Model{
         $sql = "SELECT category_id 
                 FROM categories
                 WHERE category_name = '".$category."'";
-        $getCatIdQuery = $this->_db->query($sql);
+        $getCatIdQuery = $this->db->query($sql);
         if(!$getCatIdQuery){
             return FALSE;
         }
@@ -104,20 +111,23 @@ class WordsModel extends Model{
 
 
     public function downloadAudioFile(){
-        $expFileName = explode('.', $this->audioFile['name']);
-        $ext = '.'.$expFileName[count($expFileName) - 1];
-        move_uploaded_file($this->audioFile['tmp_name'], 'audio/'.$this->word.$ext);
-        $this->audioFile = $this->word.$ext;
+        move_uploaded_file($this->audioFile['tmp_name'], 'audio/'.$this->word.'mp3');
+        $this->audioFile = $this->word.'.mp3';
     }
     
     public function insertNewCategory($catName){
         $sql = "INSERT INTO categories (category_name) VALUES ('".$catName."')";
-        $this->_db->exec($sql);
+        $this->db->exec($sql);
     }
     
     public function removeCategory($catId){
-        $sql = "DELETE FROM categories WHERE category_id = '".$catId."'";
-        $this->_db->exec($sql);
+        $this->loadHelper('InputHelper');
+        if($this->helper->checkInt($catId)){
+            $sql = "DELETE FROM categories WHERE category_id = '".$catId."'";
+            $this->db->exec($sql);
+        }else{
+            $this->errors['error'] = $this->helper->getError('0x00004');
+        } 
     }
     
 }

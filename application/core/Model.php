@@ -10,6 +10,7 @@ class Model{
     
     protected $db = null;
     protected $config;
+    protected $helper = null;
 
     public function __construct($config) {
         $this->config = $config;
@@ -27,6 +28,12 @@ class Model{
     
     public function dbConnect(){
         return $this->db;
+    }
+    
+    public function loadHelper($helperName){
+        if(!$this->helper instanceof $helperName){
+            $this->helper = new $helperName();
+        }
     }
     
     public function getData(){

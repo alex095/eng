@@ -6,7 +6,9 @@
                         <div class="add_category_form">
                             <form action="/admino/addcategory" method="post">
                                 <input type="text" name="category_name" /><br />
+                                <div class="error"><?php echo $this->showError('category'); ?></div>
                                 <input type="submit" name="add_cat" value="Додати категорію" />
+                                
                             </form>
                         </div>
                     </td>
