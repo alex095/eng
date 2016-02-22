@@ -6,13 +6,14 @@
  * and open the template in the editor.
  */
 
-class InputHelper{
+class MainHelper{
 
-    private $inputErrors = array(
+    private $errorsList = array(
         '0x00001' => 'Невірно заповнене поле!',
         '0x00002' => 'Помилка взаємодії з БД!',
         '0x00003' => 'Додайте файл mp3 формату!',
-        '0x00004' => 'Помилка видалення!'
+        '0x00004' => 'Помилка видалення!',
+        '0x00005' => 'Помилка завантаження файлу'
     );
 
 
@@ -20,7 +21,7 @@ class InputHelper{
 
 
     public function getError($errorCode){
-        return $this->inputErrors[$errorCode];
+        return $this->errorsList[$errorCode];
     }
 
     public function validateInput($value){

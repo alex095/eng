@@ -30,8 +30,12 @@ class AdminoController extends Controller{
                 $view->values = $model->validInputs;
                 $data['categories'] = $model->getWordsCategories();
                 $view->render('view_add_word', $data);
+            }else if($model->insertNewWord()){
+                echo 'success';
             }else{
-                $model->insertNewWord();
+                $view = new View('basic_template');
+                $view->errors['error'] = $model->exepMsg;
+                $view->render('view_error');
             }
         }else{
             $data['categories'] = $model->getWordsCategories();
@@ -41,7 +45,6 @@ class AdminoController extends Controller{
     }
     
     public function AddCategoryAction(){
-        $helper = new InputHelper();
         $model = new WordsModel();
         $view = new View('basic_template');
         $data = array();
