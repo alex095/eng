@@ -21,7 +21,8 @@ class Model{
     
     private function PDOConnect(){
         return new PDO("mysql:host=".$this->config['host'].";
-                                        dbname=".$this->config['db']."",
+                                        dbname=".$this->config['db'].";
+                                        charset=".$this->config['enc']."",
                                         "".$this->config['user']."",
                                         "".$this->config['pswd']."");
     }

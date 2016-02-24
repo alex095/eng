@@ -19,6 +19,18 @@
                 </div>
                 
                 <div class="input_div">
+                    <div class="input_text">Тип: </div><br />
+                    <select class="categories_list" name="type">
+                        <option selected="selected"><?php echo $this->showValue('type'); ?></option>
+                        <?php foreach($data['categories'] as $value){ ?>
+                        <option><?php echo $value['category_name']; ?></option>
+                        
+                        <?php }?>
+                    </select>
+                    <div class="error"><?php echo $this->showError('category'); ?></div>
+                </div>
+                
+                <div class="input_div">
                     <div class="input_text">Категорія: </div><br />
                     <select class="categories_list" name="category">
                         <option selected="selected"><?php echo $this->showValue('category'); ?></option>

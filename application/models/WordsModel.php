@@ -12,7 +12,8 @@ class WordsModel extends Model{
         'host' => "localhost",
         'user' => "user",
         'pswd' => "123456",
-        'db' => "eng_db"
+        'db' => "eng_db",
+        'enc' => "utf8"
     );
     
     public $word;
@@ -91,6 +92,7 @@ class WordsModel extends Model{
                         VALUES ('".$this->word."',
                                 '".$this->transcription."',
                                 '".$this->audioFile."')";
+        $sql = mb_convert_encoding($sql, "UTF-8");
         $insertQuery = $this->db->exec($sql);
         if($insertQuery === FALSE){
             throw new Exception($this->helper->getError('0x00002'));
