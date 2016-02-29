@@ -19,6 +19,7 @@ class WordsModel extends Model{
     public $word;
     public $translation;
     public $transcription;
+    public $type;
     public $category;
     public $audioFile;
     
@@ -63,12 +64,25 @@ class WordsModel extends Model{
         return $categories;
     }
     
+    public function getWordsTypes(){
+        $types = array();
+        $sql = "SELECT type_id, type_name, type_translation FROM types
+                                                  ORDER BY type_id";
+        $query = $this->db->query($sql);
+        while($result = $query->fetch(PDO::FETCH_ASSOC)){
+            $types[] = $result;
+        }
+        return $types;
+    }
+    
     public function insertNewWord(){
         try{
             $this->downloadAudioFile();
             $lastId = $this->insertWordData();
             $catId = $this->getCategoryId($this->category);
             $this->insertWordCategory($lastId, $catId);
+            $typeId = $this->getTypeId($this->type);
+            $this->insertTranslation($lastId, $typeId); 
         }catch(Exception $e){
             $this->exepMsg = $e->getMessage();
             return FALSE;
@@ -120,6 +134,18 @@ class WordsModel extends Model{
         return $getCatIdQuery->fetch(PDO::FETCH_NUM)[0];
     }
 
+    public function getTypeId($type){
+        $sql = "SELECT type_id 
+                FROM types
+                WHERE type_name = '".$type."'";
+        $getTypeIdQuery = $this->db->query($sql);
+        if(!$getTypeIdQuery){
+            throw new Exception($this->helper->getError('0x00002'));
+        }
+        return $getTypeIdQuery->fetch(PDO::FETCH_NUM)[0];
+    }
+    
+    
     public function downloadAudioFile(){
         $this->loadHelper('MainHelper');
         $moveFile = move_uploaded_file($this->audioFile['tmp_name'], 'audio/'.$this->word.'.mp3');

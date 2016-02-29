@@ -21,6 +21,7 @@ class AdminoController extends Controller{
             $model->validate('word', $_POST['word']);
             $model->validate('translation', $_POST['translation']);
             $model->validate('transcription', $_POST['transcription']);
+            $model->validate('type', $_POST['type']);
             $model->validate('category', $_POST['category']);
             $model->validateFile('audioFile', $_FILES['audioFile']);
             
@@ -29,6 +30,7 @@ class AdminoController extends Controller{
                 $view->errors = $model->errors;
                 $view->values = $model->validInputs;
                 $data['categories'] = $model->getWordsCategories();
+                $data['types'] = $model->getWordsTypes();
                 $view->render('view_add_word', $data);
             }else if($model->insertNewWord()){
                 echo 'success';
@@ -38,6 +40,7 @@ class AdminoController extends Controller{
                 $view->render('view_error');
             }
         }else{
+            $data['types'] = $model->getWordsTypes();
             $data['categories'] = $model->getWordsCategories();
             $view = new View('basic_template');
             $view->render('view_add_word', $data);

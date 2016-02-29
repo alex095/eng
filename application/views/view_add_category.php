@@ -1,11 +1,11 @@
-<div class="category_main_container">
+<div class="form_main_container">
     <form action="/admino/addcategory" method="post">
         <fieldset>
             <legend>Категорії слів</legend>
             <div class="error"><?php echo $this->showError('category'); ?></div>
             <div class="text_inputs_container">
                 <ul class="fields_list">
-                    <li class="text_field"><span>Категорія</span><input type="text" name="category_name" /></li>
+                    <li><span>Категорія</span><input type="text" name="category_name" /></li>
                 </ul>
             </div>
             <button type="submit" name="add_cat">Додати категорію</button>

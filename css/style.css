@@ -8,7 +8,7 @@ body{
     background-color: #F4F5E7;
     margin: 0px;
     padding: 0xp;
-    font-family: "Helvetica, Verdana, sans-serif";
+    font-family: "Verdana, Helvetica, sans-serif";
 }
 
 /* Топ меню */
@@ -57,54 +57,7 @@ body{
 
 /* Топ меню END*/
 
-.main_div{
-    background-color: #ccddff;
-    border: 2px solid #b7c9ff;
-    width: 400px;
-    margin: 3% auto;
-    padding: 20px;
-    font-size: 15px;
-}
-
-/*Сторінка додавання слів*/
-
-.add_words_main_div{
-    text-align: center;
-}
-
-.add_words_main_div input[type="submit"]{
-    width: 100px;
-}
-
-.add_words_main_div input[type="file"]{
-    border: 1px solid #bfd2ff;
-    padding: 5px;
-    background-color: #d5e2ff;
-    width: 60%;
-}
-
-.add_words_main_div .input_text{
-    display: inline-block;
-    margin-bottom: 2px;
-    text-align: left;
-    font-size: 14px;
-    width: 165px;
-    margin-left: 15px;
-}
-
-
-.add_words_main_div .input_div{
-    padding-bottom: 13px;
-}
-
-/*Сторінка додавання слів END*/
-
-/*Сторінка додавання категорій*/
-
-.categories_list{
-    width: 39%;
-    padding: 1px;
-}
+/*Сторінка додавання категорії START*/
 
 .cat_delete_col{
     text-align: left;
@@ -125,7 +78,6 @@ body{
 .categories_table td{
     border-bottom: 1px solid #E1E1E1;
     text-align: left;
-    /*border: 1px black solid;*/
 }
 
 .add_category_form{
@@ -139,7 +91,9 @@ body{
     margin-top: 10px;
 }
 
-/*Сторінка додавання категорій END*/
+/*Сторінка додавання категорії END*/
+
+/*Виведення помилок START*/
 
 .error{
     color: red;
@@ -154,13 +108,10 @@ body{
     margin-top: 25px;
 }
 
-/*----------------------------------------------------------------------------*/
+/*Виведення помилок END*/
 
-.main form{
-    width: 500px;
-}
 
-.category_main_container legend{
+.form_main_container legend{
     text-align: left;
     border: 1px #B4B4B4 solid;
     border-radius: 3px;
@@ -169,23 +120,22 @@ body{
     font-size: 12px;
 }
 
-.category_main_container fieldset{
+.form_main_container fieldset{
     padding: 20px;
     border: 1px #B4B4B4 solid;
     border-radius: 5px;
 }
 
-.category_main_container{
+.form_main_container{
     text-align: center;
     width: 500px;
     margin: 0 auto;
     margin-top: 20px;
 }
 
-input{
+.fields_list input{
     display: block;
-    margin-bottom: 30px;
-    border-width: 0px;
+    margin-bottom: 25px;
     background-color: #FFFFFF;
     border-radius: 5px;
     height: 18px;
@@ -194,6 +144,26 @@ input{
     font-size: 16px;
     border: 1px #D0D0D0 solid;
     padding: 7px 7px;
+}
+
+.word_add_file_input{
+    margin-top: 25px;
+}
+
+.word_add_button{
+    text-align: center;
+}
+
+.word_add_select{
+    background-color: #FFFFFF;
+    border: 1px #D0D0D0 solid;
+    padding: 7px 2px;
+    border-radius: 5px;
+    display: block;
+    margin-bottom: 20px;
+    width: 235px;
+    font-size: 14px;
+    color: #444444;
 }
 
 .fields_list{
@@ -205,31 +175,18 @@ input{
 
 .fields_list > li{
     color: #993300;
-    font-size: 18px;
+    font-size: 16px;
 }
 
 .fields_list > li span{
     margin-left: 5px;
 }
 
-select{
-    width: 172px;
-    text-align: center;
-    background-color: #FFFFFF;
-    border: 1px #D0D0D0 solid;
-    width: 200px;
-    height: 25px;
-    border-radius: 3px;
-    color: #666666;
-    font-size: 16px;
-}
-
 .text_inputs_container{
     display: inline-block;
 }
 
-button{
-    margin: 40px 0px 20px 0px;
+.form_main_container button{
     background-color: #BF4000;
     border: 0px #C95B24 solid;
     border-radius: 5px;
@@ -239,19 +196,17 @@ button{
     color: #F6F6F6;
 }
 
-button:hover{
+.form_main_container button:hover{
     background-color: #C6551C;
     cursor: pointer;
 }
 
-input:hover,
-input:focus{
-    
+.form_main_container input:hover,
+.form_main_container input:focus{
     border: 1px #b33c00 solid;
 }
 
-select:hover,
-select:focus{
-    
+.form_main_container select:hover,
+.form_main_container select:focus{
     border: 1px #b33c00 solid;
 }

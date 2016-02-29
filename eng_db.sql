@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.0.10.10
+-- version 4.0.10deb1
 -- http://www.phpmyadmin.net
 --
--- Хост: 127.0.0.1:3306
--- Час створення: Лют 02 2016 р., 18:55
--- Версія сервера: 5.5.45
--- Версія PHP: 5.3.29
+-- Хост: localhost
+-- Время создания: Фев 29 2016 г., 23:35
+-- Версия сервера: 5.5.47-0ubuntu0.14.04.1
+-- Версия PHP: 5.6.18-1+deb.sury.org~trusty+1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -17,13 +17,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- База даних: `words_db`
+-- База данных: `eng_db`
 --
 
 -- --------------------------------------------------------
 
 --
--- Структура таблиці `categories`
+-- Структура таблицы `categories`
 --
 
 CREATE TABLE IF NOT EXISTS `categories` (
@@ -31,54 +31,64 @@ CREATE TABLE IF NOT EXISTS `categories` (
   `category_name` varchar(30) NOT NULL,
   PRIMARY KEY (`category_id`),
   UNIQUE KEY `category_id` (`category_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
-
---
--- Дамп даних таблиці `categories`
---
-
-INSERT INTO `categories` (`category_id`, `category_name`) VALUES
-(1, 'sport'),
-(2, 'travelling');
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
 --
--- Структура таблиці `category`
+-- Структура таблицы `category`
 --
 
 CREATE TABLE IF NOT EXISTS `category` (
   `word_id` int(5) NOT NULL,
-  `category_id` int(2) NOT NULL
+  `category_id` int(2) NOT NULL,
+  PRIMARY KEY (`word_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Структура таблиці `translations`
+-- Структура таблицы `translations`
 --
 
 CREATE TABLE IF NOT EXISTS `translations` (
   `word_id` int(5) NOT NULL,
   `type_id` int(1) NOT NULL,
-  `translation` varchar(30) NOT NULL
+  `translation` varchar(30) NOT NULL,
+  PRIMARY KEY (`word_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Структура таблиці `types`
+-- Структура таблицы `types`
 --
 
 CREATE TABLE IF NOT EXISTS `types` (
   `type_id` int(1) NOT NULL,
-  `type_name` varchar(15) NOT NULL
+  `type_name` varchar(15) NOT NULL,
+  `type_translation` varchar(15) NOT NULL,
+  PRIMARY KEY (`type_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `types`
+--
+
+INSERT INTO `types` (`type_id`, `type_name`, `type_translation`) VALUES
+(1, 'Noun', 'Іменник'),
+(2, 'Verb', 'Дієслово'),
+(3, 'Adjective', 'Прикметник'),
+(4, 'Adverb', 'Прислівник'),
+(5, 'Pronoun', 'Займенник'),
+(6, 'Preposition', 'Прийменник'),
+(7, 'Conjunction', 'Сполучник'),
+(8, 'Another', 'Інше');
 
 -- --------------------------------------------------------
 
 --
--- Структура таблиці `words_list`
+-- Структура таблицы `words_list`
 --
 
 CREATE TABLE IF NOT EXISTS `words_list` (
