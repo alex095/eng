@@ -15,6 +15,11 @@ class AdminoController extends Controller{
     }
     
 
+    public function showWordsAction(){
+        $view = new View('basic_template');
+        $view->render('view_words_list');
+    }
+
     public function AddWordAction(){
         $model = new WordsModel();
         if(isset($_POST['send_word'])){

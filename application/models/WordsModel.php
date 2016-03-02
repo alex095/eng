@@ -53,6 +53,19 @@ class WordsModel extends Model{
         return $this->validInputs;
     }
 
+    public function getAllWords(){
+        $sql = "SELECT a.id, a.word,a.transcription, d.translation, c.category_name, e.type_name, a.audio 
+                FROM words_list as a
+                LEFT JOIN category as b 
+                    ON a.id = b.word_id
+                LEFT JOIN categories as c
+                    ON b.category_id = c.category_id
+                LEFT JOIN translations as d
+                    ON a.id = d.word_id
+                LEFT JOIN types as e
+                    ON d.type_id = e.type_id";
+    }
+
     public function getWordsCategories(){
         $categories = array();
         $sql = "SELECT category_id, category_name FROM categories
@@ -148,11 +161,12 @@ class WordsModel extends Model{
     
     public function downloadAudioFile(){
         $this->loadHelper('MainHelper');
-        $moveFile = move_uploaded_file($this->audioFile['tmp_name'], 'audio/'.$this->word.'.mp3');
+        $audioName = $this->helper->changeAudioName($this->word);
+        $moveFile = move_uploaded_file($this->audioFile['tmp_name'], 'audio/'.$audioName.'.mp3');
         if(!$moveFile){
             throw new Exception($this->helper->getError('0x00005'));
         }
-        $this->audioFile = $this->word.'.mp3';
+        $this->audioFile = $audioName.'.mp3';
     }
     
     public function insertNewCategory($catName){

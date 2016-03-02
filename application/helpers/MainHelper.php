@@ -34,6 +34,15 @@ class MainHelper{
         $this->currentInput = $value;
         return TRUE;
     }
+    
+    public function changeAudioName($fileName){
+        $expName = explode(' ', $fileName);
+        $newName = $expName[0];
+        for($i=1; $i<count($expName); $i++){
+            $newName .= "_".$expName[$i];
+        }
+        return $newName;
+    }
 
     public function checkInt($var){
         if((int)$var === 0){

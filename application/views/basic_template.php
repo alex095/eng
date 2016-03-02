@@ -15,6 +15,7 @@ and open the template in the editor.
             <div class="top_line"></div>
             <div class="basic_tmp_menu">
                 <ul>
+                    <li><a href="/admino/showwords">Список слів</a></li>
                     <li><a href="/admino/addword">Додати слово</a></li>
                     <li><a href="/admino/addcategory">Додати категорію</a></li>
                 </ul>

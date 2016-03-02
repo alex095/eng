@@ -8,7 +8,7 @@ body{
     background-color: #F4F5E7;
     margin: 0px;
     padding: 0xp;
-    font-family: "Verdana, Helvetica, sans-serif";
+    font-family: corbel, sans-serif;
 }
 
 /* Топ меню */
@@ -39,6 +39,7 @@ body{
     border-left: 1px solid #BBBCAF;
     text-align: center;
     font-weight: bold;
+    font-size: 17px;
 }
 
 .basic_tmp_menu ul > li:last-child{
@@ -141,7 +142,6 @@ body{
     height: 18px;
     width: 220px;
     color: #666666;
-    font-size: 16px;
     border: 1px #D0D0D0 solid;
     padding: 7px 7px;
 }
@@ -194,6 +194,10 @@ body{
     height: 30px;
     font-size: 14px;
     color: #F6F6F6;
+}
+
+input[type="file"]{
+    font-size: 12px;
 }
 
 .form_main_container button:hover{
