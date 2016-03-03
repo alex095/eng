@@ -53,7 +53,23 @@ class WordsModel extends Model{
         return $this->validInputs;
     }
 
-    public function getAllWords(){
+    public function countRows($field, $table){
+        $sql = "SELECT COUNT(".$field.") FROM ".$table."";
+        $count = $this->db->query($sql);
+        $rows = $count->fetch(PDO::FETCH_NUM)[0];
+        return (int)$rows;
+    }
+
+    public function getAllWords($page){
+        $rowsCount = $this->countRows('id', 'words_list');
+        $pagConfig = array(
+            'per_page' => 3,
+            'cur_page' => $page,
+            'rows_count' => $rowsCount,
+            'url_temp' => '/admino/showwords/page/'
+        );
+        $this->loadHelper('PaginationHelper', $pagConfig);
+        $words = array();
         $sql = "SELECT a.id, a.word,a.transcription, d.translation, c.category_name, e.type_name, a.audio 
                 FROM words_list as a
                 LEFT JOIN category as b 
@@ -63,7 +79,13 @@ class WordsModel extends Model{
                 LEFT JOIN translations as d
                     ON a.id = d.word_id
                 LEFT JOIN types as e
-                    ON d.type_id = e.type_id";
+                    ON d.type_id = e.type_id LIMIT ".$this->helper->getLimit()." OFFSET ".$this->helper->getOffset()."";
+        
+        $query = $this->db->query($sql);
+        while($result = $query->fetch(PDO::FETCH_ASSOC)){
+            $words[] = $result;
+        }
+        return $words;
     }
 
     public function getWordsCategories(){

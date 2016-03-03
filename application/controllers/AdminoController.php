@@ -15,9 +15,18 @@ class AdminoController extends Controller{
     }
     
 
-    public function showWordsAction(){
+    public function showWordsAction($params = NULL){
+        if($params === NULL){
+            $page = 1;
+        }else{
+            $page = (int)$params['page'];
+        }
+        $model = new WordsModel();
+        $data['words'] = $model->getAllWords($page);
+        $data['paginator'] = $model->getHelper();
+        
         $view = new View('basic_template');
-        $view->render('view_words_list');
+        $view->render('view_words_list', $data);
     }
 
     public function AddWordAction(){

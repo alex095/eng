@@ -11,7 +11,12 @@ and open the template in the editor.
     </head>
     <body>
         <?php
-        
+            foreach($data['words'] as $value){
+                echo $value['id']."<br />";
+            }
+            
+            
         ?>
+        <?php echo $data['paginator']->drawingPagination(); ?>
     </body>
 </html>

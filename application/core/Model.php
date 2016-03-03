@@ -31,13 +31,17 @@ class Model{
         return $this->db;
     }
     
-    public function loadHelper($helperName){
+    public function loadHelper($helperName, $params = NULL){
         if(!$this->helper instanceof $helperName){
-            $this->helper = new $helperName();
+            $this->helper = new $helperName($params);
         }
     }
     
-    public function getData(){
+    public function getHelper(){
+        return $this->helper;
+    }
+
+        public function getData(){
         
     }
 }
