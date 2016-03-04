@@ -63,10 +63,12 @@ class WordsModel extends Model{
     public function getAllWords($page){
         $rowsCount = $this->countRows('id', 'words_list');
         $pagConfig = array(
-            'per_page' => 3,
+            'per_page' => 10,
             'cur_page' => $page,
             'rows_count' => $rowsCount,
-            'url_temp' => '/admino/showwords/page/'
+            'url_temp' => '/admino/showwords/page/',
+            'prev_range' => 3,
+            'next_range' => 3
         );
         $this->loadHelper('PaginationHelper', $pagConfig);
         $words = array();
@@ -79,7 +81,7 @@ class WordsModel extends Model{
                 LEFT JOIN translations as d
                     ON a.id = d.word_id
                 LEFT JOIN types as e
-                    ON d.type_id = e.type_id LIMIT ".$this->helper->getLimit()." OFFSET ".$this->helper->getOffset()."";
+                    ON d.type_id = e.type_id ORDER BY id DESC LIMIT ".$this->helper->getLimit()." OFFSET ".$this->helper->getOffset()."";
         
         $query = $this->db->query($sql);
         while($result = $query->fetch(PDO::FETCH_ASSOC)){

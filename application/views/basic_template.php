@@ -11,7 +11,7 @@ and open the template in the editor.
         <?php echo $this->connectCss('style'); ?>
     </head>
     <body>
-        <div>
+        <div class="main_container">
             <div class="top_line"></div>
             <div class="basic_tmp_menu">
                 <ul>
@@ -20,7 +20,14 @@ and open the template in the editor.
                     <li><a href="/admino/addcategory">Додати категорію</a></li>
                 </ul>
             </div>
+        
+            <div class="content">
+                <?php include_once($content); ?>
+            </div>
+            <div class="footer">
+                <div class="footer_block"></div>
+            </div>
         </div>
-        <?php include_once($content); ?>
+        
     </body>
 </html>
