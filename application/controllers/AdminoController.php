@@ -90,5 +90,18 @@ class AdminoController extends Controller{
         }
         
     }
+    
+    public function RemoveWordAction($params){
+        $view = new View('basic_template');
+        $model = new WordsModel();
+        $model->removeWord($params['id']);
+        if(count($model->errors) > 0){
+            $view->errors = $model->errors;
+            $view->render('view_error');
+        }else{
+            header("Location: /admino/addcategory");
+        }
+        
+    }
 }
 

@@ -208,6 +208,20 @@ class WordsModel extends Model{
         } 
     }
     
+    public function removeWord($wordId){
+        $this->loadHelper('MainHelper');
+        if($this->helper->checkInt($wordId)){
+            $sql = "DELETE FROM words_list WHERE id = '".$wordId."' LIMIT 1";
+            $this->db->exec($sql);
+            $sql = "DELETE FROM translations WHERE word_id = '".$wordId."' LIMIT 1";
+            $this->db->exec($sql);
+            $sql = "DELETE FROM category WHERE word_id = '".$wordId."' LIMIT 1";
+            $this->db->exec($sql);
+        }else{
+            $this->errors['error'] = $this->helper->getError('0x00004');
+        } 
+    }
+    
 }
 
 

@@ -14,7 +14,7 @@
                 <?php foreach($data['categories'] as $value){ ?>
                 <tr>
                     <td><?php echo $value['category_name'] ?></td>
-                    <td class="cat_delete_col">
+                    <td class="delete_col">
                         <a href="/admino/removecategory/id/<?php echo $value['category_id'] ?>">
                             <img alt="delete" src="/images/delete_icon.png" />
                         </a>

@@ -19,6 +19,7 @@
                     <th>Переклад</th>
                     <th>Категорія</th>
                     <th>Частина мови</th>
+                    <th>Видалити</th>
                     
                 </tr>
                 <?php
@@ -30,6 +31,11 @@
                     <td><?php echo $value['translation']; ?></td>
                     <td><?php echo $value['category_name']; ?></td>
                     <td><?php echo $value['type_name']; ?></td>
+                    <td class="delete_col del_word">
+                        <a href="/admino/removeword/id/<?php echo $value['id'] ?>">
+                            <img alt="delete" src="/images/delete_icon.png" />
+                        </a>
+                    </td>
                 </tr>
                 <?php } ?>
             </table>

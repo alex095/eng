@@ -25,9 +25,14 @@ and open the template in the editor.
                 <?php include_once($content); ?>
             </div>
             <div class="footer">
-                <div class="footer_block"></div>
+                <div class="footer_block">
+                    <div class="copyright">&COPY; Copyright </div>
+                </div>
             </div>
         </div>
-        
+        <script type="text/javascript">
+            var elem = document.getElementsByClassName('copyright');
+            elem[0].innerHTML += new Date().getFullYear();
+        </script>
     </body>
 </html>
