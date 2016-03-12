@@ -99,7 +99,7 @@ class AdminoController extends Controller{
             $view->errors = $model->errors;
             $view->render('view_error');
         }else{
-            header("Location: /admino/addcategory");
+            header("Location: /admino/showwords");
         }
         
     }

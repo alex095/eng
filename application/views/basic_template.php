@@ -16,6 +16,7 @@ and open the template in the editor.
             <div class="basic_tmp_menu">
                 <ul>
                     <li><a href="/admino/showwords">Список слів</a></li>
+                    <li><a href="/admino/editword">Редагувати слово</a></li>
                     <li><a href="/admino/addword">Додати слово</a></li>
                     <li><a href="/admino/addcategory">Додати категорію</a></li>
                 </ul>
@@ -24,6 +25,7 @@ and open the template in the editor.
             <div class="content">
                 <?php include_once($content); ?>
             </div>
+            
             <div class="footer">
                 <div class="footer_block">
                     <div class="copyright">&COPY; Copyright </div>

@@ -72,16 +72,14 @@ class WordsModel extends Model{
         );
         $this->loadHelper('PaginationHelper', $pagConfig);
         $words = array();
-        $sql = "SELECT a.id, a.word,a.transcription, d.translation, c.category_name, e.type_name, a.audio 
+        $sql = "SELECT a.id, a.word, a.transcription, a.audio, b.translation, c.type_name, d.category_name
                 FROM words_list as a
-                LEFT JOIN category as b 
+                LEFT JOIN translations as b
                     ON a.id = b.word_id
-                LEFT JOIN categories as c
-                    ON b.category_id = c.category_id
-                LEFT JOIN translations as d
-                    ON a.id = d.word_id
-                LEFT JOIN types as e
-                    ON d.type_id = e.type_id ORDER BY id DESC LIMIT ".$this->helper->getLimit()." OFFSET ".$this->helper->getOffset()."";
+                LEFT JOIN types as c
+                    ON c.id = b.type_id
+                LEFT JOIN categories as d
+                ON d.id = b.category_id ORDER BY id DESC LIMIT ".$this->helper->getLimit()." OFFSET ".$this->helper->getOffset()."";
         
         $query = $this->db->query($sql);
         while($result = $query->fetch(PDO::FETCH_ASSOC)){
@@ -92,8 +90,8 @@ class WordsModel extends Model{
 
     public function getWordsCategories(){
         $categories = array();
-        $sql = "SELECT category_id, category_name FROM categories
-                                                  ORDER BY category_id DESC";
+        $sql = "SELECT id, category_name FROM categories
+                                                  ORDER BY id DESC";
         $query = $this->db->query($sql);
         while($result = $query->fetch(PDO::FETCH_ASSOC)){
             $categories[] = $result;
@@ -103,8 +101,8 @@ class WordsModel extends Model{
     
     public function getWordsTypes(){
         $types = array();
-        $sql = "SELECT type_id, type_name, type_translation FROM types
-                                                  ORDER BY type_id";
+        $sql = "SELECT id, type_name, type_translation FROM types
+                                                  ORDER BY id";
         $query = $this->db->query($sql);
         while($result = $query->fetch(PDO::FETCH_ASSOC)){
             $types[] = $result;
@@ -182,7 +180,18 @@ class WordsModel extends Model{
         return $getTypeIdQuery->fetch(PDO::FETCH_NUM)[0];
     }
     
-    
+    public function getWordName($id){
+        $sql = "SELECT word
+                FROM words_list
+                WHERE id = '".$id."'";
+        $getWordName = $this->db->query($sql);
+        if(!$getWordName){
+            throw new Exception($this->helper->getError('0x00002'));
+        }
+        return $getWordName->fetch(PDO::FETCH_NUM)[0];
+    }
+
+
     public function downloadAudioFile(){
         $this->loadHelper('MainHelper');
         $audioName = $this->helper->changeAudioName($this->word);
@@ -201,7 +210,7 @@ class WordsModel extends Model{
     public function removeCategory($catId){
         $this->loadHelper('MainHelper');
         if($this->helper->checkInt($catId)){
-            $sql = "DELETE FROM categories WHERE category_id = '".$catId."'";
+            $sql = "DELETE FROM categories WHERE category_id = '".$catId."' LIMIT 1";
             $this->db->exec($sql);
         }else{
             $this->errors['error'] = $this->helper->getError('0x00004');
@@ -210,13 +219,16 @@ class WordsModel extends Model{
     
     public function removeWord($wordId){
         $this->loadHelper('MainHelper');
+        $countWord = $this->countRows('id', 'words_list');
+        $delAudioFile = unlink('/audio/');
         if($this->helper->checkInt($wordId)){
             $sql = "DELETE FROM words_list WHERE id = '".$wordId."' LIMIT 1";
             $this->db->exec($sql);
-            $sql = "DELETE FROM translations WHERE word_id = '".$wordId."' LIMIT 1";
+            $sql = "DELETE FROM translations WHERE word_id = '".$wordId."'";
             $this->db->exec($sql);
-            $sql = "DELETE FROM category WHERE word_id = '".$wordId."' LIMIT 1";
+            $sql = "DELETE FROM category WHERE word_id = '".$wordId."'";
             $this->db->exec($sql);
+            
         }else{
             $this->errors['error'] = $this->helper->getError('0x00004');
         } 

@@ -8,16 +8,15 @@
                         <span>Слово</span><div class="error"><?php echo $this->showError('word'); ?></div>
                         <input type="text" name="word" value="<?php echo $this->showValue('word'); ?>" />
                     </li>
-                    <li>
+                    <li class="word_translation">
                         <span>Переклад</span><div class="error"><?php echo $this->showError('translation'); ?></div>
                         <input type="text" name="translation" value="<?php echo $this->showValue('translation'); ?>" />
-                        
                     </li>
-                    <li>
+                    <li class="transcription">
                         <span>Транскрипція</span><div class="error"><?php echo $this->showError('transcription'); ?></div>
                         <input type="text" name="transcription" value="<?php echo $this->showValue('transcription'); ?>" />
                     </li>
-                    <li><span>Тип</span>
+                    <li class="word_type"><span>Тип</span>
                         <div class="error"><?php echo $this->showError('type'); ?></div>
                         <select class="word_add_select" name="type">
                             <option selected="selected"><?php echo $this->showValue('type'); ?>
@@ -27,7 +26,7 @@
                             <?php }?>
                         </select>
                     </li>
-                    <li><span>Категорія</span>
+                    <li class="word_category"><span>Категорія</span>
                         <div class="error"><?php echo $this->showError('category'); ?></div>
                         <select class="word_add_select" name="category">
                             <option selected="selected"><?php echo $this->showValue('category'); ?></option>

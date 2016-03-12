@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: 127.0.0.1:3306
--- Час створення: Бер 02 2016 р., 19:07
+-- Час створення: Бер 12 2016 р., 18:00
 -- Версія сервера: 5.5.45
 -- Версія PHP: 5.6.12
 
@@ -27,49 +27,20 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE IF NOT EXISTS `categories` (
-  `category_id` int(2) NOT NULL AUTO_INCREMENT,
+  `id` int(2) NOT NULL AUTO_INCREMENT,
   `category_name` varchar(30) NOT NULL,
-  PRIMARY KEY (`category_id`),
-  UNIQUE KEY `category_id` (`category_id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `category_id` (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
 -- Дамп даних таблиці `categories`
 --
 
-INSERT INTO `categories` (`category_id`, `category_name`) VALUES
+INSERT INTO `categories` (`id`, `category_name`) VALUES
 (1, 'Rest and leisure'),
 (2, 'The human body'),
 (3, 'Education');
-
--- --------------------------------------------------------
-
---
--- Структура таблиці `category`
---
-
-CREATE TABLE IF NOT EXISTS `category` (
-  `word_id` int(5) NOT NULL,
-  `category_id` int(2) NOT NULL,
-  PRIMARY KEY (`word_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Дамп даних таблиці `category`
---
-
-INSERT INTO `category` (`word_id`, `category_id`) VALUES
-(1, 1),
-(2, 1),
-(3, 1),
-(4, 1),
-(5, 1),
-(6, 2),
-(7, 2),
-(8, 2),
-(9, 3),
-(10, 3),
-(11, 3);
 
 -- --------------------------------------------------------
 
@@ -78,28 +49,30 @@ INSERT INTO `category` (`word_id`, `category_id`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `translations` (
+  `id` int(5) NOT NULL AUTO_INCREMENT,
   `word_id` int(5) NOT NULL,
   `type_id` int(1) NOT NULL,
+  `category_id` int(2) NOT NULL,
   `translation` varchar(30) NOT NULL,
-  PRIMARY KEY (`word_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
 
 --
 -- Дамп даних таблиці `translations`
 --
 
-INSERT INTO `translations` (`word_id`, `type_id`, `translation`) VALUES
-(1, 1, 'дозвілля'),
-(2, 1, 'курорт'),
-(3, 1, 'пансіонат'),
-(4, 1, 'похід'),
-(5, 1, 'аптечка'),
-(6, 1, 'потилиця'),
-(7, 1, 'лоб'),
-(8, 1, 'челюсть'),
-(9, 1, 'виховання'),
-(10, 3, 'вихований'),
-(11, 3, 'грамотний');
+INSERT INTO `translations` (`id`, `word_id`, `type_id`, `category_id`, `translation`) VALUES
+(1, 1, 1, 1, 'дозвілля'),
+(2, 2, 1, 1, 'курорт'),
+(3, 3, 1, 1, 'пансіонат'),
+(4, 4, 1, 1, 'похід'),
+(5, 5, 1, 1, 'аптечка'),
+(6, 6, 1, 2, 'потилиця'),
+(7, 7, 1, 2, 'лоб'),
+(8, 8, 1, 2, 'челюсть'),
+(9, 9, 1, 3, 'виховання'),
+(10, 10, 3, 3, 'вихований'),
+(11, 11, 3, 3, 'грамотний');
 
 -- --------------------------------------------------------
 
@@ -108,17 +81,17 @@ INSERT INTO `translations` (`word_id`, `type_id`, `translation`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `types` (
-  `type_id` int(1) NOT NULL,
+  `id` int(1) NOT NULL,
   `type_name` varchar(15) NOT NULL,
   `type_translation` varchar(15) NOT NULL,
-  PRIMARY KEY (`type_id`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Дамп даних таблиці `types`
 --
 
-INSERT INTO `types` (`type_id`, `type_name`, `type_translation`) VALUES
+INSERT INTO `types` (`id`, `type_name`, `type_translation`) VALUES
 (1, 'Noun', 'Іменник'),
 (2, 'Verb', 'Дієслово'),
 (3, 'Adjective', 'Прикметник'),

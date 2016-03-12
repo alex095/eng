@@ -20,7 +20,6 @@
                     <th>Категорія</th>
                     <th>Частина мови</th>
                     <th>Видалити</th>
-                    
                 </tr>
                 <?php
                 foreach($data['words'] as $value){ ?>

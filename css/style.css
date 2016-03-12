@@ -5,7 +5,7 @@ and open the template in the editor.
 */
 
 @font-face {
-  font-family: 'Corbel';
+  font-family: 'Corbel_e';
   src: url('/fonts/Corbel.eot');
   src: url('/fonts/Corbel.eot?#iefix') format('embedded-opentype'),
        url('/fonts/Corbel.woff2') format('woff2'),
@@ -16,11 +16,12 @@ and open the template in the editor.
   font-style: normal;
 }
 
+
 body{
     background-color: #F4F5E7;
     margin: 0px;
     padding: 0xp;
-    font-family: Corbel;
+    font-family: Corbel, Corbel_e;
 }
 
 /* Топ меню */
@@ -77,10 +78,9 @@ body{
 .footer{
     width: 100%;
     height: 35px;
-    background-color: red;
     position: fixed;
     bottom: 0px;
-    left: 0xp;
+    left: 0px;
     background-color: #DEDFCF;
     border-top: 1px solid #BABABA;
 }
@@ -91,8 +91,8 @@ body{
     font-size: 12px;
 }
 
-
 /*Футер END*/
+
 
 
 /*Сторінка додавання категорії START*/
@@ -153,6 +153,9 @@ body{
 
 /*Виведення помилок END*/
 
+.content{
+    padding-bottom: 50px;
+}
 
 .form_main_container legend{
     text-align: left;
@@ -171,13 +174,13 @@ body{
 
 .form_main_container{
     text-align: center;
-    width: 500px;
+    width: 600px;
     margin: 0 auto;
     margin-top: 20px;
 }
 
 .fields_list input{
-    display: block;
+    display: inline-block;
     margin-bottom: 25px;
     background-color: #FFFFFF;
     border-radius: 5px;
