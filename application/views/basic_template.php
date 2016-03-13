@@ -19,8 +19,16 @@ and open the template in the editor.
                     <li><a href="/admino/editword">Редагувати слово</a></li>
                     <li><a href="/admino/addword">Додати слово</a></li>
                     <li><a href="/admino/addcategory">Додати категорію</a></li>
+                    <li class="drop_menu"><a href="#">Тести</a>
+                        <ul class="drop_menu_list">
+                            <li><a href="#">oneiric</a></li>
+                            <li><a href="#">dabbed</a></li>
+                            <li><a href="#">eagerly</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
+            
         
             <div class="content">
                 <?php include_once($content); ?>

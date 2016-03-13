@@ -115,9 +115,8 @@ class WordsModel extends Model{
             $this->downloadAudioFile();
             $lastId = $this->insertWordData();
             $catId = $this->getCategoryId($this->category);
-            $this->insertWordCategory($lastId, $catId);
             $typeId = $this->getTypeId($this->type);
-            $this->insertTranslation($lastId, $typeId); 
+            $this->insertTranslation($lastId, $typeId, $catId); 
         }catch(Exception $e){
             $this->exepMsg = $e->getMessage();
             return FALSE;
@@ -125,9 +124,9 @@ class WordsModel extends Model{
         return TRUE;
     }
 
-    public function insertTranslation($lastId, $typeId){
-        $sql = "INSERT INTO translations (word_id, type_id, translation)
-                       VALUES ('".$lastId."', '".$typeId."', '".$this->translation."')";
+    public function insertTranslation($lastId, $typeId, $categoryId){
+        $sql = "INSERT INTO translations (word_id, type_id, category_id, translation)
+                       VALUES ('".$lastId."', '".$typeId."', '".$categoryId."', '".$this->translation."')";
         $insertTransQuery = $this->db->exec($sql);
         if($insertTransQuery === FALSE){
             throw new Exception($this->helper->getError('0x00002'));
@@ -149,17 +148,18 @@ class WordsModel extends Model{
         return $this->db->lastInsertId();
     }
     
+    /*
     public function insertWordCategory($lastId, $catId){
-        $sql = "INSERT INTO category (word_id, category_id)
+        $sql = "INSERT INTO translations (word_id, category_id)
                        VALUES ('".$lastId."', '".$catId."')";
         $insertWordCategoryQuery = $this->db->exec($sql);
         if($insertWordCategoryQuery === FALSE){
             throw new Exception($this->helper->getError('0x00002'));
         }
-    }
+    }*/
 
     public function getCategoryId($category){
-        $sql = "SELECT category_id 
+        $sql = "SELECT id 
                 FROM categories
                 WHERE category_name = '".$category."'";
         $getCatIdQuery = $this->db->query($sql);
@@ -170,7 +170,7 @@ class WordsModel extends Model{
     }
 
     public function getTypeId($type){
-        $sql = "SELECT type_id 
+        $sql = "SELECT id 
                 FROM types
                 WHERE type_name = '".$type."'";
         $getTypeIdQuery = $this->db->query($sql);
@@ -210,7 +210,7 @@ class WordsModel extends Model{
     public function removeCategory($catId){
         $this->loadHelper('MainHelper');
         if($this->helper->checkInt($catId)){
-            $sql = "DELETE FROM categories WHERE category_id = '".$catId."' LIMIT 1";
+            $sql = "DELETE FROM categories WHERE id = '".$catId."' LIMIT 1";
             $this->db->exec($sql);
         }else{
             $this->errors['error'] = $this->helper->getError('0x00004');
@@ -219,16 +219,13 @@ class WordsModel extends Model{
     
     public function removeWord($wordId){
         $this->loadHelper('MainHelper');
-        $countWord = $this->countRows('id', 'words_list');
-        $delAudioFile = unlink('/audio/');
-        if($this->helper->checkInt($wordId)){
+        $word = $this->getWordName($wordId);
+        $delAudioFile = unlink("audio/".$word.".mp3");
+        if($this->helper->checkInt($wordId) && $delAudioFile){
             $sql = "DELETE FROM words_list WHERE id = '".$wordId."' LIMIT 1";
             $this->db->exec($sql);
             $sql = "DELETE FROM translations WHERE word_id = '".$wordId."'";
             $this->db->exec($sql);
-            $sql = "DELETE FROM category WHERE word_id = '".$wordId."'";
-            $this->db->exec($sql);
-            
         }else{
             $this->errors['error'] = $this->helper->getError('0x00004');
         } 

@@ -103,5 +103,13 @@ class AdminoController extends Controller{
         }
         
     }
+    
+    public function editWordAction(){
+        $model = new WordsModel();
+        $view = new View('basic_template');
+        $view->render('view_edit_word');
+    }
+    
+    
 }
 

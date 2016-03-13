@@ -55,7 +55,7 @@ body{
     font-size: 17px;
 }
 
-.basic_tmp_menu ul > li:last-child{
+.basic_tmp_menu > ul > li:last-child{
     border-right: 1px solid #BBBCAF;
 }
 
@@ -70,6 +70,44 @@ body{
 }
 
 /* Топ меню END*/
+
+
+/* Випадаюче меню START */
+
+.drop_menu{
+    position: relative;
+}
+
+.drop_menu > a{
+    padding-bottom: 30px;
+}
+
+.drop_menu:hover .drop_menu_list{
+    display: block;
+}
+
+ul.drop_menu_list{
+    background-color: #E8E9DA;
+    width: 150px;
+    padding: 0px;
+    margin: 0px;
+    list-style: none;
+    position: absolute;
+    left: 0px;
+    top: 34px;
+    display: none;
+}
+
+ul.drop_menu_list > li{
+    font-size: 15px;
+    text-align: left;
+    display: block;
+    border-left: none;
+    padding: 15px 5px 7px 7px;
+    border-bottom: 1px solid #BBBCAF;
+}
+
+/* Випадаюче меню END */
 
 
 
@@ -180,7 +218,7 @@ body{
 }
 
 .fields_list input{
-    display: inline-block;
+    display: block;
     margin-bottom: 25px;
     background-color: #FFFFFF;
     border-radius: 5px;
