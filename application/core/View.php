@@ -57,9 +57,11 @@ class View{
         
     }
 
-        private function showError($subject){
+    private function showError($subject){
         if(isset($this->errors[$subject])){
             return $this->errors[$subject];
+        }else if(isset($this->errors['error'])){
+            return $this->errors['error'];
         }
         return false;
     }

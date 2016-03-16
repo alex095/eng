@@ -16,6 +16,7 @@ class WordsModel extends Model{
         'enc' => "utf8"
     );
     
+    public $id;
     public $word;
     public $translation;
     public $transcription;
@@ -53,8 +54,14 @@ class WordsModel extends Model{
         return $this->validInputs;
     }
 
-    public function countRows($field, $table){
-        $sql = "SELECT COUNT(".$field.") FROM ".$table."";
+    
+    
+    public function countRows($field, $table, $key = NULL, $value = NULL){
+        if($key === NULL && $value === NULL){
+            $sql = "SELECT COUNT(".$field.") FROM ".$table."";
+        }else{
+            $sql = "SELECT COUNT(".$field.") FROM ".$table." WHERE ".$key." = '".$value."'";
+        }
         $count = $this->db->query($sql);
         $rows = $count->fetch(PDO::FETCH_NUM)[0];
         return (int)$rows;
@@ -229,6 +236,48 @@ class WordsModel extends Model{
         }else{
             $this->errors['error'] = $this->helper->getError('0x00004');
         } 
+    }
+    
+    public function checkWord(){
+        $this->loadHelper('MainHelper');
+        $count = $this->countRows('id', 'words_list', 'word', $this->word);
+        if($count === 0){
+            $this->helper->currentInput = $this->db->quote($this->word);
+            $this->errors['error'] = $this->helper->getError('0x00006', true);
+            return FALSE;
+        }
+        return $count;
+    }
+
+    public function searchWord(){
+        $sql = "SELECT id, word, transcription, audio FROM words_list WHERE word = '".$this->word."'";
+        $wordData = $this->resultInArray($sql);
+        if(!$wordData){
+            $this->errors['error'] = $this->helper->getError('0x00002');
+            return FALSE;
+        }else{
+            $this->id = (int)$wordData[0]['id'];
+            return $wordData[0];
+        }
+        
+    }
+    
+    public function getTranslations(){
+        $sql = "SELECT a.id, a.translation, b.type_name, c.category_name FROM translations as a
+                LEFT JOIN types as b
+                    ON a.type_id = b.id
+                LEFT JOIN categories as c
+                    ON a.category_id = c.id WHERE a.word_id = '".$this->id."'";
+        return $this->resultInArray($sql);
+    }
+
+    private function resultInArray($sql){
+        $result = array();
+        $query = $this->db->query($sql);
+        while($row = $query->fetch(PDO::FETCH_ASSOC)){
+            $result[] = $row;
+        }
+        return $result;
     }
     
 }

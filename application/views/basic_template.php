@@ -15,21 +15,20 @@ and open the template in the editor.
             <div class="top_line"></div>
             <div class="basic_tmp_menu">
                 <ul>
-                    <li><a href="/admino/showwords">Список слів</a></li>
-                    <li><a href="/admino/editword">Редагувати слово</a></li>
-                    <li><a href="/admino/addword">Додати слово</a></li>
-                    <li><a href="/admino/addcategory">Додати категорію</a></li>
                     <li class="drop_menu"><a href="#">Тести</a>
                         <ul class="drop_menu_list">
-                            <li><a href="#">oneiric</a></li>
-                            <li><a href="#">dabbed</a></li>
-                            <li><a href="#">eagerly</a></li>
+                            <li><a href="#">Англійська - Українська</a></li>
+                            <li><a href="#">Українська - Англійська</a></li>
+                            <li><a href="#">Слова на слух</a></li>
                         </ul>
                     </li>
+                    <li><a href="/admino/showwords">Список слів</a></li>
+                    <li><a href="/admino/addword">Додати слово</a></li>
+                    <li><a href="/admino/editword">Редагувати слово</a></li>
+                    <li><a href="/admino/addcategory">Додати категорію</a></li>
+                    
                 </ul>
             </div>
-            
-        
             <div class="content">
                 <?php include_once($content); ?>
             </div>

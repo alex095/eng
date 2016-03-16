@@ -88,23 +88,23 @@ body{
 
 ul.drop_menu_list{
     background-color: #E8E9DA;
-    width: 150px;
+    width: 170px;
     padding: 0px;
     margin: 0px;
     list-style: none;
     position: absolute;
     left: 0px;
-    top: 34px;
+    top: 33px;
     display: none;
 }
 
 ul.drop_menu_list > li{
-    font-size: 15px;
+    font-size: 14px;
     text-align: left;
     display: block;
     border-left: none;
-    padding: 15px 5px 7px 7px;
-    border-bottom: 1px solid #BBBCAF;
+    padding: 12px 5px 7px 8px;
+    border-bottom: 1px solid #DDDDD7;
 }
 
 /* Випадаюче меню END */
@@ -271,7 +271,7 @@ ul.drop_menu_list > li{
 
 .form_main_container button{
     background-color: #BF4000;
-    border: 0px #C95B24 solid;
+    border-width: 0px;
     border-radius: 5px;
     width: 150px;
     height: 30px;
@@ -352,3 +352,62 @@ img.play_audio{
 }
 
 /*Виведення всіх слів END*/
+
+
+
+
+/* Редагування слів START */
+
+.editing_word{
+    margin-top: 20px;
+}
+
+.editing_word table{
+    border-collapse: collapse;
+    width: 594px;
+    margin: 0px auto;
+    padding: 20px;
+}
+
+.editing_word table td,
+.editing_word table th{
+    text-align: left;
+    border: 1px #B4B4B4 solid;
+    padding: 2px 3px 2px 7px;
+}
+
+.editing_word table th{
+    color: #B03B00;
+}
+
+
+.editing_word table .word_title{
+    text-align: center;
+    font-weight: bold;
+    text-transform: capitalize;
+    color: #A03500;
+    font-size: 17px;
+    padding: 10px;
+    position: relative;
+}
+
+.editing_word table .play_audio{
+    margin-left: 3px;
+    margin-bottom: -3px;
+}
+
+.editing_word .icons{
+    width: 20px;
+    height: 20px;
+    float: right;
+    position: absolute;
+}
+
+.editing_word .edit_icon{
+    right: 35px;
+}
+.editing_word .delete_icon{
+    right: 7px;
+}
+
+/* Редагування слів END */

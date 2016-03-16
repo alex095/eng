@@ -7,7 +7,7 @@
         </script>
         
         <audio id="audio" controls="controls">
-            <source src="/audio/leisure.mp3" type="audio/mpeg">
+            <source src="" type="audio/mpeg">
         </audio>
         
         <div class="word_list_container">

@@ -13,17 +13,23 @@ class MainHelper{
         '0x00002' => 'Помилка взаємодії з БД!',
         '0x00003' => 'Додайте файл mp3 формату!',
         '0x00004' => 'Помилка видалення!',
-        '0x00005' => 'Помилка завантаження файлу'
+        '0x00005' => 'Помилка завантаження файлу',
+        '0x00006' => 'Слово * не знайдено!'
     );
 
 
     public $currentInput;
 
 
-    public function getError($errorCode){
+    public function getError($errorCode, $replace = FALSE){
+        if($replace){
+            return str_replace('*', $this->currentInput, $this->errorsList[$errorCode]);
+        }
         return $this->errorsList[$errorCode];
     }
 
+    
+    
     public function validateInput($value){
         $input = trim($value);
         $input = stripslashes($input);

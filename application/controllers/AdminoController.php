@@ -104,10 +104,24 @@ class AdminoController extends Controller{
         
     }
     
-    public function editWordAction(){
-        $model = new WordsModel();
+    public function EditWordAction(){
         $view = new View('basic_template');
-        $view->render('view_edit_word');
+        if(!isset($_POST['search_word'])){
+            $view->render('view_edit_word');
+        }else{
+            $model = new WordsModel();
+            $data = array();
+            $model->validate('word', $_POST['word']);
+            if((count($model->errors) === 0) && $model->checkWord()){
+                $data['data'] = $model->searchWord();
+                $data['tran'] = $model->getTranslations();
+                $view->render('view_edit_word', $data);
+            }else{
+                $view->errors = $model->errors;
+                $view->render('view_edit_word');
+            }
+        }
+
     }
     
     
