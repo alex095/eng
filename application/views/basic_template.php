@@ -9,6 +9,8 @@ and open the template in the editor.
         <meta charset="UTF-8">
         <title></title>
         <?php echo $this->connectCss('style'); ?>
+        <?php echo $this->connectJS('scripts'); ?>
+        <?php echo $this->connectJS('jquery-2.2.2.min'); ?>
     </head>
     <body>
         <div class="main_container">
@@ -40,8 +42,8 @@ and open the template in the editor.
             </div>
         </div>
         <script type="text/javascript">
-            var elem = document.getElementsByClassName('copyright');
-            elem[0].innerHTML += new Date().getFullYear();
+            var copy = $('.copyright').eq(0).text();
+            $('.copyright').eq(0).text(copy + new Date().getFullYear());
         </script>
     </body>
 </html>

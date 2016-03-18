@@ -345,10 +345,11 @@ table.all_words th{
 }
 
 img.play_audio{
-    width: 15px;
-    height: 15px;
+    width: 18px;
+    height: 18px;
     cursor: pointer;
     margin-left: 33px;
+    margin-bottom: -4px;
 }
 
 /*Виведення всіх слів END*/
@@ -392,6 +393,8 @@ img.play_audio{
 }
 
 .editing_word table .play_audio{
+    width: 15px;
+    height: 15px;
     margin-left: 3px;
     margin-bottom: -3px;
 }
@@ -401,6 +404,7 @@ img.play_audio{
     height: 20px;
     float: right;
     position: absolute;
+    cursor: pointer;
 }
 
 .editing_word .edit_icon{
@@ -409,5 +413,22 @@ img.play_audio{
 .editing_word .delete_icon{
     right: 7px;
 }
+
+
+.editing_word .word_editing_block{
+    margin-top: 20px;
+    text-align: center;
+    display: none;
+}
+
+.editing_word .word_editing_block button{
+    margin-top: 15px;
+}
+
+.editing_word .word_editing_block input{
+    width: 180px;
+    margin-left: 10px;
+}
+
 
 /* Редагування слів END */

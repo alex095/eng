@@ -1,11 +1,3 @@
-        <script type="text/javascript">
-            function playAudio(src){
-                var elem = document.getElementById('audio');
-                elem.src = '/audio/' + src;
-                elem.play();
-            }
-        </script>
-        
         <audio id="audio" controls="controls">
             <source src="" type="audio/mpeg">
         </audio>

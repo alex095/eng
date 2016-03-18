@@ -11,6 +11,7 @@ class View{
     const VIEWS_PATH = "./application/views/";
     const BLOCKS_PATH = "./application/views/blocks/";
     const STYLES_PATH = "/css/";
+    const JS_PATH = "/js/";
     const VIEWS_EXT = ".php";
     private $_basicTemplate;
     private $_blocks;
@@ -35,6 +36,11 @@ class View{
     public function connectCss($file){
         $fullRoute = self::STYLES_PATH.$file.'.css';
         return "<link href=\"".$fullRoute."\" rel=\"stylesheet\" />";
+    }
+    
+    public function connectJS($file){
+        $fullRoute = self::JS_PATH.$file.'.js';
+        return "<script type=\"text/javascript\" src=\"".$fullRoute."\"></script>";
     }
 
     public function showBlock($blockName){

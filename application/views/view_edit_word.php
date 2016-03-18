@@ -1,14 +1,3 @@
-<script type="text/javascript">
-    function playAudio(src){
-                var elem = document.getElementById('audio');
-                elem.src = '/audio/' + src;
-                elem.play();
-            }
-            
-    function showEditingBlock(){
-        
-    }
-</script>
 <audio id="audio" controls="controls">
     <source src="" type="audio/mpeg">
 </audio>
@@ -31,8 +20,8 @@
     <table>
         <tr>
             <td colspan="3" class="word_title"><?php echo $data['data']['word']; ?>
-                <img class="icons delete_icon" alt="edit" src="/images/delete_icon_1.png" />
-                <img class="icons edit_icon" alt="edit" src="/images/edit_icon.png" />
+                <img class="icons delete_icon" alt="edit" src="/images/delete_icon.png" />
+                <img onclick="showBlock('#editing_block')" class="icons edit_icon" alt="edit" src="/images/edit_icon.png" />
             </td>
         </tr>
         <tr>
@@ -64,12 +53,25 @@
         <?php } ?>
     </table>
     
-    <div class="editing_block">
-        
+    <div class="word_editing_block" id="editing_block">
+        <form method="post" action="/admino/saveediting/id/<?php echo $data['data']['id']; ?>" enctype="multipart/form-data">
+            <input type="text" name="changedWord" value="<?php echo $data['data']['word']; ?>" />
+            <input type="text" name="transcription" value="<?php echo $data['data']['transcription']; ?>" />
+            <input type="file" name="audioFile" />
+            <br />
+            <button onclick="" name="save_changes">Зберегти зміни</button>
+        </form>
     </div>
     
     
 </div>
 
-<?php } 
+<button onclick="validateInputs(['changingWord', 'transcription', 'audioFile']);" name="save_changes">Зберегти зміни</button>
+<script>
+
+</script>
+<?php } ?>
+
+
+
 

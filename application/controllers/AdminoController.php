@@ -124,6 +124,29 @@ class AdminoController extends Controller{
 
     }
     
+    public function saveEditingAction($params){
+        if(isset($_POST['save_changes'])){
+            $model = new WordsModel();
+            $model->validate('word', $_POST['changedword']);
+            $model->validate('transcription', $_POST['transcription']);
+            $model->validateId($params['id']);
+            if(!empty($_POST['audioFile'])){
+                $model->validateFile('audioFile', $_FILES['audioFile']);
+            }
+            if((count($model->errors) === 0)){
+                $model->saveEditingData();
+            }else{
+                echo 'errors';
+            }
+        }
+        
+    }
+    
+    public function ajaxAction(){
+        
+    }
+    
+    
     
 }
 

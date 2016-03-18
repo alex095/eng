@@ -42,6 +42,16 @@ class WordsModel extends Model{
         }
     }
     
+    public function validateId($id){
+        $this->loadHelper("MainHelper");
+        if(!$this->helper->checkInt($id)){
+            $this->errors['id'] = $this->helper->getError('0x00007');
+        }else{
+            $this->id = $id;
+        }
+    }
+
+
     public function validateFile($name, $file){
         if($file['size'] === 0){
             $this->errors[$name] = $this->helper->getError('0x00003');
@@ -269,6 +279,11 @@ class WordsModel extends Model{
                 LEFT JOIN categories as c
                     ON a.category_id = c.id WHERE a.word_id = '".$this->id."'";
         return $this->resultInArray($sql);
+    }
+
+    
+    public function saveEditingData(){
+        echo 1;
     }
 
     private function resultInArray($sql){
