@@ -12,6 +12,10 @@ function getInputValue(name, index){
     return $("input[name='" + name + "']").eq(index).val();
 }
 
+function setTdValue(cl, value, index){
+    $("" + cl + "").eq(index).text(value);
+}
+
 function validateInputs(inputs){
     var values = {};
     for(var i=0; i<inputs.length; i++){
@@ -19,16 +23,18 @@ function validateInputs(inputs){
     }
     var jsonData = JSON.stringify(values);
     ajaxInputs(jsonData);
-    
 }
 
 function ajaxInputs(data){
     $.ajax({
         type: "POST",
-        url: "/admino/ajax",
+        url: "/admino/saveEditing",
         data: "data=" + data,
         success: function(data){
-            alert(data);
+            var r = JSON.parse(data);
+            setTdValue('.word_data', r['word'], 0);
+            setTdValue('.word_data', r['transcription'], 1);
+            setTdValue('.word_data', r['audioFile'], 2);
         }
     });
 }

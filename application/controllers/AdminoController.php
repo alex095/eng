@@ -124,14 +124,17 @@ class AdminoController extends Controller{
 
     }
     
-    public function saveEditingAction($params){
-        if(isset($_POST['save_changes'])){
+    public function saveEditingAction(){
+        if(isset($_POST['data'])){
             $model = new WordsModel();
-            $model->validate('word', $_POST['changedword']);
-            $model->validate('transcription', $_POST['transcription']);
-            $model->validateId($params['id']);
-            if(!empty($_POST['audioFile'])){
-                $model->validateFile('audioFile', $_FILES['audioFile']);
+            $model->decodeJson($_POST['data']);
+            $model->validate('word', $model->getJsonData('newWord'));
+            $model->validate('transcription', $model->getJsonData('newTranscription'));
+            $model->validateId($model->getJsonData('id'));
+            if(!empty($model->getJsonData('newAudioFile'))){
+                $model->validateFile('audioFile', $model->getJsonData('newAudioFile'));
+                echo $model->getJsonData('newAudioFile');
+                $model->downloadAudioFile();
             }
             if((count($model->errors) === 0)){
                 $model->saveEditingData();
@@ -143,7 +146,8 @@ class AdminoController extends Controller{
     }
     
     public function ajaxAction(){
-        
+        var_dump($_FILES);
+
     }
     
     

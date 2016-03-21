@@ -24,6 +24,7 @@ class WordsModel extends Model{
     public $category;
     public $audioFile;
     
+    public $jsonData;
     public $exepMsg = null;
     public $errors = array();
     public $validInputs = array();
@@ -60,12 +61,24 @@ class WordsModel extends Model{
         }
     }
 
+    
+    public function getJsonData($key){
+        if(array_key_exists($key, $this->jsonData)){
+            return $this->jsonData[$key];
+        }
+        return FALSE;
+    }
+
+    public function decodeJson($json){
+        $this->jsonData = json_decode($json, true);
+    }
+
+    
+
     public function getValidInputs(){
         return $this->validInputs;
     }
 
-    
-    
     public function countRows($field, $table, $key = NULL, $value = NULL){
         if($key === NULL && $value === NULL){
             $sql = "SELECT COUNT(".$field.") FROM ".$table."";
@@ -283,7 +296,16 @@ class WordsModel extends Model{
 
     
     public function saveEditingData(){
-        echo 1;
+        $newVal = array(
+            'word' => $this->word,
+            'transcription' => $this->transcription,
+            'audioFile' => $this->audioFile
+        );
+        /*if(!empty($this->audioFile)){
+            $newVal['audioFile'] = $this->audioFile;
+        }*/
+        $r = json_encode($newVal);
+        echo $r;
     }
 
     private function resultInArray($sql){

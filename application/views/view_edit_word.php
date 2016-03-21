@@ -30,9 +30,9 @@
             <th>mp3-файл</th>
         </tr>
         <tr>
-            <td><?php echo $data['data']['word']; ?></td>
-            <td><?php echo $data['data']['transcription']; ?></td>
-            <td><?php echo $data['data']['audio']; ?>
+            <td class="word_data"><?php echo $data['data']['word']; ?></td>
+            <td class="word_data"><?php echo $data['data']['transcription']; ?></td>
+            <td class="word_data"><?php echo $data['data']['audio']; ?>
                 <img alt="audio" src="/images/audio.png" class="play_audio" onclick="playAudio('<?php echo $data['data']['audio']; ?>')" />
             </td>
         </tr>
@@ -55,23 +55,31 @@
     
     <div class="word_editing_block" id="editing_block">
         <form method="post" action="/admino/saveediting/id/<?php echo $data['data']['id']; ?>" enctype="multipart/form-data">
-            <input type="text" name="changedWord" value="<?php echo $data['data']['word']; ?>" />
-            <input type="text" name="transcription" value="<?php echo $data['data']['transcription']; ?>" />
-            <input type="file" name="audioFile" />
+            <input name="id" type="hidden" value="<?php echo $data['data']['id']; ?>" />
+            <input type="text" name="newWord" value="<?php echo $data['data']['word']; ?>" />
+            <input type="text" name="newTranscription" value="<?php echo $data['data']['transcription']; ?>" />
+            <input type="file" name="newAudioFile" />
             <br />
-            <button onclick="" name="save_changes">Зберегти зміни</button>
+            <button type="button" onclick="validateInputs(['id', 'newWord', 'newTranscription', 'newAudioFile']);" name="save_changes">Зберегти зміни</button>
         </form>
     </div>
     
-    
 </div>
-
-<button onclick="validateInputs(['changingWord', 'transcription', 'audioFile']);" name="save_changes">Зберегти зміни</button>
 <script>
 
 </script>
 <?php } ?>
 
+<form method="post" action="/admino/ajax" enctype="multipart/form-data">
+        <input type="file" name="aud" />
+        <button type="submit">12345</button>
+</form>
+
+<script>
+
+
+
+</script>
 
 
 
