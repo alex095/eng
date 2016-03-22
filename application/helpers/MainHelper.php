@@ -42,13 +42,13 @@ class MainHelper{
         return TRUE;
     }
     
-    public function changeAudioName($fileName){
+    public function changeAudioName($fileName, $ext){
         $expName = explode(' ', $fileName);
         $newName = $expName[0];
         for($i=1; $i<count($expName); $i++){
             $newName .= "_".$expName[$i];
         }
-        return $newName;
+        return $newName.".".$ext;
     }
 
     public function checkInt($var){

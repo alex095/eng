@@ -224,7 +224,7 @@ class WordsModel extends Model{
 
     public function downloadAudioFile(){
         $this->loadHelper('MainHelper');
-        $audioName = $this->helper->changeAudioName($this->word);
+        $audioName = $this->helper->changeAudioName($this->word, 'mp3');
         $moveFile = move_uploaded_file($this->audioFile['tmp_name'], 'audio/'.$audioName.'.mp3');
         if(!$moveFile){
             throw new Exception($this->helper->getError('0x00005'));
@@ -299,11 +299,13 @@ class WordsModel extends Model{
         $newVal = array(
             'word' => $this->word,
             'transcription' => $this->transcription,
-            'audioFile' => $this->audioFile
         );
-        /*if(!empty($this->audioFile)){
-            $newVal['audioFile'] = $this->audioFile;
-        }*/
+        if(empty($this->audioFile)){
+            $newVal['audioFile'] = FALSE;
+        }else{
+            $this->loadHelper('MainHelper');
+            $newVal['audioFile'] = $this->helper->changeAudioName($this->word, 'mp3');
+        }
         $r = json_encode($newVal);
         echo $r;
     }
