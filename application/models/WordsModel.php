@@ -225,8 +225,9 @@ class WordsModel extends Model{
     public function downloadAudioFile(){
         $this->loadHelper('MainHelper');
         $audioName = $this->helper->changeAudioName($this->word, 'mp3');
-        $moveFile = move_uploaded_file($this->audioFile['tmp_name'], 'audio/'.$audioName.'.mp3');
-        if(!$moveFile){
+        $moveFile = move_uploaded_file($this->audioFile['tmp_name'], 'audio/'.$audioName);
+        if(!$moveFile || $this->helper->checkDir('/audio')){
+            unlink("audio/".$audioName);
             throw new Exception($this->helper->getError('0x00005'));
         }
         $this->audioFile = $audioName.'.mp3';
@@ -296,18 +297,17 @@ class WordsModel extends Model{
 
     
     public function saveEditingData(){
+        $this->loadHelper('MainHelper');
         $newVal = array(
             'word' => $this->word,
-            'transcription' => $this->transcription,
+            'transcription' => $this->transcription
         );
-        if(empty($this->audioFile)){
-            $newVal['audioFile'] = FALSE;
-        }else{
-            $this->loadHelper('MainHelper');
-            $newVal['audioFile'] = $this->helper->changeAudioName($this->word, 'mp3');
+        if(empty($this->getJsonData('newAudioFile'))){
+            $newFileName = $this->helper->changeAudioName($this->word, 'mp3');
+            rename("audio/".$this->getJsonData('oldAudioFile'), "audio/".$newFileName);
+            $newVal['audioFile'] = $newFileName;
         }
-        $r = json_encode($newVal);
-        echo $r;
+        return json_encode($newVal);
     }
 
     private function resultInArray($sql){

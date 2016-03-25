@@ -51,6 +51,13 @@ class MainHelper{
         return $newName.".".$ext;
     }
 
+    public function checkDir($dirName){
+        if(file_exists($dirName) && is_dir($dirName)){
+            return TRUE;
+        }
+        return FALSE;
+    }
+
     public function checkInt($var){
         if((int)$var === 0){
             return FALSE;

@@ -133,15 +133,24 @@ class AdminoController extends Controller{
             $model->validateId($model->getJsonData('id'));
             if(!empty($model->getJsonData('newAudioFile'))){
                 $model->validate('audioFile', $model->getJsonData('newAudioFile'));
+            }else{
+                $model->validate('audioFile', $model->getJsonData('oldAudioFile'));
             }
             if((count($model->errors) === 0)){
-                $model->saveEditingData();
+                echo $model->saveEditingData();
             }else{
                 echo 'errors';
             }
         }
         
     }
+    
+    public function saveNewAudioAction(){
+        if(empty($_FILES['newAudioFile']['name'])){
+            echo 1;
+        }
+    }
+    
     
     public function ajaxAction(){
         var_dump($_FILES);

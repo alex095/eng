@@ -32,7 +32,7 @@
         <tr>
             <td class="word_data"><?php echo $data['data']['word']; ?></td>
             <td class="word_data"><?php echo $data['data']['transcription']; ?></td>
-            <td class="word_data"><?php echo $data['data']['audio']; ?>
+            <td class="word_data"><span id="audioValue"><?php echo $data['data']['audio']; ?></span>
                 <img alt="audio" src="/images/audio.png" class="play_audio" onclick="playAudio('<?php echo $data['data']['audio']; ?>')" />
             </td>
         </tr>
@@ -53,16 +53,17 @@
         <?php } ?>
     </table>
     
+    <iframe name="hidFrame" id="hidFrame" style="position: absolute; top: 100px; left: 50px;"></iframe>
+    
     <div class="word_editing_block" id="editing_block">
-        <form method="post" action="/admino/saveediting/id/<?php echo $data['data']['id']; ?>" enctype="multipart/form-data">
+        <form method="post" target="hidFrame" action="/admino/saveNewAudio" enctype="multipart/form-data">
             <input name="id" type="hidden" value="<?php echo $data['data']['id']; ?>" />
-            <input name="oldAudioFile" type="hidden" value="<?php echo $data['data']['audio']; ?>" />
             <input type="text" name="newWord" value="<?php echo $data['data']['word']; ?>" />
             <input type="text" name="newTranscription" value="<?php echo $data['data']['transcription']; ?>" />
             <input type="file" name="newAudioFile" />
             <br />
-            <button type="button" onclick="
-                validateInputs(['id', 'newWord', 'newTranscription', 'oldAudioFile']);
+            <button type="submit" onclick="
+                validateInputs(['id', 'newWord', 'newTranscription', 'newAudioFile']);
                                                 " name="save_changes">Зберегти зміни
             </button>
         </form>
@@ -74,10 +75,6 @@
 </script>
 <?php } ?>
 
-<form method="post" action="" enctype="multipart/form-data">
-        <input type="file" name="aud" id="fil"/>
-        <button onclick="ajaxTest();" type="button">12345</button>
-</form>
 
 <script>
 
