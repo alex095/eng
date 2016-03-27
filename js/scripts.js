@@ -4,6 +4,7 @@ function playAudio(src){
     elem.play();
 }
 
+
 function showBlock(elem){
     $(elem).slideToggle();
 }
@@ -30,16 +31,32 @@ function validateInputs(inputs){
     ajaxInputs(jsonData);
 }
 
+
+
+function IsJsonString(str) {
+    try{
+        JSON.parse(str);
+    }catch(e){
+        return false;
+    }
+    return true;
+}
+
 function ajaxInputs(data){
     $.ajax({
         type: "POST",
         url: "/admino/saveEditing",
         data: "data=" + data,
         success: function(data){
-            var r = JSON.parse(data);
-            setTdValue('.word_data', r['word'], 0);
-            setTdValue('.word_data', r['transcription'], 1);
-            setTdValue('#audioValue', r['audioFile'], 0);
+            if(IsJsonString(data)){
+                var r = JSON.parse(data);
+                setTdValue('.word_data', r['word'], 0);
+                setTdValue('.word_data', r['transcription'], 1);
+                setTdValue('#audioValue', r['audioFile'], 0);
+                location.reload();
+            }else{
+                alert(data);
+            }            
         }
     });
 }

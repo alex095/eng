@@ -10,7 +10,7 @@ class Model{
     
     protected $db = null;
     protected $config;
-    protected $helper = null;
+    public $helper = null;
 
     public function __construct($config) {
         $this->config = $config;

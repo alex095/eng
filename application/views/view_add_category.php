@@ -4,11 +4,11 @@
             <legend>Категорії слів</legend>
             <div class="error"><?php echo $this->showError('category'); ?></div>
             <div class="text_inputs_container">
-                <ul class="fields_list">
+                <ul class="input_button fields_list">
                     <li><span>Категорія</span><input type="text" name="category_name" /></li>
+                    <li><button type="submit" name="add_cat">Додати категорію</button></li>
                 </ul>
             </div>
-            <button type="submit" name="add_cat">Додати категорію</button>
             
             <table class="categories_table">
                 <?php foreach($data['categories'] as $value){ ?>

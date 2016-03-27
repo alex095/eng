@@ -54,8 +54,9 @@ class WordsModel extends Model{
 
 
     public function validateFile($name, $file){
+        $this->loadHelper("MainHelper");
         if($file['size'] === 0){
-            $this->errors[$name] = $this->helper->getError('0x00003');
+            $this->errors['error'] = $this->helper->getError('0x00003');
         }else{
             $this->$name = $file;
         }
@@ -225,6 +226,9 @@ class WordsModel extends Model{
     public function downloadAudioFile(){
         $this->loadHelper('MainHelper');
         $audioName = $this->helper->changeAudioName($this->word, 'mp3');
+        if(file_exists('audio/'.$audioName)){
+            unlink("audio/".$audioName);
+        }
         $moveFile = move_uploaded_file($this->audioFile['tmp_name'], 'audio/'.$audioName);
         if(!$moveFile || $this->helper->checkDir('/audio')){
             unlink("audio/".$audioName);

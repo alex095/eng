@@ -7,11 +7,11 @@
             <legend>Пошук слова</legend>
             <div class="error"><?php echo $this->showError('word'); ?></div>
             <div class="text_inputs_container">
-                <ul class="fields_list">
+                <ul class="input_button fields_list">
                     <li><span>Слово</span><input type="text" name="word"></li>
+                    <li><button type="submit" name="search_word">Шукати</button></li>
                 </ul>
             </div>
-            <button type="submit" name="search_word">Шукати</button>
         </fieldset>
     </form>
 </div>
@@ -63,8 +63,8 @@
             <input type="file" name="newAudioFile" />
             <br />
             <button type="submit" onclick="
-                validateInputs(['id', 'newWord', 'newTranscription', 'newAudioFile']);
-                                                " name="save_changes">Зберегти зміни
+                    validateInputs(['id', 'newWord', 'newTranscription', 'newAudioFile']);
+                                                    " name="save_changes">Зберегти зміни
             </button>
         </form>
     </div>

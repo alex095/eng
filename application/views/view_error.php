@@ -10,6 +10,7 @@ and open the template in the editor.
         <title></title>
     </head>
     <body>
+        <div class="simple_error">Щось пішло не так...</div>
         <div class="simple_error"><?php echo $this->showError('error'); ?></div>
     </body>
 </html>

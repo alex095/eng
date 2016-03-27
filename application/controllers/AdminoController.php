@@ -139,16 +139,26 @@ class AdminoController extends Controller{
             if((count($model->errors) === 0)){
                 echo $model->saveEditingData();
             }else{
-                echo 'errors';
+                echo $model->helper->getError('0x00008');
             }
         }
         
     }
     
     public function saveNewAudioAction(){
-        if(empty($_FILES['newAudioFile']['name'])){
-            echo 1;
+        if(!empty($_FILES['newAudioFile']['name'])){
+            $model = new WordsModel();
+            $model->validateFile('audioFile', $_FILES['newAudioFile']);
+            $model->validate('word', $_POST['newWord']);
+            if(count($model->errors) > 0){
+                $view = new View('basic_template');
+                $view->errors = $model->errors;
+                $view->render('view_error');
+            }else{
+                $model->downloadAudioFile();
+            }
         }
+        
     }
     
     
