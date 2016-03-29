@@ -301,16 +301,27 @@ class WordsModel extends Model{
 
     
     public function saveEditingData(){
-        $this->loadHelper('MainHelper');
         $newVal = array(
             'word' => $this->word,
-            'transcription' => $this->transcription
+            'transcription' => $this->transcription,
         );
+        
+        $sql = "UPDATE words_list
+                SET word = '".$this->word."', transcription = '".$this->transcription."'
+                WHERE id = '".$this->id."'";
+
         if(empty($this->getJsonData('newAudioFile'))){
+            $this->loadHelper('MainHelper');
             $newFileName = $this->helper->changeAudioName($this->word, 'mp3');
             rename("audio/".$this->getJsonData('oldAudioFile'), "audio/".$newFileName);
             $newVal['audioFile'] = $newFileName;
+            $sql = "UPDATE words_list
+                SET word = '".$this->word."', transcription = '".$this->transcription."',
+                    audio = '".$newFileName."'
+                WHERE id = '".$this->id."'";
         }
+        
+        $this->db->exec($sql);
         return json_encode($newVal);
     }
 

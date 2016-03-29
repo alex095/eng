@@ -53,7 +53,11 @@ function ajaxInputs(data){
                 setTdValue('.word_data', r['word'], 0);
                 setTdValue('.word_data', r['transcription'], 1);
                 setTdValue('#audioValue', r['audioFile'], 0);
-                location.reload();
+                setTdValue('#word_title', r['word'], 0);
+                console.log(r['audioFile']);
+                $('#playaud').on('click', function(){
+                    playAudio(r['audioFile']);
+                });
             }else{
                 alert(data);
             }            

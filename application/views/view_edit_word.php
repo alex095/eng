@@ -19,7 +19,7 @@
 <div class="editing_word">
     <table>
         <tr>
-            <td colspan="3" class="word_title"><?php echo $data['data']['word']; ?>
+            <td colspan="3" class="word_title"><span id="word_title"><?php echo $data['data']['word']; ?></span>
                 <img class="icons delete_icon" alt="edit" src="/images/delete_icon.png" />
                 <img onclick="showBlock('#editing_block')" class="icons edit_icon" alt="edit" src="/images/edit_icon.png" />
             </td>
@@ -33,7 +33,7 @@
             <td class="word_data"><?php echo $data['data']['word']; ?></td>
             <td class="word_data"><?php echo $data['data']['transcription']; ?></td>
             <td class="word_data"><span id="audioValue"><?php echo $data['data']['audio']; ?></span>
-                <img alt="audio" src="/images/audio.png" class="play_audio" onclick="playAudio('<?php echo $data['data']['audio']; ?>')" />
+                <img alt="audio" src="/images/audio.png" id="playaud" class="play_audio" onclick="playAudio('<?php echo $data['data']['audio']; ?>')" />
             </td>
         </tr>
         <tr>
@@ -58,6 +58,7 @@
     <div class="word_editing_block" id="editing_block">
         <form method="post" target="hidFrame" action="/admino/saveNewAudio" enctype="multipart/form-data">
             <input name="id" type="hidden" value="<?php echo $data['data']['id']; ?>" />
+            <input name="oldAudioFile" type="hidden" value="" />
             <input type="text" name="newWord" value="<?php echo $data['data']['word']; ?>" />
             <input type="text" name="newTranscription" value="<?php echo $data['data']['transcription']; ?>" />
             <input type="file" name="newAudioFile" />
