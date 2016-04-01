@@ -69,6 +69,14 @@ body{
     color: #C64403;
 }
 
+#hidFrame{
+    position: absolute;
+    top: 100px;
+    left: 50px;
+    width: 0px;
+    height: 0px;
+}
+
 /* Топ меню END*/
 
 

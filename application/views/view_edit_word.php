@@ -53,7 +53,7 @@
         <?php } ?>
     </table>
     
-    <iframe name="hidFrame" id="hidFrame" style="position: absolute; top: 100px; left: 50px;"></iframe>
+    <iframe name="hidFrame" id="hidFrame"></iframe>
     
     <div class="word_editing_block" id="editing_block">
         <form method="post" target="hidFrame" action="/admino/saveNewAudio" enctype="multipart/form-data">
@@ -64,7 +64,7 @@
             <input type="file" name="newAudioFile" />
             <br />
             <button type="submit" onclick="
-                    validateInputs(['id', 'newWord', 'newTranscription', 'newAudioFile']);
+                    validateInputs(['id', 'newWord', 'newTranscription', 'newAudioFile', 'oldAudioFile']);
                                                     " name="save_changes">Зберегти зміни
             </button>
         </form>

@@ -156,6 +156,8 @@ class AdminoController extends Controller{
                 $view->render('view_error');
             }else{
                 $model->downloadAudioFile();
+                $model->validate('audioFile', $_POST['oldAudioFile']);
+                $model->removeAudioFile($model->audioFile);
             }
         }
         

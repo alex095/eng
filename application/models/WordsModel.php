@@ -226,9 +226,7 @@ class WordsModel extends Model{
     public function downloadAudioFile(){
         $this->loadHelper('MainHelper');
         $audioName = $this->helper->changeAudioName($this->word, 'mp3');
-        if(file_exists('audio/'.$audioName)){
-            unlink("audio/".$audioName);
-        }
+        
         $moveFile = move_uploaded_file($this->audioFile['tmp_name'], 'audio/'.$audioName);
         if(!$moveFile || $this->helper->checkDir('/audio')){
             unlink("audio/".$audioName);
@@ -237,6 +235,15 @@ class WordsModel extends Model{
         $this->audioFile = $audioName.'.mp3';
     }
     
+    public function removeAudioFile($fileName){
+        $this->loadHelper('MainHelper');
+        $audioName = $this->helper->changeAudioName($this->word, 'mp3');
+        if($fileName !== $audioName && file_exists('audio/'.$fileName)){
+            unlink("audio/".$fileName);
+        }
+    }
+
+
     public function insertNewCategory($catName){
         $sql = "INSERT INTO categories (category_name) VALUES ('".$catName."')";
         $this->db->exec($sql);
@@ -305,22 +312,16 @@ class WordsModel extends Model{
             'word' => $this->word,
             'transcription' => $this->transcription,
         );
-        
+        $this->loadHelper('MainHelper');
+        $newFileName = $this->helper->changeAudioName($this->word, 'mp3');
+        $newVal['audioFile'] = $newFileName;
         $sql = "UPDATE words_list
-                SET word = '".$this->word."', transcription = '".$this->transcription."'
-                WHERE id = '".$this->id."'";
-
-        if(empty($this->getJsonData('newAudioFile'))){
-            $this->loadHelper('MainHelper');
-            $newFileName = $this->helper->changeAudioName($this->word, 'mp3');
-            rename("audio/".$this->getJsonData('oldAudioFile'), "audio/".$newFileName);
-            $newVal['audioFile'] = $newFileName;
-            $sql = "UPDATE words_list
                 SET word = '".$this->word."', transcription = '".$this->transcription."',
                     audio = '".$newFileName."'
                 WHERE id = '".$this->id."'";
+        if(empty($this->getJsonData('newAudioFile'))){
+            rename("audio/".$this->getJsonData('oldAudioFile'), "audio/".$newFileName);
         }
-        
         $this->db->exec($sql);
         return json_encode($newVal);
     }

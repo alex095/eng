@@ -13,6 +13,12 @@ function getInputValue(name, index){
     return $("input[name='" + name + "']").eq(index).val();
 }
 
+function setInputValue(name, value, index){
+    $("input[name='" + name + "']").eq(index).val(value);
+}
+
+
+
 function getTdValue(id){
     return $("#" + id).eq(0).text();
 }
@@ -26,11 +32,10 @@ function validateInputs(inputs){
     for(var i=0; i<inputs.length; i++){
         values[inputs[i]] = getInputValue(inputs[i], 0);
     }
-    values['oldAudioFile'] = getTdValue('audioValue');
+    setInputValue('oldAudioFile', values['oldAudioFile'], 0);
     var jsonData = JSON.stringify(values);
     ajaxInputs(jsonData);
 }
-
 
 
 function IsJsonString(str) {
@@ -54,10 +59,10 @@ function ajaxInputs(data){
                 setTdValue('.word_data', r['transcription'], 1);
                 setTdValue('#audioValue', r['audioFile'], 0);
                 setTdValue('#word_title', r['word'], 0);
-                console.log(r['audioFile']);
                 $('#playaud').on('click', function(){
                     playAudio(r['audioFile']);
                 });
+                showBlock('#editing_block');
             }else{
                 alert(data);
             }            
