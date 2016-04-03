@@ -18,7 +18,6 @@ function setInputValue(name, value, index){
 }
 
 
-
 function getTdValue(id){
     return $("#" + id).eq(0).text();
 }
@@ -32,13 +31,14 @@ function validateInputs(inputs){
     for(var i=0; i<inputs.length; i++){
         values[inputs[i]] = getInputValue(inputs[i], 0);
     }
+    values['oldAudioFile'] = getTdValue('audioValue');
     setInputValue('oldAudioFile', values['oldAudioFile'], 0);
     var jsonData = JSON.stringify(values);
     ajaxInputs(jsonData);
 }
 
 
-function IsJsonString(str) {
+function isJsonString(str) {
     try{
         JSON.parse(str);
     }catch(e){
@@ -53,7 +53,7 @@ function ajaxInputs(data){
         url: "/admino/saveEditing",
         data: "data=" + data,
         success: function(data){
-            if(IsJsonString(data)){
+            if(isJsonString(data)){
                 var r = JSON.parse(data);
                 setTdValue('.word_data', r['word'], 0);
                 setTdValue('.word_data', r['transcription'], 1);
@@ -64,44 +64,8 @@ function ajaxInputs(data){
                 });
                 showBlock('#editing_block');
             }else{
-                alert(data);
+                alert(data);    
             }            
         }
     });
-}
-
-
-function ajaxTest(){
-    var data = new FormData();
-    var file = $('#fil').eq(0).prop('files')[0];
-    data.append('au', data);
-    $.ajax({
-        type: "POST",
-        url: "/admino/ajax",
-        processData: false,
-        contentType: false,
-        cache: false,
-        data: data,
-        success: function(data){
-            alert(data);
-        }
-    });
-    
-    
-    /*var $input = $('#fil');
-    var fd = new FormData;
-    
-    fd.append('file', $input.prop('files')[0]);
-    
-    
-    $.ajax({
-        type: "POST",
-        url: "/admino/ajax",
-        data: fd,
-        processData: false,
-        contentType: false,
-        success: function(data){
-            alert(data);
-        }
-    });*/
 }

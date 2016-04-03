@@ -75,6 +75,7 @@ body{
     left: 50px;
     width: 0px;
     height: 0px;
+    display: none;
 }
 
 /* Топ меню END*/
@@ -394,6 +395,7 @@ img.play_audio{
 
 .editing_word{
     margin-top: 20px;
+    /*font-size: 16px;*/
 }
 
 .editing_word table{
@@ -447,6 +449,15 @@ img.play_audio{
     right: 7px;
 }
 
+.editing_word .add_icon,
+.editing_word .edit_translation_icon{
+    width: 17px;
+    height: 17px;
+    padding-top: 5px;
+    cursor: pointer;
+}
+
+
 
 .editing_word .word_editing_block{
     margin-top: 20px;
@@ -463,5 +474,14 @@ img.play_audio{
     margin-left: 10px;
 }
 
+.editing_word td.icons_container{
+    padding: 0px;
+    margin: 0px;
+    text-align: center;
+}
+
+.editing_word td.icons_container:hover{
+    background-color: #E4E5D8;
+}
 
 /* Редагування слів END */
