@@ -15,9 +15,10 @@
         </fieldset>
     </form>
 </div>
+
 <?php if(isset($data['data']['word'])){ ?>
 <div class="editing_word">
-    <table>
+    <table id="table_of_data">
         <tr>
             <td colspan="5" class="word_title"><span id="word_title"><?php echo $data['data']['word']; ?></span>
                 <img class="icons delete_icon" alt="delete" src="/images/delete_icon.png" />
@@ -38,7 +39,7 @@
         </tr>
         <tr>
             <td colspan="5" class="word_title">Переклад
-                <img class="icons delete_icon" alt="add" src="/images/add_icon.png" />
+                <img onclick="showBlock('#translation_adding')" class="icons add_translation_icon" alt="add" src="/images/add_icon_1.png" />
             </td>
         </tr>
         <tr>
@@ -47,10 +48,10 @@
             <th colspan="3">Категорія</th>
         </tr>
         <?php foreach($data['tran'] as $value){ ?>
-        <tr>
-            <td><?php echo $value['translation']; ?></td>
-            <td><?php echo $value['type_name']; ?></td>
-            <td><?php echo $value['category_name']; ?></td>
+        <tr class="translation_row">
+            <td class="trans_data"><?php echo $value['translation']; ?></td>
+            <td class="trans_data"><?php echo $value['type_name']; ?></td>
+            <td class="trans_data"><?php echo $value['category_name']; ?></td>
             <td class="icons_container"><img class="add_icon" alt="delete" src="/images/edit_icon_1.png" /></td>
             <td class="icons_container"><img class="edit_translation_icon" alt="delete" src="/images/delete_icon.png" /></td>
         </tr>
@@ -71,6 +72,25 @@
                     validateInputs(['id', 'newWord', 'newTranscription', 'newAudioFile', 'oldAudioFile']);
                                                     " name="save_changes">Зберегти зміни
             </button>
+        </form>
+    </div>
+    
+    <div class="translation_adding" id="translation_adding">
+        <form>
+            <input type="text" name="addTranslation" />
+            <input type="hidden" name="wordId" value="<?php echo $data['data']['id']; ?>" />
+            <select id="types_list" class="types_list" name="addType">
+                <?php foreach($data['types'] as $value){ ?>
+                    <option value="<?php echo $value['type_name']; ?>"><?php echo $value['type_name']; ?></option>
+                <?php }?>
+            </select>
+            <select id="cat_list" class="categories_list" name="addCategory">
+                <?php foreach($data['categories'] as $value){ ?>
+                    <option value="<?php echo $value['category_name']; ?>"><?php echo $value['category_name']; ?></option>
+                <?php }?>
+            </select>
+            <br />
+            <button type="button" name="sendTranslation" onclick="validateTranslations(['addTranslation', 'wordId'])">Додати переклад</button>
         </form>
     </div>
     

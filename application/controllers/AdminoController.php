@@ -22,7 +22,7 @@ class AdminoController extends Controller{
             $page = (int)$params['page'];
         }
         $model = new WordsModel();
-        $data['words'] = $model->getAllWords($page);
+        $data['words'] = $model->getAllUniqueWords($page);
         $data['paginator'] = $model->getHelper();
         
         $view = new View('basic_template');
@@ -115,6 +115,8 @@ class AdminoController extends Controller{
             if((count($model->errors) === 0) && $model->checkWord()){
                 $data['data'] = $model->searchWord();
                 $data['tran'] = $model->getTranslations();
+                $data['types'] = $model->getWordsTypes();
+                $data['categories'] = $model->getWordsCategories();
                 $view->render('view_edit_word', $data);
             }else{
                 $view->errors = $model->errors;
@@ -164,8 +166,20 @@ class AdminoController extends Controller{
     }
     
     
-    public function ajaxAction(){
-        var_dump($_FILES);
+    public function addNewTranslAction(){
+        if(isset($_POST['data'])){
+            $model = new WordsModel();
+            $model->decodeJson($_POST['data']);
+            $model->validate('translation', $model->getJsonData('addTranslation'));
+            $model->validate('type', $model->getJsonData('addType'));
+            $model->validate('category', $model->getJsonData('addCategory'));
+            $model->validateId($model->getJsonData('wordId'));
+            if(count($model->errors) > 0){
+                echo $model->helper->getError('0x00008');
+            }else{
+                echo $model->insertNewTranslation();
+            }
+        }
     }
     
     

@@ -152,6 +152,7 @@ ul.drop_menu_list > li{
 
 .del_word{
     text-align: center;
+    vertical-align: middle;
 }
 
 
@@ -349,6 +350,10 @@ table.all_words td{
     border-bottom: 1px solid #E4E5D8;
 }
 
+table.all_words tr{
+    vertical-align: top;
+}
+
 table.all_words tr:hover{
     background-color: #E4E5D8;
 }
@@ -449,6 +454,14 @@ img.play_audio{
     right: 7px;
 }
 
+.editing_word .add_translation_icon{
+    width: 18px;
+    height: 18px;
+    float: left;
+    margin-left: 7px;
+    margin-top: 2px;
+}
+
 .editing_word .add_icon,
 .editing_word .edit_translation_icon{
     width: 17px;
@@ -459,17 +472,20 @@ img.play_audio{
 
 
 
-.editing_word .word_editing_block{
+.editing_word .word_editing_block,
+.editing_word .translation_adding{
     margin-top: 20px;
     text-align: center;
     display: none;
 }
 
-.editing_word .word_editing_block button{
+.editing_word .word_editing_block button,
+.editing_word .translation_adding button{
     margin-top: 15px;
 }
 
-.editing_word .word_editing_block input{
+.editing_word .word_editing_block input,
+.editing_word .translation_adding input{
     width: 180px;
     margin-left: 10px;
 }
@@ -483,5 +499,14 @@ img.play_audio{
 .editing_word td.icons_container:hover{
     background-color: #E4E5D8;
 }
+
+.editing_word select.types_list,
+.editing_word select.categories_list{
+    margin-left: 5px;
+    height: 21px;
+    width: 180px;
+}
+
+
 
 /* Редагування слів END */

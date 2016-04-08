@@ -75,7 +75,6 @@ class WordsModel extends Model{
     }
 
     
-
     public function getValidInputs(){
         return $this->validInputs;
     }
@@ -102,7 +101,6 @@ class WordsModel extends Model{
             'next_range' => 3
         );
         $this->loadHelper('PaginationHelper', $pagConfig);
-        $words = array();
         $sql = "SELECT a.id, a.word, a.transcription, a.audio, b.translation, c.type_name, d.category_name
                 FROM words_list as a
                 LEFT JOIN translations as b
@@ -110,35 +108,51 @@ class WordsModel extends Model{
                 LEFT JOIN types as c
                     ON c.id = b.type_id
                 LEFT JOIN categories as d
-                ON d.id = b.category_id ORDER BY id DESC LIMIT ".$this->helper->getLimit()." OFFSET ".$this->helper->getOffset()."";
-        
+                ON d.id = b.category_id ORDER BY id DESC, b.id LIMIT ".$this->helper->getLimit()." OFFSET ".$this->helper->getOffset()."";
+ 
+        return $this->resultInArray($sql);
+    }
+
+    
+    public function getAllUniqueWords(){
+        $sql = "SELECT id, word, audio, transcription FROM words_list";
+        $result = array();
         $query = $this->db->query($sql);
-        while($result = $query->fetch(PDO::FETCH_ASSOC)){
-            $words[] = $result;
+        while($row = $query->fetch(PDO::FETCH_ASSOC)){
+            $result['word_data'][] = $row;
         }
-        return $words;
+        $result['tran'][0] = null;
+        $sql = "SELECT translation, word_id FROM translations";
+        $query = $this->db->query($sql);
+        while($row = $query->fetch(PDO::FETCH_ASSOC)){
+            if(array_key_exists($row['word_id'], $result['tran'])){
+                if(!is_array($result['tran'][$row['word_id']])){
+                    $result['tran'][$row['word_id']] = array($result['tran'][$row['word_id']]);
+                    $result['tran'][$row['word_id']][] = $row['translation'];
+                }else{
+                    $result['tran'][$row['word_id']][] = $row['translation'];
+                }
+                /*$result['tran'][$row['word_id']] .= " | ".$row['translation'];*/
+            }else{
+                $result['tran'][$row['word_id']] = $row['translation'];
+            }
+            
+        }
+        return $result;
     }
 
     public function getWordsCategories(){
-        $categories = array();
         $sql = "SELECT id, category_name FROM categories
                                                   ORDER BY id DESC";
-        $query = $this->db->query($sql);
-        while($result = $query->fetch(PDO::FETCH_ASSOC)){
-            $categories[] = $result;
-        }
-        return $categories;
+        
+        return $this->resultInArray($sql);
     }
     
     public function getWordsTypes(){
-        $types = array();
         $sql = "SELECT id, type_name, type_translation FROM types
                                                   ORDER BY id";
-        $query = $this->db->query($sql);
-        while($result = $query->fetch(PDO::FETCH_ASSOC)){
-            $types[] = $result;
-        }
-        return $types;
+        
+        return $this->resultInArray($sql);
     }
     
     public function insertNewWord(){
@@ -325,6 +339,30 @@ class WordsModel extends Model{
         $this->db->exec($sql);
         return json_encode($newVal);
     }
+    
+    public function insertNewTranslation(){
+        /*$typeId = $this->getTypeId($this->type);
+        $catId = $this->getCategoryId($this->category);
+        $sql = "INSERT INTO translations (word_id,
+                                          type_id,
+                                          category_id,
+                                          translation) 
+                                    VALUES ('".$this->id."',
+                                            '".$typeId."',
+                                            '".$catId."',
+                                            '".$this->translation."')";
+        $this->db->exec($sql);*/
+        $newVal = array(
+            'translation' => $this->translation,
+            'type' => $this->type,
+            'category' => $this->category,
+            'id' => 4
+        );
+        return json_encode($newVal);
+    }
+    
+    
+    
 
     private function resultInArray($sql){
         $result = array();
