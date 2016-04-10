@@ -22,7 +22,8 @@ class AdminoController extends Controller{
             $page = (int)$params['page'];
         }
         $model = new WordsModel();
-        $data['words'] = $model->getAllUniqueWords($page);
+        
+        $data['words'] = $model->getAllWords($page);
         $data['paginator'] = $model->getHelper();
         
         $view = new View('basic_template');

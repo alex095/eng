@@ -104,7 +104,7 @@ function sendTranslationData(data){
                 var rowClass = "transRow" + values['id'];
                 var elem = "<tr class='" + rowClass + "'>" + $('.translation_row').eq(0).html() + "</tr>";
                 $('#table_of_data').append(elem);
-                //showBlock('#translation_adding');
+                showBlock('#translation_adding');
                 $('.' + rowClass + '> td').eq(0).text(values['translation']);
                 $('.' + rowClass + '> td').eq(1).text(values['type']);
                 $('.' + rowClass + '> td').eq(2).text(values['category']);
@@ -114,7 +114,7 @@ function sendTranslationData(data){
                 $('.' + rowClass + ' .icons_container > img').eq(1).on('click', function(){
                     alert('delete');
                 });
-                //location.reload(); 
+                location.reload(); 
             }else{
                 alert(data);
             }            

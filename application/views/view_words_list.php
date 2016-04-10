@@ -9,8 +9,8 @@
                     <th>Прослухати</th>
                     <th>Транскрипція</th>
                     <th>Переклад</th>
-                    <th>Категорія</th>
                     <th>Частина мови</th>
+                    <th>Категорія</th>
                     <th>Видалити</th>
                 </tr>
                 <?php
@@ -30,8 +30,24 @@
                         }
                         
                     ?></td>
-                    <td><?php echo $value['category_name']; ?></td>
-                    <td><?php echo $value['type_name']; ?></td>
+                    <td><?php
+                    if(is_array($data['words']['types'][$value['id']])){
+                            foreach($data['words']['types'][$value['id']] as $val){
+                                echo $val."<br />";
+                            }
+                        }else{
+                            echo $data['words']['types'][$value['id']];
+                        }
+                    ?></td>
+                    <td><?php
+                    if(is_array($data['words']['cats'][$value['id']])){
+                            foreach($data['words']['cats'][$value['id']] as $val){
+                                echo $val."<br />";
+                            }
+                        }else{
+                            echo $data['words']['cats'][$value['id']];
+                        }
+                    ?></td>
                     <td class="delete_col del_word">
                         <a onclick="return confirmLinkClick('Delete?')" href="/admino/removeword/id/<?php echo $value['id'] ?>">
                             <img alt="delete" src="/images/delete_icon.png" />
