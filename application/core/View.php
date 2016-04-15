@@ -63,10 +63,10 @@ class View{
         
     }
 
-    private function showError($subject){
+    private function showError($subject, $noNameError = FALSE){
         if(isset($this->errors[$subject])){
             return $this->errors[$subject];
-        }else if(isset($this->errors['error'])){
+        }else if(isset($this->errors['error']) && $noNameError){
             return $this->errors['error'];
         }
         return false;

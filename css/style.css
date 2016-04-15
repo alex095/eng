@@ -473,19 +473,22 @@ img.play_audio{
 
 
 .editing_word .word_editing_block,
-.editing_word .translation_adding{
+.editing_word .translation_adding,
+.editing_word .translation_editing{
     margin-top: 20px;
     text-align: center;
     display: none;
 }
 
 .editing_word .word_editing_block button,
-.editing_word .translation_adding button{
+.editing_word .translation_adding button,
+.editing_word .translation_editing button{
     margin-top: 15px;
 }
 
 .editing_word .word_editing_block input,
-.editing_word .translation_adding input{
+.editing_word .translation_adding input,
+.editing_word .translation_editing input{
     width: 180px;
     margin-left: 10px;
 }
@@ -506,7 +509,6 @@ img.play_audio{
     height: 21px;
     width: 180px;
 }
-
 
 
 /* Редагування слів END */

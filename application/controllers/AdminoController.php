@@ -22,12 +22,16 @@ class AdminoController extends Controller{
             $page = (int)$params['page'];
         }
         $model = new WordsModel();
-        
-        $data['words'] = $model->getAllWords($page);
-        $data['paginator'] = $model->getHelper();
-        
         $view = new View('basic_template');
-        $view->render('view_words_list', $data);
+        $data['words'] = $model->getAllWords($page);
+        if(!$data['words']){
+            $view->errors = $model->errors;
+            $view->render('view_error');
+        }else{
+            $data['paginator'] = $model->getHelper();
+            $view->render('view_words_list', $data);
+        }
+        
     }
 
     public function AddWordAction(){
@@ -48,7 +52,7 @@ class AdminoController extends Controller{
                 $data['types'] = $model->getWordsTypes();
                 $view->render('view_add_word', $data);
             }else if($model->insertNewWord()){
-                echo 'success';
+                header("Location: /admino/showwords");
             }else{
                 $view = new View('basic_template');
                 $view->errors['error'] = $model->exepMsg;
@@ -95,15 +99,62 @@ class AdminoController extends Controller{
     public function RemoveWordAction($params){
         $view = new View('basic_template');
         $model = new WordsModel();
-        $model->removeWord($params['id']);
+        $model->validateId($params['id']);
         if(count($model->errors) > 0){
+            $model->loadHelper('MainHelper');
+            $model->errors['error'] = $model->helper->getError('0x00004');
             $view->errors = $model->errors;
             $view->render('view_error');
         }else{
+            $model->removeWord($params['id']);
             header("Location: /admino/showwords");
         }
         
     }
+    
+    public function AjaxDelTransAction(){
+        if(isset($_POST['id'])){
+            $id = $_POST['id'];
+            $model = new WordsModel();
+            $model->validateId($id);
+            if(count($model->errors) > 0){
+                echo $model->helper->getError('0x00004');
+            }else{
+                $model->removeTranslation($id);
+            }
+        }
+    }
+    
+    public function AjaxDelWordAction(){
+        if(isset($_POST['id'])){
+            $id = $_POST['id'];
+            $model = new WordsModel();
+            $model->validateId($id);
+            if(count($model->errors) > 0){
+                echo $model->helper->getError('0x00004');
+            }else{
+                $model->removeWord($id);
+            }
+        }
+        
+    }
+    
+    public function AjaxEditTransAction(){
+        if(isset($_POST['data'])){
+            $model = new WordsModel();
+            $model->decodeJson($_POST['data']);
+            $model->validate('type', $model->getJsonData('editType'));
+            $model->validate('category', $model->getJsonData('editCategory'));
+            $model->validate('translation', $model->getJsonData('editTranslation'));
+            $model->validateId($model->getJsonData('transId'));
+            if((count($model->errors) === 0)){
+                echo $model->saveEditedTrans();
+            }else{
+                echo $model->helper->getError('0x00008');
+            }
+        }
+    }
+    
     
     public function EditWordAction(){
         $view = new View('basic_template');
@@ -127,7 +178,7 @@ class AdminoController extends Controller{
 
     }
     
-    public function saveEditingAction(){
+    public function SaveEditingAction(){
         if(isset($_POST['data'])){
             $model = new WordsModel();
             $model->decodeJson($_POST['data']);
@@ -148,7 +199,7 @@ class AdminoController extends Controller{
         
     }
     
-    public function saveNewAudioAction(){
+    public function SaveNewAudioAction(){
         if(!empty($_FILES['newAudioFile']['name'])){
             $model = new WordsModel();
             $model->validateFile('audioFile', $_FILES['newAudioFile']);
@@ -167,7 +218,7 @@ class AdminoController extends Controller{
     }
     
     
-    public function addNewTranslAction(){
+    public function AddNewTranslAction(){
         if(isset($_POST['data'])){
             $model = new WordsModel();
             $model->decodeJson($_POST['data']);

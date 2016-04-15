@@ -89,64 +89,51 @@ class WordsModel extends Model{
         $rows = $count->fetch(PDO::FETCH_NUM)[0];
         return (int)$rows;
     }
-
-    public function getAllWords1($page){
+    
+    public function setPagination($page, $config){
         $rowsCount = $this->countRows('id', 'words_list');
         $pagConfig = array(
-            'per_page' => 10,
+            'per_page' => $config[0],
             'cur_page' => $page,
             'rows_count' => $rowsCount,
-            'url_temp' => '/admino/showwords/page/',
-            'prev_range' => 3,
-            'next_range' => 3
+            'url_temp' => $config[1],
+            'prev_range' => $config[2],
+            'next_range' => $config[3]
         );
         $this->loadHelper('PaginationHelper', $pagConfig);
-        $sql = "SELECT a.id, a.word, a.transcription, a.audio, b.translation, c.type_name, d.category_name
-                FROM words_list as a
-                LEFT JOIN translations as b
-                    ON a.id = b.word_id
-                LEFT JOIN types as c
-                    ON c.id = b.type_id
-                LEFT JOIN categories as d
-                ON d.id = b.category_id ORDER BY id DESC, b.id LIMIT ".$this->helper->getLimit()." OFFSET ".$this->helper->getOffset()."";
- 
-        return $this->resultInArray($sql);
     }
-
     
     public function getAllWords($page){
-        $rowsCount = $this->countRows('id', 'words_list');
-        $pagConfig = array(
-            'per_page' => 10,
-            'cur_page' => $page,
-            'rows_count' => $rowsCount,
-            'url_temp' => '/admino/showwords/page/',
-            'prev_range' => 3,
-            'next_range' => 3
-        );
-        $this->loadHelper('PaginationHelper', $pagConfig);
+        $this->setPagination($page, [10, '/admino/showwords/page/', 3, 3]);
         
         $result = array();
-        $sql = "SELECT id, word, audio, transcription FROM words_list LIMIT ".$this->helper->getLimit()." OFFSET ".$this->helper->getOffset()."";
+        $sql = "SELECT id, word, audio, transcription FROM words_list ORDER BY id DESC LIMIT ".$this->helper->getLimit()." OFFSET ".$this->helper->getOffset()."";
         $result['word_data'] = $this->resultInArray($sql);
-        $firstId = $result['word_data'][0]['id'];
-        $endId = $result['word_data'][count($result['word_data']) - 1]['id'];
-        echo $firstId." - ".$endId;
-        
+        $endId = $result['word_data'][0]['id'];
+        $startId = $result['word_data'][count($result['word_data']) - 1]['id'];
+        //echo $firstId." - ".$endId;
+        $query = $this->getTransBetweenIds($startId, $endId);
+        if($query){
+            $queryResult = $query->fetchAll(PDO::FETCH_ASSOC);
+            $result['tran'] = $this->fewValuesOfWord($queryResult, 'translation');
+            $result['types'] = $this->fewValuesOfWord($queryResult, 'type_name');
+            $result['cats'] = $this->fewValuesOfWord($queryResult, 'category_name');
+            return $result;
+        }
+        $this->loadHelper('MainHelper');
+        $this->errors['error'] = $this->helper->getError('0x00002');
+        return FALSE;
+    }
+
+    public function getTransBetweenIds($startId, $endId){
         $sql = "SELECT a.translation, a.word_id, b.type_name, c.category_name FROM translations as a
                 LEFT JOIN types as b ON a.type_id = b.id
                 LEFT JOIN categories as c ON c.id = a.category_id 
-                WHERE a.word_id BETWEEN ".$firstId." AND ".$endId."
+                WHERE a.word_id BETWEEN ".$startId." AND ".$endId."
                 ORDER BY word_id";
-        $query = $this->db->query($sql);
-        $queryResult = $query->fetchAll(PDO::FETCH_ASSOC);
-        $result['tran'] = $this->fewValuesOfWord($queryResult, 'translation');
-        $result['types'] = $this->fewValuesOfWord($queryResult, 'type_name');
-        $result['cats'] = $this->fewValuesOfWord($queryResult, 'category_name');
-        return $result;
-        
+        return $this->db->query($sql);
     }
-
+    
     public function fewValuesOfWord($queryResult, $field){
         $result = array();
         $result[0] = null;
@@ -268,7 +255,7 @@ class WordsModel extends Model{
             unlink("audio/".$audioName);
             throw new Exception($this->helper->getError('0x00005'));
         }
-        $this->audioFile = $audioName.'.mp3';
+        $this->audioFile = $audioName;
     }
     
     public function removeAudioFile($fileName){
@@ -307,6 +294,11 @@ class WordsModel extends Model{
         }else{
             $this->errors['error'] = $this->helper->getError('0x00004');
         } 
+    }
+    
+    public function removeTranslation($transId){
+         $sql = "DELETE FROM translations WHERE id = '".$transId."' LIMIT 1";
+         $this->db->exec($sql);
     }
     
     public function checkWord(){
@@ -383,6 +375,15 @@ class WordsModel extends Model{
         return json_encode($newVal);
     }
     
+    public function saveEditedTrans(){
+        $typeId = $this->getTypeId($this->type);
+        $catId = $this->getCategoryId($this->category);
+        $sql = "UPDATE translations SET type_id = '".$typeId."',
+                                        category_id = '".$catId."',
+                                        translation = '".$this->translation."'
+                                    WHERE id = '".$this->id."'";
+        $this->db->exec($sql);
+    }
     
     
 

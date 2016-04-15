@@ -35,13 +35,18 @@ function setInputValue(name, value, index){
     $("input[name='" + name + "']").eq(index).val(value);
 }
 
-
 function getTdValue(id){
     return $("#" + id).eq(0).text();
 }
 
 function setTdValue(cl, value, index){
     $(cl).eq(index).text(value);
+}
+
+function setOptionSelected(selectID, value){
+    $(selectID + ' > option').filter(function(){
+        return ($(this).text() === value);
+    }).prop('selected', true);
 }
 
 function inputValuesInObject(inputs){
@@ -108,16 +113,82 @@ function sendTranslationData(data){
                 $('.' + rowClass + '> td').eq(0).text(values['translation']);
                 $('.' + rowClass + '> td').eq(1).text(values['type']);
                 $('.' + rowClass + '> td').eq(2).text(values['category']);
-                $('.' + rowClass + ' .icons_container > img').eq(0).on('click', function(){
-                    alert('edit');
-                });
-                $('.' + rowClass + ' .icons_container > img').eq(1).on('click', function(){
-                    alert('delete');
-                });
                 location.reload(); 
             }else{
                 alert(data);
             }            
         }
     });
+}
+
+function deleteWord(id){
+    if(confirmLinkClick('Delete?')){
+        $.ajax({
+            type: "POST",
+            url: "/admino/ajaxDelWord",
+            data: "id=" + id,
+            success: function(data){
+                if(data.length === 0){
+                    alert('Deleted!');
+                    location.reload();
+                }else{
+                    alert(data);
+                }
+            }
+        });
+    }
+}
+
+function deleteTranslation(id){
+    if(confirmLinkClick('Delete?')){
+        $.ajax({
+            type: "POST",
+            url: "/admino/ajaxDelTrans",
+            data: "id=" + id,
+            success: function(data){
+                if(data.length === 0){
+                    alert('Deleted!');
+                    location.reload();
+                }else{
+                    alert(data);
+                }
+            }
+        });
+    }
+}
+
+function showEditingBlock(rowId){
+    var tran = $('.translation_row_' + rowId + ' > td').eq(0).text();
+    var type = $('.translation_row_' + rowId + ' > td').eq(1).text();
+    var cat = $('.translation_row_' + rowId + ' > td').eq(2).text();
+    
+    if(rowId !== parseInt(getInputValue('transId', 0))){
+        $('#translation_editing').slideDown();
+    }else{
+        showBlock('#translation_editing');
+    }
+    setInputValue('transId', rowId, 0);
+    
+    setInputValue('editTranslation', tran, 0);
+    setOptionSelected('#tran_types_list', type);
+    setOptionSelected('#tran_cat_list', cat);
+}
+
+function getEditedTrans(inputs){
+    var values = inputValuesInObject(inputs);
+    values['editType'] = getTdValue('tran_types_list option:selected');
+    values['editCategory'] = getTdValue('tran_cat_list option:selected');
+    var jsonData = JSON.stringify(values);
+    sendEditedTrans(jsonData);
+}
+
+function sendEditedTrans(data){
+    $.ajax({
+            type: "POST",
+            url: "/admino/ajaxDelTrans",
+            data: "data=" + data,
+            success: function(data){
+                location.reload();
+            }
+        });
 }
