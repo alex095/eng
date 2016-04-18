@@ -178,6 +178,7 @@ function getEditedTrans(inputs){
     var values = inputValuesInObject(inputs);
     values['editType'] = getTdValue('tran_types_list option:selected');
     values['editCategory'] = getTdValue('tran_cat_list option:selected');
+    console.log(values);
     var jsonData = JSON.stringify(values);
     sendEditedTrans(jsonData);
 }
@@ -185,10 +186,14 @@ function getEditedTrans(inputs){
 function sendEditedTrans(data){
     $.ajax({
             type: "POST",
-            url: "/admino/ajaxDelTrans",
+            url: "/admino/AjaxEditTrans",
             data: "data=" + data,
             success: function(data){
-                location.reload();
+                if(data.length === 0){
+                    location.reload();
+                }else{
+                    alert(data);
+                }
             }
         });
 }

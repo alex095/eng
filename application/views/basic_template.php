@@ -17,7 +17,7 @@ and open the template in the editor.
             <div class="top_line"></div>
             <div class="basic_tmp_menu">
                 <ul>
-                    <li class="drop_menu"><a href="#">Тести</a>
+                    <li class="drop_menu"><a href="/tests/showtests">Тести</a>
                         <ul class="drop_menu_list">
                             <li><a href="#">Англійська - Українська</a></li>
                             <li><a href="#">Українська - Англійська</a></li>

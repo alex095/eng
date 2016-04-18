@@ -148,7 +148,9 @@ class AdminoController extends Controller{
             $model->validate('translation', $model->getJsonData('editTranslation'));
             $model->validateId($model->getJsonData('transId'));
             if((count($model->errors) === 0)){
-                echo $model->saveEditedTrans();
+                if($model->saveEditedTrans() === false){
+                    echo $model->helper->getError('0x00002');
+                }
             }else{
                 echo $model->helper->getError('0x00008');
             }

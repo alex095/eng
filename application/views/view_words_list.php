@@ -17,9 +17,9 @@
                 foreach($data['words']['word_data'] as $value){
                 ?>
                 <tr>
-                    <td><?php echo $value['word']; ?></td>
-                    <td><img alt="audio" src="/images/audio.png" class="play_audio" onclick="playAudio('<?php echo $value['audio']; ?>')" /></td>
-                    <td><?php echo $value['transcription']; ?></td>
+                    <td class="middle_align"><?php echo $value['word']; ?></td>
+                    <td class="middle_align"><img alt="audio" src="/images/audio.png" class="play_audio" onclick="playAudio('<?php echo $value['audio']; ?>')" /></td>
+                    <td class="middle_align"><?php echo $value['transcription']; ?></td>
                     <td><?php
                         if(is_array($data['words']['tran'][$value['id']])){
                             foreach($data['words']['tran'][$value['id']] as $val){
@@ -48,7 +48,7 @@
                             echo $data['words']['cats'][$value['id']];
                         }
                     ?></td>
-                    <td class="delete_col del_word">
+                    <td class="delete_col del_word middle_align">
                         <a onclick="return confirmLinkClick('Delete?')" href="/admino/removeword/id/<?php echo $value['id'] ?>">
                             <img alt="delete" src="/images/delete_icon.png" />
                         </a>

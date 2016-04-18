@@ -375,6 +375,11 @@ img.play_audio{
     margin-bottom: -4px;
 }
 
+.middle_align{
+    vertical-align: middle;
+}
+
+
 /*Виведення всіх слів END*/
 
 
@@ -512,3 +517,48 @@ img.play_audio{
 
 
 /* Редагування слів END */
+
+
+
+
+/* Головна сторінка тестів START */
+
+div.tests_container{
+    text-align: center;
+}
+
+div.tests_container div.tests_list{
+    margin-top: 30px;
+    width: 30%;
+    margin: 70px auto;
+}
+
+div.tests_container ul{
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+}
+
+div.tests_container ul > li{
+    padding: 10px 0px;
+    margin-bottom: 30px;
+    border: 2px solid #D0D0D0;
+    border-radius: 13px;
+    font-weight: bold;
+    box-shadow: 0px 0px 10px #BCBCBC;
+    cursor: pointer;
+}
+
+div.tests_container ul > li:hover{
+    background-color: #FFFFFF;
+    box-shadow: 0px 0px 5px #BCBCBC;
+}
+
+div.tests_container ul > li > a{
+    text-decoration: none;
+    color: #AE551D;
+    padding: 10px 120px;
+}
+
+
+/* Головна сторінка тестів END */

@@ -382,7 +382,8 @@ class WordsModel extends Model{
                                         category_id = '".$catId."',
                                         translation = '".$this->translation."'
                                     WHERE id = '".$this->id."'";
-        $this->db->exec($sql);
+        return $this->db->exec($sql);
+        
     }
     
     

@@ -117,7 +117,7 @@
                 <?php } ?>
             </select>
             <br />
-            <button type="button" name="editTranslation" onclick="sendEditedTrans('editTranslation', 'transId')">Зберегти зміни</button>
+            <button type="button" name="editTranslation" onclick="getEditedTrans(['editTranslation', 'transId'])">Зберегти зміни</button>
         </form>
     </div>
     
