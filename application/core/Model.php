@@ -11,11 +11,15 @@ class Model{
     protected $db = null;
     protected $config;
     public $helper = null;
+    public $exepMsg = null;
+    public $errors = array();
 
-    public function __construct($config) {
-        $this->config = $config;
-        if($this->db === null){
-            $this->db = $this->PDOConnect();
+    public function __construct($config = FALSE) {
+        if($config){
+            $this->config = $config;
+            if($this->db === null){
+                $this->db = $this->PDOConnect();
+            }
         }
     }
     
@@ -32,16 +36,23 @@ class Model{
     }
     
     public function loadHelper($helperName, $params = NULL){
-        if(!$this->helper instanceof $helperName){
-            $this->helper = new $helperName($params);
+        if(!$this->helper[$helperName] instanceof $helperName){
+            $this->helper[$helperName] = new $helperName($params);
         }
     }
     
-    public function getHelper(){
-        return $this->helper;
+    public function getHelper($helperName){
+        return $this->helper[$helperName];
     }
 
-        public function getData(){
+    public function noErrors(){
+        if(count($this->errors) === 0){
+            return TRUE;
+        }
+        return FALSE;
+    }
+    
+    public function getData(){
         
     }
 }

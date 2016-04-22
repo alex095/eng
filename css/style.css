@@ -530,7 +530,7 @@ div.tests_container{
 div.tests_container div.tests_list{
     margin-top: 30px;
     width: 30%;
-    margin: 70px auto;
+    margin: 40px auto;
 }
 
 div.tests_container ul{
@@ -562,3 +562,46 @@ div.tests_container ul > li > a{
 
 
 /* Головна сторінка тестів END */
+
+
+
+/* Тест англійська-українська START */
+
+
+.test_area .nav_container form button{
+    background-color: #BF4000;
+    border-width: 0px;
+    border-radius: 5px;
+    width: 150px;
+    height: 30px;
+    font-size: 14px;
+    color: #F6F6F6;
+}
+
+.test_area .nav_container form button:hover{
+    background-color: #C6551C;
+    cursor: pointer;
+}
+
+.test_area .nav_container{
+    width: 50%;
+    margin: 0px auto;
+    text-align: center;
+    padding-top: 30px;
+}
+
+.test_area .nav_container select{
+    background-color: #FFFFFF;
+    border: 1px #D0D0D0 solid;
+    padding: 7px 2px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    width: 235px;
+    font-size: 14px;
+    color: #444444;
+}
+
+
+
+
+/* Тест англійська-українська END */

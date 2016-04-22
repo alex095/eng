@@ -25,8 +25,6 @@ class WordsModel extends Model{
     public $audioFile;
     
     public $jsonData;
-    public $exepMsg = null;
-    public $errors = array();
     public $validInputs = array();
 
     public function __construct(){
@@ -35,34 +33,32 @@ class WordsModel extends Model{
 
     public function validate($name, $value){
         $this->loadHelper("MainHelper");
-        if($this->helper->validateInput($value)){
-            $this->$name = $this->helper->currentInput;
+        if($this->helper['MainHelper']->validateInput($value)){
+            $this->$name = $this->helper['MainHelper']->currentInput;
             $this->validInputs[$name] = $this->$name;
         }else{
-            $this->errors[$name] = $this->helper->getError('0x00001');
+            $this->errors[$name] = $this->helper['MainHelper']->getError('0x00001');
         }
     }
     
     public function validateId($id){
         $this->loadHelper("MainHelper");
-        if(!$this->helper->checkInt($id)){
-            $this->errors['id'] = $this->helper->getError('0x00007');
+        if(!$this->helper['MainHelper']->checkInt($id)){
+            $this->errors['id'] = $this->helper['MainHelper']->getError('0x00007');
         }else{
             $this->id = $id;
         }
     }
 
-
     public function validateFile($name, $file){
         $this->loadHelper("MainHelper");
         if($file['size'] === 0){
-            $this->errors['error'] = $this->helper->getError('0x00003');
+            $this->errors['error'] = $this->helper['MainHelper']->getError('0x00003');
         }else{
             $this->$name = $file;
         }
     }
 
-    
     public function getJsonData($key){
         if(array_key_exists($key, $this->jsonData)){
             return $this->jsonData[$key];
@@ -74,24 +70,14 @@ class WordsModel extends Model{
         $this->jsonData = json_decode($json, true);
     }
 
-    
     public function getValidInputs(){
         return $this->validInputs;
     }
 
-    public function countRows($field, $table, $key = NULL, $value = NULL){
-        if($key === NULL && $value === NULL){
-            $sql = "SELECT COUNT(".$field.") FROM ".$table."";
-        }else{
-            $sql = "SELECT COUNT(".$field.") FROM ".$table." WHERE ".$key." = '".$value."'";
-        }
-        $count = $this->db->query($sql);
-        $rows = $count->fetch(PDO::FETCH_NUM)[0];
-        return (int)$rows;
-    }
     
     public function setPagination($page, $config){
-        $rowsCount = $this->countRows('id', 'words_list');
+        $this->loadHelper('DbHelper', $this->db);
+        $rowsCount = $this->helper['DbHelper']->countRows('id', 'words_list');
         $pagConfig = array(
             'per_page' => $config[0],
             'cur_page' => $page,
@@ -107,12 +93,18 @@ class WordsModel extends Model{
         $this->setPagination($page, [10, '/admino/showwords/page/', 3, 3]);
         
         $result = array();
-        $sql = "SELECT id, word, audio, transcription FROM words_list ORDER BY id DESC LIMIT ".$this->helper->getLimit()." OFFSET ".$this->helper->getOffset()."";
-        $result['word_data'] = $this->resultInArray($sql);
+        $sql = "SELECT id, word, audio, transcription
+                    FROM words_list ORDER BY id DESC 
+                    LIMIT ".$this->helper['PaginationHelper']->getLimit()." 
+                    OFFSET ".$this->helper['PaginationHelper']->getOffset()."";
+        
+        $this->loadHelper('DbHelper');
+        $result['word_data'] = $this->helper['DbHelper']->resultInArray($sql);
         $endId = $result['word_data'][0]['id'];
         $startId = $result['word_data'][count($result['word_data']) - 1]['id'];
         //echo $firstId." - ".$endId;
         $query = $this->getTransBetweenIds($startId, $endId);
+        
         if($query){
             $queryResult = $query->fetchAll(PDO::FETCH_ASSOC);
             $result['tran'] = $this->fewValuesOfWord($queryResult, 'translation');
@@ -121,7 +113,7 @@ class WordsModel extends Model{
             return $result;
         }
         $this->loadHelper('MainHelper');
-        $this->errors['error'] = $this->helper->getError('0x00002');
+        $this->errors['error'] = $this->helper['MainHelper']->getError('0x00002');
         return FALSE;
     }
 
@@ -155,13 +147,15 @@ class WordsModel extends Model{
     public function getWordsCategories(){
         $sql = "SELECT id, category_name FROM categories
                                                   ORDER BY id DESC";
-        return $this->resultInArray($sql);
+        $this->loadHelper('DbHelper', $this->db);
+        return $this->helper['DbHelper']->resultInArray($sql);
     }
     
     public function getWordsTypes(){
         $sql = "SELECT id, type_name, type_translation FROM types
                                                   ORDER BY id";
-        return $this->resultInArray($sql);
+        $this->loadHelper('DbHelper', $this->db);
+        return $this->helper['DbHelper']->resultInArray($sql);
     }
     
     public function insertNewWord(){
@@ -170,7 +164,7 @@ class WordsModel extends Model{
             $lastId = $this->insertWordData();
             $catId = $this->getCategoryId($this->category);
             $typeId = $this->getTypeId($this->type);
-            $this->insertTranslation($lastId, $typeId, $catId); 
+            $this->insertTranslation($lastId, $typeId, $catId);
         }catch(Exception $e){
             $this->exepMsg = $e->getMessage();
             return FALSE;
@@ -183,7 +177,7 @@ class WordsModel extends Model{
                        VALUES ('".$lastId."', '".$typeId."', '".$categoryId."', '".$this->translation."')";
         $insertTransQuery = $this->db->exec($sql);
         if($insertTransQuery === FALSE){
-            throw new Exception($this->helper->getError('0x00002'));
+            throw new Exception($this->helper['MainHelper']->getError('0x00002'));
         }
     }
 
@@ -197,20 +191,10 @@ class WordsModel extends Model{
         $sql = mb_convert_encoding($sql, "UTF-8");
         $insertQuery = $this->db->exec($sql);
         if($insertQuery === FALSE){
-            throw new Exception($this->helper->getError('0x00002'));
+            throw new Exception($this->helper['MainHelper']->getError('0x00002'));
         }
         return $this->db->lastInsertId();
     }
-    
-    /*
-    public function insertWordCategory($lastId, $catId){
-        $sql = "INSERT INTO translations (word_id, category_id)
-                       VALUES ('".$lastId."', '".$catId."')";
-        $insertWordCategoryQuery = $this->db->exec($sql);
-        if($insertWordCategoryQuery === FALSE){
-            throw new Exception($this->helper->getError('0x00002'));
-        }
-    }*/
 
     public function getCategoryId($category){
         $sql = "SELECT id 
@@ -218,7 +202,7 @@ class WordsModel extends Model{
                 WHERE category_name = '".$category."'";
         $getCatIdQuery = $this->db->query($sql);
         if(!$getCatIdQuery){
-            throw new Exception($this->helper->getError('0x00002'));
+            throw new Exception($this->helper['MainHelper']->getError('0x00002'));
         }
         return $getCatIdQuery->fetch(PDO::FETCH_NUM)[0];
     }
@@ -229,7 +213,7 @@ class WordsModel extends Model{
                 WHERE type_name = '".$type."'";
         $getTypeIdQuery = $this->db->query($sql);
         if(!$getTypeIdQuery){
-            throw new Exception($this->helper->getError('0x00002'));
+            throw new Exception($this->helper['MainHelper']->getError('0x00002'));
         }
         return $getTypeIdQuery->fetch(PDO::FETCH_NUM)[0];
     }
@@ -240,7 +224,7 @@ class WordsModel extends Model{
                 WHERE id = '".$id."'";
         $getWordName = $this->db->query($sql);
         if(!$getWordName){
-            throw new Exception($this->helper->getError('0x00002'));
+            throw new Exception($this->helper['MainHelper']->getError('0x00002'));
         }
         return $getWordName->fetch(PDO::FETCH_NUM)[0];
     }
@@ -248,19 +232,19 @@ class WordsModel extends Model{
 
     public function downloadAudioFile(){
         $this->loadHelper('MainHelper');
-        $audioName = $this->helper->changeAudioName($this->word, 'mp3');
+        $audioName = $this->helper['MainHelper']->changeAudioName($this->word, 'mp3');
         
         $moveFile = move_uploaded_file($this->audioFile['tmp_name'], 'audio/'.$audioName);
-        if(!$moveFile || $this->helper->checkDir('/audio')){
+        if(!$moveFile || $this->helper['MainHelper']->checkDir('/audio')){
             unlink("audio/".$audioName);
-            throw new Exception($this->helper->getError('0x00005'));
+            throw new Exception($this->helper['MainHelper']->getError('0x00005'));
         }
         $this->audioFile = $audioName;
     }
     
     public function removeAudioFile($fileName){
         $this->loadHelper('MainHelper');
-        $audioName = $this->helper->changeAudioName($this->word, 'mp3');
+        $audioName = $this->helper['MainHelper']->changeAudioName($this->word, 'mp3');
         if($fileName !== $audioName && file_exists('audio/'.$fileName)){
             unlink("audio/".$fileName);
         }
@@ -274,11 +258,11 @@ class WordsModel extends Model{
     
     public function removeCategory($catId){
         $this->loadHelper('MainHelper');
-        if($this->helper->checkInt($catId)){
+        if($this->helper['MainHelper']->checkInt($catId)){
             $sql = "DELETE FROM categories WHERE id = '".$catId."' LIMIT 1";
             $this->db->exec($sql);
         }else{
-            $this->errors['error'] = $this->helper->getError('0x00004');
+            $this->errors['error'] = $this->helper['MainHelper']->getError('0x00004');
         } 
     }
     
@@ -286,13 +270,13 @@ class WordsModel extends Model{
         $this->loadHelper('MainHelper');
         $word = $this->getWordName($wordId);
         $delAudioFile = unlink("audio/".$word.".mp3");
-        if($this->helper->checkInt($wordId) && $delAudioFile){
+        if($this->helper['MainHelper']->checkInt($wordId) && $delAudioFile){
             $sql = "DELETE FROM words_list WHERE id = '".$wordId."' LIMIT 1";
             $this->db->exec($sql);
             $sql = "DELETE FROM translations WHERE word_id = '".$wordId."'";
             $this->db->exec($sql);
         }else{
-            $this->errors['error'] = $this->helper->getError('0x00004');
+            $this->errors['error'] = $this->helper['MainHelper']->getError('0x00004');
         } 
     }
     
@@ -302,11 +286,12 @@ class WordsModel extends Model{
     }
     
     public function checkWord(){
+        $this->loadHelper('DbHelper', $this->db);
+        $count = $this->helper['DbHelper']->countRows('id', 'words_list', 'word', $this->word);
         $this->loadHelper('MainHelper');
-        $count = $this->countRows('id', 'words_list', 'word', $this->word);
         if($count === 0){
-            $this->helper->currentInput = $this->db->quote($this->word);
-            $this->errors['error'] = $this->helper->getError('0x00006', true);
+            $this->helper['MainHelper']->currentInput = $this->db->quote($this->word);
+            $this->errors['error'] = $this->helper['MainHelper']->getError('0x00006', true);
             return FALSE;
         }
         return $count;
@@ -314,15 +299,15 @@ class WordsModel extends Model{
 
     public function searchWord(){
         $sql = "SELECT id, word, transcription, audio FROM words_list WHERE word = '".$this->word."'";
-        $wordData = $this->resultInArray($sql);
+        $this->loadHelper('DbHelper', $this->db);
+        $wordData = $this->helper['DbHelper']->resultInArray($sql);
         if(!$wordData){
-            $this->errors['error'] = $this->helper->getError('0x00002');
+            $this->errors['error'] = $this->helper['MainHelper']->getError('0x00002');
             return FALSE;
         }else{
             $this->id = (int)$wordData[0]['id'];
             return $wordData[0];
         }
-        
     }
     
     public function getTranslations(){
@@ -331,7 +316,8 @@ class WordsModel extends Model{
                     ON a.type_id = b.id
                 LEFT JOIN categories as c
                     ON a.category_id = c.id WHERE a.word_id = '".$this->id."'";
-        return $this->resultInArray($sql);
+        $this->loadHelper('DbHelper', $this->db);
+        return $this->helper['DbHelper']->resultInArray($sql);
     }
 
     
@@ -341,7 +327,7 @@ class WordsModel extends Model{
             'transcription' => $this->transcription,
         );
         $this->loadHelper('MainHelper');
-        $newFileName = $this->helper->changeAudioName($this->word, 'mp3');
+        $newFileName = $this->helper['MainHelper']->changeAudioName($this->word, 'mp3');
         $newVal['audioFile'] = $newFileName;
         $sql = "UPDATE words_list
                 SET word = '".$this->word."', transcription = '".$this->transcription."',
@@ -385,17 +371,7 @@ class WordsModel extends Model{
         return $this->db->exec($sql);
         
     }
-    
-    
 
-    private function resultInArray($sql){
-        $result = array();
-        $query = $this->db->query($sql);
-        while($row = $query->fetch(PDO::FETCH_ASSOC)){
-            $result[] = $row;
-        }
-        return $result;
-    }
     
 }
 

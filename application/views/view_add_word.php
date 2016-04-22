@@ -37,7 +37,7 @@
                     </li>
                     <li>
                         <div class="word_add_file_input">
-                            <div class="error"><?php echo $this->showError('audioFile'); ?></div>
+                            <div class="error"><?php echo $this->showError('audioFile', true); ?></div>
                             <input type="file" name="audioFile" />
                         </div>
                     </li>

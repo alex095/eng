@@ -28,7 +28,7 @@ class AdminoController extends Controller{
             $view->errors = $model->errors;
             $view->render('view_error');
         }else{
-            $data['paginator'] = $model->getHelper();
+            $data['paginator'] = $model->getHelper('PaginationHelper');
             $view->render('view_words_list', $data);
         }
         
@@ -102,7 +102,7 @@ class AdminoController extends Controller{
         $model->validateId($params['id']);
         if(count($model->errors) > 0){
             $model->loadHelper('MainHelper');
-            $model->errors['error'] = $model->helper->getError('0x00004');
+            $model->errors['error'] = $model->helper['MainHelper']->getError('0x00004');
             $view->errors = $model->errors;
             $view->render('view_error');
         }else{
@@ -118,7 +118,7 @@ class AdminoController extends Controller{
             $model = new WordsModel();
             $model->validateId($id);
             if(count($model->errors) > 0){
-                echo $model->helper->getError('0x00004');
+                echo $model->helper['MainHelper']->getError('0x00004');
             }else{
                 $model->removeTranslation($id);
             }
@@ -131,7 +131,7 @@ class AdminoController extends Controller{
             $model = new WordsModel();
             $model->validateId($id);
             if(count($model->errors) > 0){
-                echo $model->helper->getError('0x00004');
+                echo $model->helper['MainHelper']->getError('0x00004');
             }else{
                 $model->removeWord($id);
             }
@@ -149,10 +149,10 @@ class AdminoController extends Controller{
             $model->validateId($model->getJsonData('transId'));
             if((count($model->errors) === 0)){
                 if($model->saveEditedTrans() === false){
-                    echo $model->helper->getError('0x00002');
+                    echo $model->helper['MainHelper']->getError('0x00002');
                 }
             }else{
-                echo $model->helper->getError('0x00008');
+                echo $model->helper['MainHelper']->getError('0x00008');
             }
         }
     }
@@ -195,7 +195,7 @@ class AdminoController extends Controller{
             if((count($model->errors) === 0)){
                 echo $model->saveEditingData();
             }else{
-                echo $model->helper->getError('0x00008');
+                echo $model->helper['MainHelper']->getError('0x00008');
             }
         }
         
@@ -229,7 +229,7 @@ class AdminoController extends Controller{
             $model->validate('category', $model->getJsonData('addCategory'));
             $model->validateId($model->getJsonData('wordId'));
             if(count($model->errors) > 0){
-                echo $model->helper->getError('0x00008');
+                echo $model->helper['MainHelper']->getError('0x00008');
             }else{
                 echo $model->insertNewTranslation();
             }

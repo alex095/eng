@@ -19,9 +19,9 @@ and open the template in the editor.
                 <ul>
                     <li class="drop_menu"><a href="/tests/showtests">Тести</a>
                         <ul class="drop_menu_list">
-                            <li><a href="#">Англійська - Українська</a></li>
-                            <li><a href="#">Українська - Англійська</a></li>
-                            <li><a href="#">Слова на слух</a></li>
+                            <li><a href="/tests/chooseTest/test/engTest">Англійська - Українська</a></li>
+                            <li><a href="/tests/chooseTest/test/ukrTest">Українська - Англійська</a></li>
+                            <li><a href="/tests/chooseTest/test/hearingTest">Слова на слух</a></li>
                         </ul>
                     </li>
                     <li><a href="/admino/showwords">Список слів</a></li>
