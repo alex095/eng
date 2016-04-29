@@ -198,3 +198,89 @@ function sendEditedTrans(data){
         });
 }
 
+function move(){
+    $('.words_list').animate({'margin-left': "-=500px"}, 600, function(){
+        $('#test').val('');
+        $('ul.words_list > li.word').first().removeClass();
+    });
+    $('.next_word').off();
+    moveButtonEvent();
+}
+
+function confirmAnswer(){
+    var word = $('ul.words_list > li.word > li').eq(1).text();
+    var answer = $('#test').val();
+    if(answer.length > 1){
+        if(word === answer){
+            $('.messages_container').text("Правильно!");
+            changeBackground('.messages_container', '#B8F7B6');
+        }else{
+            $('.messages_container').text("Правильна відповідь - \"" + word + "\"");
+            changeBackground('.messages_container', '#FFD4D4');
+        }
+
+        $('.next_word').on('click', function(){
+            $('.messages_container').text('');
+            changeBackground('.messages_container', '#FFFFFF');
+            move();
+        });
+    }else{
+        $('.messages_container').text("Заповніть поле правильно!");
+            changeBackground('.messages_container', '#FFD4D4');
+    }
+    
+}
+
+function changeBackground(elClass, color){
+    $(elClass).css('background-color', color);
+}
+
+function randomNum(max){
+    return Math.round((Math.random() * max));
+}
+
+
+function one(jsonData){
+    moveButtonEvent();
+    for (var i in jsonData){
+        var obj = getAnswers(jsonData[i]);
+        console.log(obj);
+        $('ul.words_list').append("<li class='word'>" + obj['word'] + "</li>");
+        $('ul.words_list > li:last').append(
+                "<li style='font-size: 12px;'>( " + obj['type_name'] + " )</li>"
+            );
+        $('ul.words_list > li:last').append(
+                "<li style='font-size: 12px;'>" + obj['translation'] + "</li>"
+            );
+        
+    }
+    
+}
+
+function getAnswers(wordObj){
+    if(wordObj['type_name'][0].length > 1){
+        var obj = {};
+        obj.id = wordObj['id'];
+        obj.word = wordObj['word'];
+        obj.type_name = wordObj['type_name'][randomNum(wordObj['type_name'].length - 1)];
+        obj.translation = [];
+        for(var i=0; i<wordObj['type_name'].length; i++){
+            if(wordObj['type_name'][i] === obj.type_name){
+                obj.translation[obj.translation.length] = wordObj['translation'][i];
+            }
+        }
+        if(obj.translation.length === 1){
+            obj.translation = obj.translation[0];
+        }
+        return obj; 
+        
+    }
+    return wordObj;
+}
+
+
+function moveButtonEvent(){
+    $('.next_word').on('click', function(){
+        confirmAnswer();
+    });
+}

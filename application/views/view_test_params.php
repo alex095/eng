@@ -1,5 +1,5 @@
-<div class="test_container">
-    <div class="test_area">
+<div class="test_params_container">
+    <div class="test_params_area">
         <div class="nav_container">
             <form method="post" action="/tests/<?php echo $data['action']; ?>">
                 <div>Категорія</div>

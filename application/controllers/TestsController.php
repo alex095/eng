@@ -23,8 +23,11 @@ class TestsController extends Controller{
             $model->validate('category', $_POST['wordsCategory']);
             $model->validateInt('wordsNum', $_POST['wordsNumber']);
             if($model->noErrors()){
-                $model->getEngTestData();
-
+                $data = array();
+                $data['data'] = $model->getEngTestData();
+                $data['abc'] = 'ccc';
+                $view = new View('basic_template');
+                $view->render('view_test_start', $data);
             }else{
                 $view = new View('basic_template');
                 $view->render('view_error');

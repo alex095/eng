@@ -565,10 +565,10 @@ div.tests_container ul > li > a{
 
 
 
-/* Тест англійська-українська START */
+/* Параметри тесту англійська-українська START */
 
 
-.test_area .nav_container form button{
+.test_params_area .nav_container form button{
     background-color: #BF4000;
     border-width: 0px;
     border-radius: 5px;
@@ -578,19 +578,19 @@ div.tests_container ul > li > a{
     color: #F6F6F6;
 }
 
-.test_area .nav_container form button:hover{
+.test_params_area .nav_container form button:hover{
     background-color: #C6551C;
     cursor: pointer;
 }
 
-.test_area .nav_container{
+.test_params_area .nav_container{
     width: 50%;
     margin: 0px auto;
     text-align: center;
     padding-top: 30px;
 }
 
-.test_area .nav_container select{
+.test_params_area .nav_container select{
     background-color: #FFFFFF;
     border: 1px #D0D0D0 solid;
     padding: 7px 2px;
@@ -602,6 +602,57 @@ div.tests_container ul > li > a{
 }
 
 
+/* Параметри тесту англійська-українська END */
 
+
+
+/* Тест англійська-українська START */
+
+
+div.test_main_container{
+    
+}
+
+div.test_area{
+    width: 680px;
+    height: 300px;
+    margin: 60px auto;
+    background-color: #FFFFFF;
+    border: 1px solid #D8D8D8;
+    border-radius: 15px;
+    text-align: center;
+    overflow: hidden;
+}
+
+div.test_area ul{
+    padding: 0px;
+    margin: 0px;
+    list-style: none;
+    white-space: nowrap;
+    width: 500px;
+    margin: 40px auto;
+}
+
+div.test_area ul > li{
+    display: inline-block;
+    width: 500px;
+    font-size: 30px;
+}
+
+div.test_area button{
+    margin-top: 10px;
+}
+
+div.test_area ul > li > span{
+    display: block;
+    font-size: 12px;
+    margin-top: 3px;
+}
+
+.messages_container{
+    background-color: #FFFFFF;
+    height: 20px;
+    padding: 5px;
+}
 
 /* Тест англійська-українська END */

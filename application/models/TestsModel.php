@@ -13,8 +13,8 @@ class TestsModel extends Model{
     );
     
     
-    public $category;
-    public $wordsNum;
+    private $category;
+    private $wordsNum;
     
     
     public function __construct(){
@@ -48,29 +48,40 @@ class TestsModel extends Model{
                     LEFT JOIN words_list as c ON c.id = a.word_id
                     ORDER BY a.word_id";
             $query = $this->db->query($sql);
-            $this->getRandomWords($query->fetchAll(PDO::FETCH_ASSOC));    
+            $wordsArr = $this->makeFewTranslations($query->fetchAll(PDO::FETCH_ASSOC));
+            return $this->getRandomWords($wordsArr, $this->wordsNum);
         }
     }
     
-    
-    public function getRandomWords($wordsArr){
+    public function makeFewTranslations($wordsArr){
         $arr = array();
         foreach($wordsArr as $val){
             if((int)$arr[count($arr) - 1]['id'] === (int)$val['id']){
                 if(!is_array($arr[count($arr) - 1]['translation'])){
                     $arr[count($arr) - 1]['translation'] = array($arr[count($arr) - 1]['translation']);
+                    $arr[count($arr) - 1]['type_name'] = array($arr[count($arr) - 1]['type_name']);
                     //$arr[count($arr) - 1]['translation'] .= '|'.$val['translation'];
                 }
                 $arr[count($arr) - 1]['translation'][] = $val['translation'];
+                $arr[count($arr) - 1]['type_name'][] = $val['type_name'];
             }else{
                 $arr[] = $val;
-            }
-            
-            //$pre = (int)$val['id'];
+            } 
         }
-        echo '<pre>';
-        print_r($arr);
-        echo '</pre>';
+        return $arr;
+    }
+    
+    public function getRandomWords($words, $num){
+        $randWords = array();
+        for($i=0; $i<$num; $i++){
+            $randomNum = rand(0, count($words) - 1);
+            if(key_exists($randomNum, $randWords)){
+                $i--;
+                continue;
+            }
+            $randWords[$randomNum] = $words[$randomNum];
+        }
+        return json_encode($randWords);
     }
     
     
