@@ -1,6 +1,6 @@
 <script>
     $(document).ready(function(){
-        one(<?php echo $data['data']; ?>);
+        makeWordsList(<?php echo $data['data']; ?>);
     });
 </script>
 <div class="test_main_container">
@@ -9,7 +9,7 @@
         <ul class="words_list">
             
         </ul>
-        <input id="test" type="text" />
-        <button class="next_word">next</button>
+        <input id="answer" type="text" />
+        <button class="next_word">Далі</button>
     </div>
 </div>

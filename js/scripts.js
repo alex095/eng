@@ -199,40 +199,83 @@ function sendEditedTrans(data){
 }
 
 function move(){
-    $('.words_list').animate({'margin-left': "-=500px"}, 600, function(){
-        $('#test').val('');
-        $('ul.words_list > li.word').first().removeClass();
-    });
+    $('.words_list').animate({'margin-left': "-=500px"}, 600);
     $('.next_word').off();
     moveButtonEvent();
 }
 
 function confirmAnswer(){
     var word = $('ul.words_list > li.word > li').eq(1).text();
-    var answer = $('#test').val();
+    var answer = $('#answer').val();
     if(answer.length > 1){
         if(word === answer){
-            $('.messages_container').text("Правильно!");
-            changeBackground('.messages_container', '#B8F7B6');
+            showMessage('.messages_container', '#B8F7B6', '#329922', "Правильно!");
+        }else if(word.indexOf(',') > 0){
+            var anotherAnswers = getAnotherAnswers(word, answer);
+            if(anotherAnswers){
+                showMessage('.messages_container', '#B8F7B6', '#329922', "Правильно! Ще як варіант: ", anotherAnswers);
+            }else{
+                var allAnswers = getAllAnswers(word);
+                showMessage('.messages_container', '#FFD4D4', '#E83E3E', "Правильні відповіді: ", allAnswers);
+            }
         }else{
-            $('.messages_container').text("Правильна відповідь - \"" + word + "\"");
-            changeBackground('.messages_container', '#FFD4D4');
+            word = quoteWord(word);
+            showMessage('.messages_container', '#FFD4D4', '#E83E3E', "Правильна відповідь - ", word);
         }
-
-        $('.next_word').on('click', function(){
-            $('.messages_container').text('');
-            changeBackground('.messages_container', '#FFFFFF');
-            move();
-        });
+        $('.next_word').on('click', nextWord);
     }else{
-        $('.messages_container').text("Заповніть поле правильно!");
-            changeBackground('.messages_container', '#FFD4D4');
+        showMessage('.messages_container', '#FFD4D4', '#E83E3E', "Заповніть поле правильно!");
     }
     
 }
 
-function changeBackground(elClass, color){
-    $(elClass).css('background-color', color);
+function quoteWord(word){
+    return "\"" + word + "\"";
+}
+
+function getAllAnswers(words){
+    var arr = words.split(',');
+    return arr.join(', ');
+}
+
+function getAnotherAnswers(words, answer){
+    var wordsArr = words.split(',');
+    var anotherAnsw = [];
+    var foundWord = false;
+    for(var i=0; i<wordsArr.length; i++){
+        if(wordsArr[i] === answer){
+            foundWord = true;
+            continue;
+        }
+        anotherAnsw.push(wordsArr[i]);
+    }
+    if(foundWord){
+        return anotherAnsw.join(', ');
+    }
+    return false;
+    
+}
+
+function nextWord(){
+    $('ul.words_list > li.word').first().removeClass();
+    $('#answer').val('');
+    $('#answer').focus();
+    showMessage('.messages_container', '#FFFFFF', '#FFFFFF', "");
+    move();
+}
+
+
+function showMessage(elClass, backColor, color, message, text){
+    $(elClass).css({
+        'background-color': backColor,
+        'color': color
+    });
+    if(text === undefined){
+        $(elClass).text(message)
+    }else{
+        $(elClass).text(message + text);
+    }
+    
 }
 
 function randomNum(max){
@@ -240,20 +283,19 @@ function randomNum(max){
 }
 
 
-function one(jsonData){
+function makeWordsList(jsonData){
     moveButtonEvent();
     for (var i in jsonData){
         var obj = getAnswers(jsonData[i]);
-        console.log(obj);
-        $('ul.words_list').append("<li class='word'>" + obj['word'] + "</li>");
+        $('ul.words_list').append("<li>" + obj['word'] + "</li>");
+        $('ul.words_list > li:last')
+                .append("<li>( " + obj['type_name'] + " )</li>")
+                .addClass('word');
         $('ul.words_list > li:last').append(
-                "<li style='font-size: 12px;'>( " + obj['type_name'] + " )</li>"
+                "<li>" + obj['translation'] + "</li>"
             );
-        $('ul.words_list > li:last').append(
-                "<li style='font-size: 12px;'>" + obj['translation'] + "</li>"
-            );
-        
     }
+    $('#answer').focus();
     
 }
 
@@ -272,6 +314,7 @@ function getAnswers(wordObj){
         if(obj.translation.length === 1){
             obj.translation = obj.translation[0];
         }
+        console.log(obj);
         return obj; 
         
     }

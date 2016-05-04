@@ -10,7 +10,7 @@ class Model{
     
     protected $db = null;
     protected $config;
-    public $helper = null;
+    public $helper = array();
     public $exepMsg = null;
     public $errors = array();
 
@@ -36,7 +36,7 @@ class Model{
     }
     
     public function loadHelper($helperName, $params = NULL){
-        if(!$this->helper[$helperName] instanceof $helperName){
+        if(!array_key_exists($helperName, $this->helper)){
             $this->helper[$helperName] = new $helperName($params);
         }
     }

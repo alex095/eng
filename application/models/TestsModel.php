@@ -54,7 +54,7 @@ class TestsModel extends Model{
     }
     
     public function makeFewTranslations($wordsArr){
-        $arr = array();
+        $arr = array(0);
         foreach($wordsArr as $val){
             if((int)$arr[count($arr) - 1]['id'] === (int)$val['id']){
                 if(!is_array($arr[count($arr) - 1]['translation'])){
@@ -68,6 +68,7 @@ class TestsModel extends Model{
                 $arr[] = $val;
             } 
         }
+        array_shift($arr);
         return $arr;
     }
     
