@@ -206,7 +206,7 @@ function move(){
 
 function confirmAnswer(){
     var word = $('ul.words_list > li.word > li').eq(1).text();
-    var answer = $('#answer').val();
+    var answer = $('#answer').val().toLowerCase();
     if(answer.length > 1){
         if(word === answer){
             showMessage('.messages_container', '#B8F7B6', '#329922', "Правильно!");
@@ -258,8 +258,7 @@ function getAnotherAnswers(words, answer){
 
 function nextWord(){
     $('ul.words_list > li.word').first().removeClass();
-    $('#answer').val('');
-    $('#answer').focus();
+    $('#answer').val('').focus();
     showMessage('.messages_container', '#FFFFFF', '#FFFFFF', "");
     move();
 }
@@ -285,8 +284,10 @@ function randomNum(max){
 
 function makeWordsList(jsonData){
     moveButtonEvent();
-    for (var i in jsonData){
-        var obj = getAnswers(jsonData[i]);
+    setEnterEvent();
+    var objsArray = objectsInArray(jsonData);
+    for (var i in objsArray){
+        var obj = getAnswers(objsArray[i]);
         $('ul.words_list').append("<li>" + obj['word'] + "</li>");
         $('ul.words_list > li:last')
                 .append("<li>( " + obj['type_name'] + " )</li>")
@@ -314,7 +315,7 @@ function getAnswers(wordObj){
         if(obj.translation.length === 1){
             obj.translation = obj.translation[0];
         }
-        console.log(obj);
+        
         return obj; 
         
     }
@@ -326,4 +327,28 @@ function moveButtonEvent(){
     $('.next_word').on('click', function(){
         confirmAnswer();
     });
+}
+
+function setEnterEvent(){
+    $(document).bind('keydown', function() {
+        if (event.keyCode === 13) {
+            $('.next_word').click();
+        };
+    });
+
+}
+
+function randomSort(){
+    return Math.random() - 0.5;
+}
+
+function objectsInArray(obj){
+    var arr = [];
+    for(var r in obj){
+        arr.push(obj[r]);
+    }
+    
+    return arr.sort(randomSort);
+    
+    
 }

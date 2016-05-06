@@ -49,7 +49,7 @@ class TestsModel extends Model{
                     ORDER BY a.word_id";
             $query = $this->db->query($sql);
             $wordsArr = $this->makeFewTranslations($query->fetchAll(PDO::FETCH_ASSOC));
-            return $this->getRandomWords($wordsArr, $this->wordsNum);
+            return json_encode($this->getRandomWords($wordsArr, $this->wordsNum));
         }
     }
     
@@ -82,7 +82,7 @@ class TestsModel extends Model{
             }
             $randWords[$randomNum] = $words[$randomNum];
         }
-        return json_encode($randWords);
+        return $randWords;
     }
     
     
