@@ -4,6 +4,19 @@ function playAudio(src){
     elem.play();
 }
 
+function getAudioName(word){
+    var audio =  word.replace(/ /g, '_');
+    return audio + ".mp3";
+}
+
+function getJustText(elem) {
+    return $(elem).clone()
+        .children()
+        .remove()
+        .end()
+        .text();
+};
+
 function confirmFormSending(id, msg){
     if(confirm(msg)){
         $(''+ id +'').submit();
@@ -198,8 +211,16 @@ function sendEditedTrans(data){
         });
 }
 
+function playCurrentWord(delay){
+    var word = getJustText($('ul.words_list > li.word').first());
+    setTimeout(playAudio, delay, getAudioName(word));
+}
+
+
 function move(){
-    $('.words_list').animate({'margin-left': "-=500px"}, 600);
+    $('.words_list').animate({'margin-left': "-=500px"}, 600, function(){
+        playCurrentWord(300);
+    });
     $('.next_word').off();
     moveButtonEvent();
 }
@@ -209,11 +230,11 @@ function confirmAnswer(){
     var answer = $('#answer').val().toLowerCase();
     if(answer.length > 1){
         if(word === answer){
-            showMessage('.messages_container', '#B8F7B6', '#329922', "Правильно!");
+            showMessage('.messages_container', '#B8D6F2', '#4384C1', "Правильно!");
         }else if(word.indexOf(',') > 0){
             var anotherAnswers = getAnotherAnswers(word, answer);
             if(anotherAnswers){
-                showMessage('.messages_container', '#B8F7B6', '#329922', "Правильно! Ще як варіант: ", anotherAnswers);
+                showMessage('.messages_container', '#B8D6F2', '#4384C1', "Правильно! Ще як варіант: ", anotherAnswers);
             }else{
                 var allAnswers = getAllAnswers(word);
                 showMessage('.messages_container', '#FFD4D4', '#E83E3E', "Правильні відповіді: ", allAnswers);
@@ -260,6 +281,7 @@ function nextWord(){
     $('ul.words_list > li.word').first().removeClass();
     $('#answer').val('').focus();
     showMessage('.messages_container', '#FFFFFF', '#FFFFFF', "");
+    $('.messages_container').css('box-shadow', 'none');
     move();
 }
 
@@ -267,7 +289,8 @@ function nextWord(){
 function showMessage(elClass, backColor, color, message, text){
     $(elClass).css({
         'background-color': backColor,
-        'color': color
+        'color': color,
+        'box-shadow': '0px 0px 7px #838383'
     });
     if(text === undefined){
         $(elClass).text(message)
@@ -297,6 +320,7 @@ function makeWordsList(jsonData){
             );
     }
     $('#answer').focus();
+    playCurrentWord(500);
     
 }
 
@@ -349,6 +373,4 @@ function objectsInArray(obj){
     }
     
     return arr.sort(randomSort);
-    
-    
 }

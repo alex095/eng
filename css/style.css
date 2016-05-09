@@ -529,7 +529,7 @@ div.tests_container{
 
 div.tests_container div.tests_list{
     margin-top: 30px;
-    width: 30%;
+    width: 400px;
     margin: 40px auto;
 }
 
@@ -546,8 +546,8 @@ div.tests_container ul > li{
     border-radius: 13px;
     font-weight: bold;
     box-shadow: 0px 0px 10px #BCBCBC;
-    cursor: pointer;
     white-space: nowrap;
+    padding: 15px 0px 10px 0px;
 }
 
 div.tests_container ul > li:hover{
@@ -556,9 +556,10 @@ div.tests_container ul > li:hover{
 }
 
 div.tests_container ul > li > a{
+    cursor: pointer;
     text-decoration: none;
     color: #AE551D;
-    padding: 10px 120px;
+    padding: 15px 100px 10px 100px;
 }
 
 
@@ -619,12 +620,13 @@ div.test_main_container{
 div.test_area{
     width: 700px;
     height: 340px;
-    margin: 60px auto;
+    margin: 0px auto;
     background-color: #FFFFFF;
     border: 1px solid #D8D8D8;
     border-radius: 15px;
     text-align: center;
     overflow: hidden;
+    box-shadow: 3px 3px 15px #C0C0C0;
 }
 
 div.test_area ul{
@@ -654,7 +656,8 @@ div.test_area ul > li > li:last-child{
 .messages_container{
     background-color: #FFFFFF;
     height: 20px;
-    padding: 7px 5px 5px 5px;
+    padding: 10px 5px 5px 5px;
+    
 }
 
 div.test_area button.next_word{
@@ -690,6 +693,61 @@ div.test_area .play_word{
 div.test_area .play_word > img{
     width: 80px;
     height: 80px;
+    cursor: pointer;
 }
+
+div.test_area .play_word > img:hover{
+    width: 78px;
+    height: 78px;
+}
+
+div.test_main_container div.info_container > div{
+    display: inline-block;
+    margin-left: 20px;
+}
+
+div.test_main_container div.info_container{
+    margin: 35px auto 5px auto;
+    height: 25px;
+    width: 700px;
+    vertical-align: top;
+}
+
+div.test_main_container .errors_count ul{
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+}
+
+div.test_main_container .errors_count ul > li{
+    display: inline-block;
+    min-width: 20px;
+    height: 20px;
+    float: left;
+    font-size: 18px;
+    font-family: Verdana, Tahoma, serif;
+}
+
+div.test_main_container .error_num{
+    color: #D7392E;
+    margin-left: 5px;
+}
+
+div.test_main_container .errors_count ul li > img{
+    height: 20px;
+    width: 20px;
+}
+
+div.test_main_container .errors_count ul > li.progress_line{
+    border: 1px solid #D0D0D0;
+    border-radius: 4px;
+    width: 250px;
+    background-color: #FFFFFF;
+    margin-left: 10px;
+    background-image: url(/images/audio.png);
+}
+
+
+
 
 /* Тест англійська-українська END */
