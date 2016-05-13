@@ -220,8 +220,9 @@ function playCurrentWord(delay){
 function move(){
     $('.words_list').animate({'margin-left': "-=500px"}, 600, function(){
         playCurrentWord(300);
+        $('ul.words_list > li.del').last().html('');
     });
-    $('.next_word').off();
+    
     moveButtonEvent();
 }
 
@@ -230,22 +231,24 @@ function confirmAnswer(){
     var answer = $('#answer').val().toLowerCase();
     if(answer.length > 1){
         if(word === answer){
-            showMessage('.messages_container', '#B8D6F2', '#4384C1', "Правильно!");
+            showMessage('.messages_container', '#AEEFD2', '#0E9A5B', "Правильно!");
+            moveProgressLine();
         }else if(word.indexOf(',') > 0){
             var anotherAnswers = getAnotherAnswers(word, answer);
             if(anotherAnswers){
-                showMessage('.messages_container', '#B8D6F2', '#4384C1', "Правильно! Ще як варіант: ", anotherAnswers);
+                showMessage('.messages_container', '#AEEFD2', '#0E9A5B', "Правильно! Ще як варіант: ", anotherAnswers);
+                moveProgressLine();
             }else{
-                var allAnswers = getAllAnswers(word);
-                showMessage('.messages_container', '#FFD4D4', '#E83E3E', "Правильні відповіді: ", allAnswers);
+                showMessage('.messages_container', '#FFBBAE', '#DD0A0A', "Правильні відповіді: ", getAllAnswers(word));
+                errorInAnswer();
             }
         }else{
-            word = quoteWord(word);
-            showMessage('.messages_container', '#FFD4D4', '#E83E3E', "Правильна відповідь - ", word);
+            showMessage('.messages_container', '#FFBBAE', '#DD0A0A', "Правильна відповідь - ", quoteWord(word));
+            errorInAnswer();
         }
-        $('.next_word').on('click', nextWord);
+        $('.next_word').off().on('click', nextWord);
     }else{
-        showMessage('.messages_container', '#FFD4D4', '#E83E3E', "Заповніть поле правильно!");
+        showMessage('.messages_container', '#FFBBAE', '#DD0A0A', "Заповніть поле правильно!");
     }
     
 }
@@ -277,11 +280,34 @@ function getAnotherAnswers(words, answer){
     
 }
 
+function test(){
+    var currentNum = parseInt($('.error_num').text());
+    var wordsCount = parseInt($('ul.words_list > li').length) - currentNum;
+    
+    console.log(wordsCount);
+    console.log(currentNum);
+    
+    
+    $('.test_area').children().remove();
+    $('.test_area')
+            .append("<div id='opa'></div>")
+            .children()
+            .css('opacity', '0');
+    $('#opa').animate({'opacity': '1'}, 1000);
+    
+    var perCent = (100 - (currentNum * (100 / wordsCount))).toFixed(0);
+    
+    $('#opa').text(perCent);
+}
+
 function nextWord(){
-    $('ul.words_list > li.word').first().removeClass();
+    $('ul.words_list > li.word').first().removeClass().addClass('del');
     $('#answer').val('').focus();
     showMessage('.messages_container', '#FFFFFF', '#FFFFFF', "");
     $('.messages_container').css('box-shadow', 'none');
+    if($('ul.words_list > li.del').last().is('ul.words_list > li:last')){
+        return;
+    }
     move();
 }
 
@@ -293,7 +319,7 @@ function showMessage(elClass, backColor, color, message, text){
         'box-shadow': '0px 0px 7px #838383'
     });
     if(text === undefined){
-        $(elClass).text(message)
+        $(elClass).text(message);
     }else{
         $(elClass).text(message + text);
     }
@@ -346,11 +372,25 @@ function getAnswers(wordObj){
     return wordObj;
 }
 
+function errorInAnswer(){
+    var errorWord = $('ul.words_list > li.word').first().html();
+    $('ul.words_list').append("<li class='word'></li>");
+    $('ul.words_list > li.word').last().append(errorWord);
+    var currentNum = parseInt($('.error_num').text());
+    $('.error_num').text(++currentNum);
+}
+
+function moveProgressLine(){
+    var errors = parseInt($('.error_num').text());
+    var wordsCount = $('ul.words_list > li').length - errors;
+    console.log(wordsCount);
+    var fullWidth = parseInt($('.progress_line').css('width')) - 4;
+    $('.active_progress').animate({'width': "+=" + (fullWidth / wordsCount) + "px"}, 600);
+}
+
 
 function moveButtonEvent(){
-    $('.next_word').on('click', function(){
-        confirmAnswer();
-    });
+    $('.next_word').off().on('click', confirmAnswer);
 }
 
 function setEnterEvent(){
@@ -371,6 +411,5 @@ function objectsInArray(obj){
     for(var r in obj){
         arr.push(obj[r]);
     }
-    
     return arr.sort(randomSort);
 }

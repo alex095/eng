@@ -6,13 +6,16 @@
 <audio id="audio" controls="controls">
     <source src="" type="audio/mpeg">
 </audio>
+<div style="height: 10px; background-color: red" id="ttt"></div>
+<button onclick="test()">12345</button>
 <div class="test_main_container">
     <div class="info_container">
         <div class="errors_count">
             <ul>
                 <li><img alt="errors" src="/images/cross.png" /></li>
-                <li class="error_num">2</li>
-                <li class="progress_line"></li>
+                <li class="error_num">0</li>
+                <li class="progress_line"><div class="active_progress"></div></li>
+                <li class="right_answers">0</li>
             </ul>
         </div>
     </div>
