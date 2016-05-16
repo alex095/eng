@@ -547,7 +547,7 @@ div.tests_container ul > li{
     font-weight: bold;
     box-shadow: 0px 0px 10px #BCBCBC;
     white-space: nowrap;
-    padding: 15px 0px 15px 0px;
+    padding: 15px 0px 12px 0px;
 }
 
 div.tests_container ul > li:hover{
@@ -559,7 +559,7 @@ div.tests_container ul > li > a{
     cursor: pointer;
     text-decoration: none;
     color: #AE551D;
-    padding: 15px 100px 10px 100px;
+    padding: 15px 100px 15px 100px;
 }
 
 
@@ -721,7 +721,7 @@ div.test_main_container .errors_count ul{
 
 div.test_main_container .errors_count ul > li{
     display: inline-block;
-    min-width: 20px;
+    min-width: 10px;
     height: 20px;
     float: left;
     font-size: 18px;
@@ -730,12 +730,19 @@ div.test_main_container .errors_count ul > li{
 
 div.test_main_container .error_num{
     color: #D7392E;
-    margin-left: 5px;
+    margin-right: 10px;
+}
+
+div.test_main_container .words_num{
+    color: #23809A;
+    margin-right: 10px;
 }
 
 div.test_main_container .errors_count ul li > img{
     height: 20px;
     width: 20px;
+    padding-left: 4px;
+    padding-right: 4px;
 }
 
 div.test_main_container .errors_count ul > li.progress_line{
@@ -752,11 +759,7 @@ div.test_main_container .active_progress{
     margin: 2px;
     border-radius: 4px;
     width: 0px;
-    
-}
-
-div.test_main_container .errors_count ul > li.right_answers{
-    display: none;
+    max-width: 246px;
 }
 
 

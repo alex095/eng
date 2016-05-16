@@ -345,6 +345,7 @@ function makeWordsList(jsonData){
                 "<li>" + obj['translation'] + "</li>"
             );
     }
+    $('.words_num').text(objsArray.length);
     $('#answer').focus();
     playCurrentWord(500);
     
@@ -383,9 +384,9 @@ function errorInAnswer(){
 function moveProgressLine(){
     var errors = parseInt($('.error_num').text());
     var wordsCount = $('ul.words_list > li').length - errors;
-    console.log(wordsCount);
     var fullWidth = parseInt($('.progress_line').css('width')) - 4;
-    $('.active_progress').animate({'width': "+=" + (fullWidth / wordsCount) + "px"}, 600);
+    var addedWidth = (fullWidth / wordsCount).toFixed(2);
+    $('.active_progress').animate({'width': "+=" + addedWidth + "px"}, 600);
 }
 
 
