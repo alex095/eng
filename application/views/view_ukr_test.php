@@ -6,8 +6,7 @@
 <audio id="audio" controls="controls">
     <source src="" type="audio/mpeg">
 </audio>
-<div style="height: 10px; background-color: red" id="ttt"></div>
-<button onclick="test()">12345</button>
+<!--<button onclick="moveProgressLine()">test</button>-->
 <div class="test_main_container">
     <div class="info_container">
         <div class="errors_count">

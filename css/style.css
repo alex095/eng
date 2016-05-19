@@ -642,6 +642,7 @@ div.test_area ul > li{
     display: inline-block;
     width: 500px;
     font-size: 30px;
+    height: 55px;
 }
 
 div.test_area ul > li > li{
@@ -734,7 +735,7 @@ div.test_main_container .error_num{
 }
 
 div.test_main_container .words_num{
-    color: #23809A;
+    color: #4D87CA;
     margin-right: 10px;
 }
 
@@ -762,6 +763,12 @@ div.test_main_container .active_progress{
     max-width: 246px;
 }
 
+div.test_main_container #test_result{
+    color: #4D87CA;
+    font-size: 70px;
+    font-family: serif;
+    margin-top: 110px;
+}
 
 
 

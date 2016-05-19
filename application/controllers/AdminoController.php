@@ -157,7 +157,7 @@ class AdminoController extends Controller{
         }
     }
     
-    
+
     public function EditWordAction(){
         $view = new View('basic_template');
         if(!isset($_POST['search_word'])){

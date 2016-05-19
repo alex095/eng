@@ -40,27 +40,69 @@ class TestsModel extends Model{
         }
     }
     
-    
     public function getEngTestData(){
         if($this->category === 'all'){
             $sql = "SELECT c.id, c.word, a.translation, b.type_name FROM translations as a
                     LEFT JOIN types as b ON b.id = a.type_id
                     LEFT JOIN words_list as c ON c.id = a.word_id
                     ORDER BY a.word_id";
-            $query = $this->db->query($sql);
-            $wordsArr = $this->makeFewTranslations($query->fetchAll(PDO::FETCH_ASSOC));
-            return json_encode($this->getRandomWords($wordsArr, $this->wordsNum));
+        }else{
+            $wordsModel = new WordsModel();
+            $sql = "SELECT c.id, c.word, a.translation, b.type_name FROM translations as a
+                    LEFT JOIN types as b ON b.id = a.type_id
+                    LEFT JOIN words_list as c ON c.id = a.word_id
+                    WHERE a.category_id = '".$wordsModel->getCategoryId($this->category)."' ORDER BY a.word_id";
         }
+        $query = $this->db->query($sql);
+        $wordsArr = $this->makeFewEngTranslations($query->fetchAll(PDO::FETCH_ASSOC));
+        return json_encode($this->getRandomWords($wordsArr, $this->wordsNum));
     }
     
-    public function makeFewTranslations($wordsArr){
+    public function getUkrTestData(){
+        if($this->category === 'all'){
+            $sql = "SELECT c.word, a.translation FROM translations as a
+                    LEFT JOIN words_list as c ON c.id = a.word_id
+                    ORDER BY a.word_id";
+        }else{
+            $wordsModel = new WordsModel();
+            $sql = "SELECT c.word, a.translation FROM translations as a
+                    LEFT JOIN words_list as c ON c.id = a.word_id
+                    WHERE a.category_id = '".$wordsModel->getCategoryId($this->category)."' ORDER BY a.word_id";
+        }
+        $query = $this->db->query($sql);
+        $wordsArr = $query->fetchAll(PDO::FETCH_ASSOC);
+        
+        /*echo '<pre>';
+        print_r($wordsArr);
+        echo '</pre>';*/
+        
+     $this->searchSameTranslations($wordsArr);
+        
+        /*return json_encode($this->getRandomWords($wordsArr, $this->wordsNum));*/
+    }
+
+    public function searchSameTranslations($arr){
+        $transArr = [[$arr[0]['word'], $arr[0]['translation']]];
+        for($i=1; $i<count($arr); $i++){
+            $transArr[$i] = array($arr[$i]['word']);
+            $transArr[$i][] = $arr[$i]['translation'];
+        }
+        var_dump($transArr);
+    }
+
+
+
+
+
+
+
+    public function makeFewEngTranslations($wordsArr){
         $arr = array(0);
         foreach($wordsArr as $val){
             if((int)$arr[count($arr) - 1]['id'] === (int)$val['id']){
                 if(!is_array($arr[count($arr) - 1]['translation'])){
                     $arr[count($arr) - 1]['translation'] = array($arr[count($arr) - 1]['translation']);
                     $arr[count($arr) - 1]['type_name'] = array($arr[count($arr) - 1]['type_name']);
-                    //$arr[count($arr) - 1]['translation'] .= '|'.$val['translation'];
                 }
                 $arr[count($arr) - 1]['translation'][] = $val['translation'];
                 $arr[count($arr) - 1]['type_name'][] = $val['type_name'];
@@ -73,6 +115,9 @@ class TestsModel extends Model{
     }
     
     public function getRandomWords($words, $num){
+        if($num > count($words)){
+            $num = count($words);
+        }
         $randWords = array();
         for($i=0; $i<$num; $i++){
             $randomNum = rand(0, count($words) - 1);

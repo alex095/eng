@@ -25,9 +25,8 @@ class TestsController extends Controller{
             if($model->noErrors()){
                 $data = array();
                 $data['data'] = $model->getEngTestData();
-                $data['abc'] = 'ccc';
                 $view = new View('basic_template');
-                $view->render('view_test_start', $data);
+                $view->render('view_eng_test', $data);
             }else{
                 $view = new View('basic_template');
                 $view->render('view_error');
@@ -36,7 +35,20 @@ class TestsController extends Controller{
     }
     
     public function UkrTestAction(){
-        echo 'ukr';
+        if(isset($_POST['start_test'])){
+            $model = new TestsModel();
+            $model->validate('category', $_POST['wordsCategory']);
+            $model->validateInt('wordsNum', $_POST['wordsNumber']);
+            if($model->noErrors()){
+                $data = array();
+                $data['data'] = $model->getUkrTestData();
+                $view = new View('basic_template');
+                $view->render('view_ukr_test', $data);
+            }else{
+                $view = new View('basic_template');
+                $view->render('view_error');
+            }
+        }
     }
     
     public function HearingTestAction(){

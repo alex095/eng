@@ -191,7 +191,6 @@ function getEditedTrans(inputs){
     var values = inputValuesInObject(inputs);
     values['editType'] = getTdValue('tran_types_list option:selected');
     values['editCategory'] = getTdValue('tran_cat_list option:selected');
-    console.log(values);
     var jsonData = JSON.stringify(values);
     sendEditedTrans(jsonData);
 }
@@ -205,6 +204,7 @@ function sendEditedTrans(data){
                 if(data.length === 0){
                     location.reload();
                 }else{
+                    console.log(JSON.stringify(data));
                     alert(data);
                 }
             }
@@ -220,7 +220,8 @@ function playCurrentWord(delay){
 function move(){
     $('.words_list').animate({'margin-left': "-=500px"}, 600, function(){
         playCurrentWord(300);
-        $('ul.words_list > li.del').last().html('');
+        var word = getJustText($('ul.words_list > li.del').last());
+        $('ul.words_list > li.del').last().html(word);
     });
     
     moveButtonEvent();
@@ -280,33 +281,33 @@ function getAnotherAnswers(words, answer){
     
 }
 
-function test(){
+function showResult(){
     var currentNum = parseInt($('.error_num').text());
-    var wordsCount = parseInt($('ul.words_list > li').length) - currentNum;
-    
-    console.log(wordsCount);
-    console.log(currentNum);
-    
+    var wordsCount = parseInt($('.words_num').text());
     
     $('.test_area').children().remove();
     $('.test_area')
-            .append("<div id='opa'></div>")
+            .append("<div id='test_result'></div>")
             .children()
             .css('opacity', '0');
-    $('#opa').animate({'opacity': '1'}, 1000);
+    $('#test_result').animate({'opacity': '1'}, 1000);
     
     var perCent = (100 - (currentNum * (100 / wordsCount))).toFixed(0);
     
-    $('#opa').text(perCent);
+    $('#test_result').html("<span>" + perCent + "%</span>");
 }
 
 function nextWord(){
-    $('ul.words_list > li.word').first().removeClass().addClass('del');
+    $('ul.words_list > li.word')
+            .first()
+            .removeClass()
+            .addClass('del')
+            .css('vertical-align', 'top');
     $('#answer').val('').focus();
     showMessage('.messages_container', '#FFFFFF', '#FFFFFF', "");
     $('.messages_container').css('box-shadow', 'none');
     if($('ul.words_list > li.del').last().is('ul.words_list > li:last')){
-        return;
+        showResult();
     }
     move();
 }
@@ -375,18 +376,30 @@ function getAnswers(wordObj){
 
 function errorInAnswer(){
     var errorWord = $('ul.words_list > li.word').first().html();
+    var word = getJustText($('ul.words_list > li.word').first());
     $('ul.words_list').append("<li class='word'></li>");
     $('ul.words_list > li.word').last().append(errorWord);
-    var currentNum = parseInt($('.error_num').text());
-    $('.error_num').text(++currentNum);
+    var wasMistake = $("ul.words_list > li.del").filter(function(){
+        return ($(this).text() === word);
+    });
+    if(wasMistake.length < 1){
+        var currentNum = parseInt($('.error_num').text());
+        $('.error_num').text(++currentNum);
+    }
+    
 }
 
 function moveProgressLine(){
-    var errors = parseInt($('.error_num').text());
-    var wordsCount = $('ul.words_list > li').length - errors;
+    var wordsCount = parseInt($('.words_num').text());
     var fullWidth = parseInt($('.progress_line').css('width')) - 4;
-    var addedWidth = (fullWidth / wordsCount).toFixed(2);
-    $('.active_progress').animate({'width': "+=" + addedWidth + "px"}, 600);
+    var addedWidth = Math.ceil((fullWidth / wordsCount).toFixed(2));
+    var currentWidth = parseInt($('.active_progress').css('width'));
+    if(currentWidth < (fullWidth - addedWidth).toFixed(2)){
+        $('.active_progress').animate({'width': "+=" + addedWidth + "px"}, 600);
+    }else{
+        $('.active_progress').animate({'width': fullWidth + "px"}, 600);
+    }
+    
 }
 
 
