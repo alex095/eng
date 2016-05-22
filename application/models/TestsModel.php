@@ -70,28 +70,34 @@ class TestsModel extends Model{
                     WHERE a.category_id = '".$wordsModel->getCategoryId($this->category)."' ORDER BY a.word_id";
         }
         $query = $this->db->query($sql);
-        $wordsArr = $query->fetchAll(PDO::FETCH_ASSOC);
         
-        /*echo '<pre>';
-        print_r($wordsArr);
-        echo '</pre>';*/
+        $wordsArr = $this->searchSameTranslations($query->fetchAll(PDO::FETCH_ASSOC));
+        $randomKeys = $this->getRandomWords(array_keys($wordsArr), $this->wordsNum);
         
-     $this->searchSameTranslations($wordsArr);
-        
-        /*return json_encode($this->getRandomWords($wordsArr, $this->wordsNum));*/
+        return json_encode($this->chooseUkrWords($wordsArr, $randomKeys));
     }
+
+    public function chooseUkrWords($arr, $keys){
+        $randomWords = array();
+        foreach($keys as $val){
+            $randomWords[$val] = $arr[$val];
+        }
+        return $randomWords;
+    }
+
 
     public function searchSameTranslations($arr){
-        $transArr = [[$arr[0]['word'], $arr[0]['translation']]];
+        $transArr = [$arr[0]['translation'] => $arr[0]['word']];
         for($i=1; $i<count($arr); $i++){
-            $transArr[$i] = array($arr[$i]['word']);
-            $transArr[$i][] = $arr[$i]['translation'];
+            if(array_key_exists($arr[$i]['translation'], $transArr)){
+                $transArr[$arr[$i]['translation']] .= ",".$arr[$i]['word'];
+            }else{
+                $transArr[$arr[$i]['translation']] = $arr[$i]['word'];
+            }
+            
         }
-        var_dump($transArr);
+        return $transArr;
     }
-
-
-
 
 
 

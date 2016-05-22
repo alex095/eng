@@ -212,6 +212,9 @@ function sendEditedTrans(data){
 }
 
 function playCurrentWord(delay){
+    if($('.play_word').is('.play_false')){
+        return false;
+    }
     var word = getJustText($('ul.words_list > li.word').first());
     setTimeout(playAudio, delay, getAudioName(word));
 }
@@ -351,6 +354,26 @@ function makeWordsList(jsonData){
     playCurrentWord(500);
     
 }
+
+function makeUkrWordsList(jsonData){
+    moveButtonEvent();
+    setEnterEvent();
+    for(var i in jsonData){
+        $('ul.words_list').append("<li>" + i + "</li>");
+        $('ul.words_list > li:last')
+                .append("<li></li>")
+                .append("<li>" + jsonData[i] + "</li>")
+                .addClass('word');
+    }
+    var wordsCount = $('ul.words_list > li').length;
+    $('.words_num').text(wordsCount);
+    $('#answer').focus();
+    
+}
+
+
+
+
 
 function getAnswers(wordObj){
     if(wordObj['type_name'][0].length > 1){

@@ -1,12 +1,12 @@
 <script>
     $(document).ready(function(){
-        makeWordsList(<?php echo $data['data']; ?>);
+        makeUkrWordsList(<?php echo $data['data']; ?>);
     });
 </script>
 <audio id="audio" controls="controls">
     <source src="" type="audio/mpeg">
 </audio>
-<!--<button onclick="moveProgressLine()">test</button>-->
+
 <div class="test_main_container">
     <div class="info_container">
         <div class="errors_count">
@@ -21,8 +21,8 @@
     </div>
     <div class="test_area">
         <div class="messages_container"></div>
-        <div class="play_word">
-            <img onclick="playCurrentWord(0)" src="/images/audio2.png" alt="play" />
+        <div class="play_word play_false">
+            <img src="/images/audio2.png" alt="play" />
         </div>
         <ul class="words_list">
             
