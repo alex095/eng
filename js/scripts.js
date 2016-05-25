@@ -126,10 +126,10 @@ function sendTranslationData(data){
                 $('.' + rowClass + '> td').eq(0).text(values['translation']);
                 $('.' + rowClass + '> td').eq(1).text(values['type']);
                 $('.' + rowClass + '> td').eq(2).text(values['category']);
-                location.reload(); 
+                location.reload();
             }else{
                 alert(data);
-            }            
+            }
         }
     });
 }
@@ -219,7 +219,6 @@ function playCurrentWord(delay){
     setTimeout(playAudio, delay, getAudioName(word));
 }
 
-
 function move(){
     $('.words_list').animate({'margin-left': "-=500px"}, 600, function(){
         playCurrentWord(300);
@@ -305,7 +304,6 @@ function nextWord(){
             .first()
             .removeClass()
             .addClass('del')
-            .css('vertical-align', 'top');
     $('#answer').val('').focus();
     showMessage('.messages_container', '#FFFFFF', '#FFFFFF', "");
     $('.messages_container').css('box-shadow', 'none');
@@ -362,7 +360,7 @@ function makeUkrWordsList(jsonData){
         $('ul.words_list').append("<li>" + i + "</li>");
         $('ul.words_list > li:last')
                 .append("<li></li>")
-                .append("<li>" + jsonData[i] + "</li>")
+                .append("<li class='trans'>" + jsonData[i] + "</li>")
                 .addClass('word');
     }
     var wordsCount = $('ul.words_list > li').length;
@@ -422,7 +420,15 @@ function moveProgressLine(){
     }else{
         $('.active_progress').animate({'width': fullWidth + "px"}, 600);
     }
-    
+    playCurTranslation(); 
+}
+
+function playCurTranslation(){
+    var translation = $('ul.words_list > li.word:first > li:last');
+    if(translation.is('.trans')){
+        var word = getAudioName(translation.text());
+        setTimeout(playAudio, 100, word);
+    }
 }
 
 

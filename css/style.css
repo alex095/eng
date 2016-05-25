@@ -610,7 +610,7 @@ div.tests_container ul > li > a{
 
 
 
-/* Тест англійська-українська START */
+/* Тест англійська-українська, українська-англійська START */
 
 
 div.test_main_container{
@@ -643,6 +643,10 @@ div.test_area ul > li{
     width: 500px;
     font-size: 30px;
     height: 55px;
+}
+
+div.test_area ul > li.del{
+    vertical-align: top;
 }
 
 div.test_area ul > li > li{
@@ -769,6 +773,4 @@ div.test_main_container #test_result{
     margin-top: 110px;
 }
 
-
-
-/* Тест англійська-українська END */
+/* Тест англійська-українська, українська-англійська END */

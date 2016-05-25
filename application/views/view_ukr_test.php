@@ -21,8 +21,8 @@
     </div>
     <div class="test_area">
         <div class="messages_container"></div>
-        <div class="play_word play_false">
-            <img src="/images/audio2.png" alt="play" />
+        <div class="play_word play_false arrow_down_icon">
+            <img src="/images/arrowdown.png" alt="play" />
         </div>
         <ul class="words_list">
             
