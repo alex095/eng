@@ -773,4 +773,13 @@ div.test_main_container #test_result{
     margin-top: 110px;
 }
 
+
+div.test_main_container .ukr_words_list{
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+
+
+
+
 /* Тест англійська-українська, українська-англійська END */

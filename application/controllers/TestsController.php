@@ -52,7 +52,20 @@ class TestsController extends Controller{
     }
     
     public function HearingTestAction(){
-        echo 'hearing';
+        if(isset($_POST['start_test'])){
+            $model = new TestsModel();
+            $model->validate('category', $_POST['wordsCategory']);
+            $model->validateInt('wordsNum', $_POST['wordsNumber']);
+            if($model->noErrors()){
+                $data = array();
+                $data['data'] = $model->getHearingTestData();
+                $view = new View('basic_template');
+                $view->render('view_hearing_test', $data);
+            }else{
+                $view = new View('basic_template');
+                $view->render('view_error');
+            }
+        }
     }
     
 }

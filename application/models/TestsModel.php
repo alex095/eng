@@ -40,6 +40,23 @@ class TestsModel extends Model{
         }
     }
     
+    public function getHearingTestData(){
+        if($this->category === 'all'){
+            $sql = "SELECT word, audio FROM words_list";
+        }else{
+            $wordsModel = new WordsModel();
+            $sql = "SELECT DISTINCT c.word, c.audio FROM translations as a
+                    LEFT JOIN categories as b ON b.id = a.category_id
+                    LEFT JOIN words_list as c ON c.id = a.word_id
+                    WHERE a.category_id = '".$wordsModel->getCategoryId($this->category)."'";
+        }
+        $query = $this->db->query($sql);
+        $result = $query->fetchAll(PDO::FETCH_ASSOC);
+        $randomKeys = $this->getRandomWords(array_keys($result), $this->wordsNum);
+        $r = $this->chooseUkrWords($result, $randomKeys);
+        var_dump($r);
+    }
+    
     public function getEngTestData(){
         if($this->category === 'all'){
             $sql = "SELECT c.id, c.word, a.translation, b.type_name FROM translations as a

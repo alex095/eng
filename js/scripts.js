@@ -221,7 +221,7 @@ function playCurrentWord(delay){
 
 function move(){
     $('.words_list').animate({'margin-left': "-=500px"}, 600, function(){
-        playCurrentWord(300);
+        playCurrentWord(200);
         var word = getJustText($('ul.words_list > li.del').last());
         $('ul.words_list > li.del').last().html(word);
     });
@@ -347,7 +347,7 @@ function makeWordsList(jsonData){
                 "<li>" + obj['translation'] + "</li>"
             );
     }
-    $('.words_num').text(objsArray.length);
+    displayWordsCount();
     $('#answer').focus();
     playCurrentWord(500);
     
@@ -363,14 +363,19 @@ function makeUkrWordsList(jsonData){
                 .append("<li class='trans'>" + jsonData[i] + "</li>")
                 .addClass('word');
     }
-    var wordsCount = $('ul.words_list > li').length;
-    $('.words_num').text(wordsCount);
+    displayWordsCount();
     $('#answer').focus();
-    
+}
+
+function makeHearingList(jsonData){
+    console.log(jsonData);
 }
 
 
-
+function displayWordsCount(){
+    var wordsCount = $('ul.words_list > li').length;
+    $('.words_num').text(wordsCount);
+}
 
 
 function getAnswers(wordObj){
@@ -426,9 +431,25 @@ function moveProgressLine(){
 function playCurTranslation(){
     var translation = $('ul.words_list > li.word:first > li:last');
     if(translation.is('.trans')){
-        var word = getAudioName(translation.text());
-        setTimeout(playAudio, 100, word);
+        var answer = $('#answer').val().toLowerCase();
+        var word = checkAudioName(translation.text(), answer);
+        var audio = getAudioName(word);
+        setTimeout(playAudio, 100, audio);
     }
+}
+
+function checkAudioName(word, answer){
+    if(word.indexOf(',') === -1){
+       return word; 
+    }
+    var words = word.split(',');
+    for(var i=0; i<words.length; i++){
+        if(words[i] !== answer){
+            continue;
+        }
+        return words[i];
+    }
+    
 }
 
 

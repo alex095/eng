@@ -1,6 +1,6 @@
 <script>
     $(document).ready(function(){
-        makeUkrWordsList(<?php echo $data['data']; ?>);
+        makeHearingList(<?php echo $data['data']; ?>);
     });
 </script>
 <audio id="audio" controls="controls">
