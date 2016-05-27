@@ -779,7 +779,22 @@ div.test_main_container .ukr_words_list{
     margin-top: 10px;
 }
 
-
-
-
 /* Тест англійська-українська, українська-англійська END */
+
+
+
+/* Слова на слух START */
+
+div.test_main_container .hearing_play img{
+    margin-top: 30px;
+}
+
+div.test_main_container .hearing_play img:hover{
+    cursor: pointer;
+}
+
+div.test_main_container .ukr_words_list > li{
+    display: none;
+}
+
+/* Слова на слух END */

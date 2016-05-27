@@ -21,10 +21,10 @@
     </div>
     <div class="test_area">
         <div class="messages_container"></div>
-        <div class="play_word play_false">
-            <img src="/images/arrowdown.png" alt="play" />
+        <div class="hearing_play">
+            <img src="/images/music.png" alt="play" />
         </div>
-        <ul class="words_list ukr_words_list">
+        <ul class="words_list">
             
         </ul>
         <input id="answer" type="text" />

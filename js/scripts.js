@@ -368,7 +368,8 @@ function makeUkrWordsList(jsonData){
 }
 
 function makeHearingList(jsonData){
-    console.log(jsonData);
+    makeUkrWordsList(jsonData);
+    $('ul.words_list > li').hide();
 }
 
 

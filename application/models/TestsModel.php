@@ -53,10 +53,18 @@ class TestsModel extends Model{
         $query = $this->db->query($sql);
         $result = $query->fetchAll(PDO::FETCH_ASSOC);
         $randomKeys = $this->getRandomWords(array_keys($result), $this->wordsNum);
-        $r = $this->chooseUkrWords($result, $randomKeys);
-        var_dump($r);
+        return json_encode($this->chooseHearingWords($result, $randomKeys));
     }
     
+    public function chooseHearingWords($words, $keys){
+        $hearingWords = array();
+        foreach($keys as $val){
+            $hearingWords[$words[$val]['audio']] = $words[$val]['word'];
+        }
+        return $hearingWords;
+    }
+
+
     public function getEngTestData(){
         if($this->category === 'all'){
             $sql = "SELECT c.id, c.word, a.translation, b.type_name FROM translations as a
