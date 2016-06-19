@@ -5,6 +5,9 @@ function playAudio(src){
 }
 
 function getAudioName(word){
+    if(word.indexOf('.mp3') > 0){
+        return word;
+    }
     var audio =  word.replace(/ /g, '_');
     return audio + ".mp3";
 }
@@ -310,6 +313,7 @@ function nextWord(){
     if($('ul.words_list > li.del').last().is('ul.words_list > li:last')){
         showResult();
     }
+    
     move();
 }
 
@@ -347,11 +351,85 @@ function makeWordsList(jsonData){
                 "<li>" + obj['translation'] + "</li>"
             );
     }
+    setDisplayTransEvent();
     displayWordsCount();
     $('#answer').focus();
     playCurrentWord(500);
     
 }
+
+function setDisplayTransEvent(){
+    $('.play_word > img').on('mouseenter', function(e){
+        var x = e.clientX;
+        var y = e.clientY;
+        var word = $('ul.words_list > li.word').first().text();
+        word = word.split('(')[0];
+        searchTranscription(word, x, y);
+    });
+    $('.play_word > img').on('mouseout', function(){
+        $('#transcript_block').remove();
+    });
+    
+}
+
+function searchTranscription(word, x, y){
+    $.ajax({
+        type: "POST",
+        url: "/tests/searchTranscription",
+        data: "word=" + word,
+        success: function(data){
+            showTranscription(data, x, y);
+        }
+    });
+}
+
+function showTranscription(transcription, x, y){
+    $('body').append("<p id='transcript_block'>" + transcription + "</p>");
+    $('#transcript_block').css({
+        'border': '1px solid #DADADA',
+        'border-radius': '7px',
+        'padding': '3px 10px',
+        'color': '#424242',
+        'background-color': '#F2F2F2',
+        'position': 'absolute',
+        'left': x + 'px',
+        'top': y + 'px'
+    });
+    $('.play_word > img').on('mousemove', function(e){
+        $('#transcript_block').css({
+            'left': (e.clientX + 10) + 'px',
+            'top': (e.clientY - 50) + 'px'
+        });
+    });
+    
+    
+}
+
+
+
+function sendInputedWord(){
+    var word = $('#add_word').val();
+    $.ajax({
+        type: "POST",
+        url: "/admino/checkWord",
+        data: "word=" + word,
+        success: function(data){
+            checkWord(data);
+        }
+    });
+}
+
+function checkWord(data){
+    var wordEl = $('#add_word');
+    if(isJsonString(data)){
+        wordEl.css('border-color', '#EF3423');
+    }else if(data.length === 0){
+        wordEl.css('border-color', '#54BD46');
+    }else{
+        wordEl.css('border-color', '#EF3423');
+    }
+}
+
 
 function makeUkrWordsList(jsonData){
     moveButtonEvent();
@@ -369,7 +447,30 @@ function makeUkrWordsList(jsonData){
 
 function makeHearingList(jsonData){
     makeUkrWordsList(jsonData);
-    $('ul.words_list > li').hide();
+    playCurrentWord(300);
+    $('#audio').eq(0).on('loadeddata', changePlayingImage);
+    
+}
+
+function clickForPlayWord(){
+    playCurrentWord(100);
+    changePlayingImage();
+    $('#answer').focus();
+}
+
+function changePlayingImage(){
+    var audioDuration = ($('#audio')[0].duration * 1000).toFixed(0) - 300;
+    var playingImage = $('.hearing_play > img')[0];
+    changeImage(playingImage, false);
+    setTimeout(changeImage, audioDuration, playingImage, true);
+}
+
+function changeImage(playingImage, original){
+    if(original){
+        playingImage.src = playingImage.src.replace('2', '1');
+    }else{
+        playingImage.src = playingImage.src.replace('1', '2');
+    }
 }
 
 
@@ -426,7 +527,7 @@ function moveProgressLine(){
     }else{
         $('.active_progress').animate({'width': fullWidth + "px"}, 600);
     }
-    playCurTranslation(); 
+    playCurTranslation();
 }
 
 function playCurTranslation(){

@@ -1,10 +1,5 @@
 <?php
 
-/**
- * Description of PaginationHelper
- *
- * @author okryzhanivskyi
- */
 class PaginationHelper {
 
     private $perPage;

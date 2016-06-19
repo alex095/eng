@@ -21,7 +21,8 @@
     <div class="test_area">
         <div class="messages_container"></div>
         <div class="play_word">
-            <img onclick="playCurrentWord(0)" src="/images/audio2.png" alt="play" />
+            <img onclick="playCurrentWord(100)" src="/images/audio2.png" alt="play" />
+            
         </div>
         <ul class="words_list">
             

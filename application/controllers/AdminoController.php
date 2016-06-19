@@ -1,17 +1,10 @@
 <?php
 
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 class AdminoController extends Controller{
 
     
     public function IndexAction(){
-        $view = new View('basic_template');
-        $view->render('view_index');
+        $this->showWordsAction();
     }
     
 
@@ -236,7 +229,16 @@ class AdminoController extends Controller{
         }
     }
     
+    public function checkWordAction(){
+        $model = new WordsModel();
+        $model->validate('word', $_POST['word']);
+        if(count($model->errors) > 0){
+            echo $model->helper['MainHelper']->getError('0x00001');
+        }else{
+            echo $model->checkWordExist();
+        }
+          
+    }
     
     
 }
-

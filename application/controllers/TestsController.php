@@ -3,6 +3,11 @@
 
 class TestsController extends Controller{
 
+    
+    public function IndexAction(){
+        $this->ShowTestsAction();
+    }
+
     public function ShowTestsAction(){
         $view = new View('basic_template');
         $view->render('view_show_tests');
@@ -66,6 +71,17 @@ class TestsController extends Controller{
                 $view->render('view_error');
             }
         }
+    }
+    
+    public function searchTranscriptionAction(){
+        $model = new WordsModel();
+        $model->validate('word', $_POST['word']);
+        if(count($model->errors) > 0){
+            echo $model->helper['MainHelper']->getError('0x00001');
+        }else{
+            echo $model->searchTranscription();
+        }
+          
     }
     
 }

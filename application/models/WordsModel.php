@@ -365,7 +365,21 @@ class WordsModel extends Model{
         return $this->db->exec($sql);
     }
 
+    public function checkWordExist(){
+        $this->loadHelper('DbHelper', $this->db);
+        $count = $this->helper['DbHelper']->countRows('id', 'words_list', 'word', $this->word);
+        if($count != 0){
+            return json_encode(['word' => $this->word]);
+        }
+    }
+    
+    
+    public function searchTranscription(){
+        $this->loadHelper('MainHelper');
+        $sql = "SELECT transcription FROM words_list WHERE word = '". $this->word ."'";
+        $result = $this->db->query($sql);
+        return $result->fetch(PDO::FETCH_NUM)[0];
+    }
+    
     
 }
-
-

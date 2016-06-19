@@ -793,7 +793,7 @@ div.test_main_container .hearing_play img:hover{
     cursor: pointer;
 }
 
-div.test_main_container .ukr_words_list > li{
+div.test_main_container ul.hearing_list > li{
     display: none;
 }
 

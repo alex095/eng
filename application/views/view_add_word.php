@@ -6,7 +6,7 @@
                 <ul class="fields_list">
                     <li> 
                         <span>Слово</span><div class="error"><?php echo $this->showError('word'); ?></div>
-                        <input type="text" name="word" value="<?php echo $this->showValue('word'); ?>" />
+                        <input onblur="sendInputedWord()" id="add_word" type="text" name="word" value="<?php echo $this->showValue('word'); ?>" />
                     </li>
                     <li class="word_translation">
                         <span>Переклад</span><div class="error"><?php echo $this->showError('translation'); ?></div>

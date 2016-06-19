@@ -22,9 +22,9 @@
     <div class="test_area">
         <div class="messages_container"></div>
         <div class="hearing_play">
-            <img src="/images/music.png" alt="play" />
+            <img onclick="clickForPlayWord()" src="/images/music1.png" alt="play" />
         </div>
-        <ul class="words_list">
+        <ul class="words_list hearing_list">
             
         </ul>
         <input id="answer" type="text" />
