@@ -16,6 +16,7 @@ class TestsController extends Controller{
     public function ChooseTestAction($params){
         $model = new WordsModel();
         $data['cats'] = $model->getWordsCategories();
+        $data['types'] = $model->getWordsTypes();
         $data['action'] = $params['test'];
         $view = new View('basic_template');
         $view->render('view_test_params', $data);
@@ -26,6 +27,7 @@ class TestsController extends Controller{
         if(isset($_POST['start_test'])){
             $model = new TestsModel();
             $model->validate('category', $_POST['wordsCategory']);
+            $model->validate('type', $_POST['wordsType']);
             $model->validateInt('wordsNum', $_POST['wordsNumber']);
             if($model->noErrors()){
                 $data = array();
@@ -43,6 +45,7 @@ class TestsController extends Controller{
         if(isset($_POST['start_test'])){
             $model = new TestsModel();
             $model->validate('category', $_POST['wordsCategory']);
+            $model->validate('type', $_POST['wordsType']);
             $model->validateInt('wordsNum', $_POST['wordsNumber']);
             if($model->noErrors()){
                 $data = array();
@@ -60,6 +63,7 @@ class TestsController extends Controller{
         if(isset($_POST['start_test'])){
             $model = new TestsModel();
             $model->validate('category', $_POST['wordsCategory']);
+            $model->validate('type', $_POST['wordsType']);
             $model->validateInt('wordsNum', $_POST['wordsNumber']);
             if($model->noErrors()){
                 $data = array();

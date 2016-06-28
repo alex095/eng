@@ -11,7 +11,7 @@
         <div class="errors_count">
             <ul>
                 <li><img alt="words" src="/images/word.png" /></li>
-                <li class="words_num"></li>
+                <li class="words_num">0</li>
                 <li><img alt="errors" src="/images/cross.png" /></li>
                 <li class="error_num">0</li>
                 <li class="progress_line"><div class="active_progress"></div></li>
@@ -21,7 +21,7 @@
     <div class="test_area">
         <div class="messages_container"></div>
         <div class="play_word">
-            <img onclick="playCurrentWord(100)" src="/images/audio2.png" alt="play" />
+            <img onclick="playAndFocus()" src="/images/audio2.png" alt="play" />
             
         </div>
         <ul class="words_list">

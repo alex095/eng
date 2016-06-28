@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: localhost
--- Время создания: Апр 10 2016 г., 23:46
--- Версия сервера: 5.5.47-0ubuntu0.14.04.1
--- Версия PHP: 5.6.20-1+deb.sury.org~trusty+1
+-- Время создания: Июн 28 2016 г., 18:32
+-- Версия сервера: 5.5.49-0ubuntu0.14.04.1
+-- Версия PHP: 5.6.23-1+deprecated+dontuse+deb.sury.org~trusty+1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `categories` (
   `category_name` varchar(30) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `category_id` (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
 -- Дамп данных таблицы `categories`
@@ -40,7 +40,8 @@ CREATE TABLE IF NOT EXISTS `categories` (
 INSERT INTO `categories` (`id`, `category_name`) VALUES
 (1, 'Rest and leisure'),
 (2, 'The human body'),
-(3, 'Education');
+(3, 'Education'),
+(4, 'General');
 
 -- --------------------------------------------------------
 
@@ -55,7 +56,7 @@ CREATE TABLE IF NOT EXISTS `translations` (
   `category_id` int(2) NOT NULL,
   `translation` varchar(30) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=25 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=17 ;
 
 --
 -- Дамп данных таблицы `translations`
@@ -73,9 +74,11 @@ INSERT INTO `translations` (`id`, `word_id`, `type_id`, `category_id`, `translat
 (9, 9, 1, 3, 'виховання'),
 (10, 10, 3, 3, 'вихований'),
 (11, 11, 3, 3, 'грамотний'),
-(22, 6, 2, 3, 'test-1'),
-(23, 6, 7, 1, 'test-2'),
-(24, 8, 3, 3, 'test-3');
+(12, 12, 1, 2, 'горб'),
+(13, 13, 1, 3, 'крейда'),
+(14, 14, 4, 4, 'навіть'),
+(15, 15, 2, 4, 'усвідомлювати'),
+(16, 16, 6, 4, 'замість');
 
 -- --------------------------------------------------------
 
@@ -102,7 +105,8 @@ INSERT INTO `types` (`id`, `type_name`, `type_translation`) VALUES
 (5, 'Pronoun', 'Займенник'),
 (6, 'Preposition', 'Прийменник'),
 (7, 'Conjunction', 'Сполучник'),
-(8, 'Another', 'Інше');
+(8, 'Another', 'Інше'),
+(9, 'Phrases', 'Словосполучення');
 
 -- --------------------------------------------------------
 
@@ -116,7 +120,7 @@ CREATE TABLE IF NOT EXISTS `words_list` (
   `audio` varchar(35) NOT NULL,
   `transcription` varchar(40) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=17 ;
 
 --
 -- Дамп данных таблицы `words_list`
@@ -133,7 +137,12 @@ INSERT INTO `words_list` (`id`, `word`, `audio`, `transcription`) VALUES
 (8, 'jaw', 'jaw.mp3', '[ dʒɔː ]'),
 (9, 'upbringing', 'upbringing.mp3', '[ ˈʌpˌbrɪŋ.ɪŋ ]'),
 (10, 'well-bred', 'well-bred.mp3', '[ wel ] [ bred ]'),
-(11, 'literate', 'literate.mp3', '[ ˈlɪt.ər.ət ]');
+(11, 'literate', 'literate.mp3', '[ ˈlɪt.ər.ət ]'),
+(12, 'hump', 'hump.mp3', '[ hʌmp ]'),
+(13, 'chalk', 'chalk.mp3', '[ tʃɔːk ]'),
+(14, 'even', 'even.mp3', '[ ˈiːvn̩ ]'),
+(15, 'realize', 'realize.mp3', '[ ˈrɪəlaɪz ]'),
+(16, 'instead of', 'instead_of.mp3', '[ ɪnˈsted ɒv ]');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

@@ -12,7 +12,7 @@ class TestsModel extends Model{
         'enc' => "utf8"
     );
     
-    
+    private $type;
     private $category;
     private $wordsNum;
     
@@ -41,15 +41,11 @@ class TestsModel extends Model{
     }
     
     public function getHearingTestData(){
-        if($this->category === 'all'){
-            $sql = "SELECT word, audio FROM words_list";
-        }else{
-            $wordsModel = new WordsModel();
-            $sql = "SELECT DISTINCT c.word, c.audio FROM translations as a
-                    LEFT JOIN categories as b ON b.id = a.category_id
-                    LEFT JOIN words_list as c ON c.id = a.word_id
-                    WHERE a.category_id = '".$wordsModel->getCategoryId($this->category)."'";
-        }
+        $startSql = "SELECT DISTINCT c.word, c.audio FROM translations as a
+                LEFT JOIN categories as b ON b.id = a.category_id
+                LEFT JOIN words_list as c ON c.id = a.word_id";
+        $sql = $this->makeSql($startSql);
+      
         $query = $this->db->query($sql);
         $result = $query->fetchAll(PDO::FETCH_ASSOC);
         $randomKeys = $this->getRandomWords(array_keys($result), $this->wordsNum);
@@ -64,36 +60,39 @@ class TestsModel extends Model{
         return $hearingWords;
     }
 
-
-    public function getEngTestData(){
-        if($this->category === 'all'){
-            $sql = "SELECT c.id, c.word, a.translation, b.type_name FROM translations as a
-                    LEFT JOIN types as b ON b.id = a.type_id
-                    LEFT JOIN words_list as c ON c.id = a.word_id
-                    ORDER BY a.word_id";
-        }else{
-            $wordsModel = new WordsModel();
-            $sql = "SELECT c.id, c.word, a.translation, b.type_name FROM translations as a
-                    LEFT JOIN types as b ON b.id = a.type_id
-                    LEFT JOIN words_list as c ON c.id = a.word_id
-                    WHERE a.category_id = '".$wordsModel->getCategoryId($this->category)."' ORDER BY a.word_id";
+    
+    
+    public function makeSql($sql){
+        $wordsModel = new WordsModel();
+        if($this->category !== 'all' && $this->type === 'all'){
+            $sql .= " WHERE a.category_id = '".$wordsModel->getCategoryId($this->category)."'";
+        }else if($this->category === 'all' && $this->type !== 'all'){
+            $sql .= " WHERE a.type_id = '".$wordsModel->getTypeId($this->type)."'";
+        }else if($this->category !== 'all' && $this->type !== 'all'){
+            $sql .= " WHERE a.category_id = '".$wordsModel->getCategoryId($this->category)."'";
+            $sql .= " AND a.type_id = '".$wordsModel->getTypeId($this->type)."'";
         }
+        $sql .= " ORDER BY a.word_id";
+        return $sql;
+    }
+    
+    
+    
+    public function getEngTestData(){
+        $startSql = "SELECT c.id, c.word, a.translation, b.type_name FROM translations as a
+                    LEFT JOIN types as b ON b.id = a.type_id
+                    LEFT JOIN words_list as c ON c.id = a.word_id";
+        $sql = $this->makeSql($startSql);
         $query = $this->db->query($sql);
         $wordsArr = $this->makeFewEngTranslations($query->fetchAll(PDO::FETCH_ASSOC));
         return json_encode($this->getRandomWords($wordsArr, $this->wordsNum));
     }
     
     public function getUkrTestData(){
-        if($this->category === 'all'){
-            $sql = "SELECT c.word, a.translation FROM translations as a
-                    LEFT JOIN words_list as c ON c.id = a.word_id
-                    ORDER BY a.word_id";
-        }else{
-            $wordsModel = new WordsModel();
-            $sql = "SELECT c.word, a.translation FROM translations as a
-                    LEFT JOIN words_list as c ON c.id = a.word_id
-                    WHERE a.category_id = '".$wordsModel->getCategoryId($this->category)."' ORDER BY a.word_id";
-        }
+        $startSql = "SELECT c.word, a.translation FROM translations as a
+                     LEFT JOIN words_list as c ON c.id = a.word_id";
+
+        $sql = $this->makeSql($startSql);
         $query = $this->db->query($sql);
         
         $wordsArr = $this->searchSameTranslations($query->fetchAll(PDO::FETCH_ASSOC));
@@ -112,6 +111,9 @@ class TestsModel extends Model{
 
 
     public function searchSameTranslations($arr){
+        if(count($arr) === 0){
+            return [];
+        }
         $transArr = [$arr[0]['translation'] => $arr[0]['word']];
         for($i=1; $i<count($arr); $i++){
             if(array_key_exists($arr[$i]['translation'], $transArr)){

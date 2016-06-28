@@ -10,6 +10,14 @@
                     <?php } ?>
                 </select>
                 <br />
+                <div>Частина мови</div>
+                <select name="wordsType">
+                    <option value="all">All</option>
+                    <?php foreach($data['types'] as $val) { ?>
+                    <option value="<?php echo $val['type_name']; ?>"><?php echo $val['type_name']; ?></option>
+                    <?php } ?>
+                </select>
+                <br />
                 <div>Кількість слів</div>
                 <select name="wordsNumber">
                     <option value="1">1</option>

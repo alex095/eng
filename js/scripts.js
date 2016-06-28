@@ -336,11 +336,20 @@ function randomNum(max){
     return Math.round((Math.random() * max));
 }
 
+function noWords(){
+    $('.test_area').children().remove();
+    $('.test_area').append("<div id='test_result'>No words...</div>");
+}
+
 
 function makeWordsList(jsonData){
     moveButtonEvent();
     setEnterEvent();
     var objsArray = objectsInArray(jsonData);
+    if(objsArray.length < 1){
+        noWords();
+        return;
+    }
     for (var i in objsArray){
         var obj = getAnswers(objsArray[i]);
         $('ul.words_list').append("<li>" + obj['word'] + "</li>");
@@ -434,6 +443,10 @@ function checkWord(data){
 function makeUkrWordsList(jsonData){
     moveButtonEvent();
     setEnterEvent();
+    if(jsonData.length < 1){
+        noWords();
+        return false;
+    }
     for(var i in jsonData){
         $('ul.words_list').append("<li>" + i + "</li>");
         $('ul.words_list > li:last')
@@ -443,12 +456,15 @@ function makeUkrWordsList(jsonData){
     }
     displayWordsCount();
     $('#answer').focus();
+    return true;
 }
 
 function makeHearingList(jsonData){
-    makeUkrWordsList(jsonData);
-    playCurrentWord(300);
-    $('#audio').eq(0).on('loadeddata', changePlayingImage);
+    if(makeUkrWordsList(jsonData)){
+        playCurrentWord(300);
+        $('#audio').eq(0).on('loadeddata', changePlayingImage);
+    }
+    
     
 }
 
@@ -457,6 +473,12 @@ function clickForPlayWord(){
     changePlayingImage();
     $('#answer').focus();
 }
+
+function playAndFocus(){
+    playCurrentWord(100);
+    $('#answer').focus();
+}
+
 
 function changePlayingImage(){
     var audioDuration = ($('#audio')[0].duration * 1000).toFixed(0) - 300;
